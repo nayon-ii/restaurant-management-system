@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Eye, EyeOff } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
 
 // Import UI components
 import { Button } from "@/components/ui/button";
@@ -36,6 +37,7 @@ export default function SignIn() {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const {
     register,
@@ -56,29 +58,31 @@ export default function SignIn() {
       // Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 2000));
 
-      // Store user data in localStorage
+      // Create user data
       const userData = {
         role: data.role,
         email: data.email,
-        rememberMe: data.rememberMe,
+        rememberMe: data.rememberMe || false,
         loginTime: new Date().toISOString(),
+        name: data.email.split("@")[0],
       };
 
-      localStorage.setItem("user", JSON.stringify(userData));
+      // Use auth context to login
+      login(userData);
 
       // Dismiss loading toast
       toast.dismiss(loadingToast);
 
-      // Show success toast (will auto-dismiss after 3 seconds)
+      // Show success toast
       toast.success("Login successful!", {
         description: `Welcome back, ${data.email}`,
       });
 
       console.log("Sign in data:", data);
 
-      // Navigate after a short delay to show the success message
+      // Navigate after a short delay
       setTimeout(() => {
-        navigate("/dashboard");
+        navigate("/dashboard", { replace: true });
       }, 500);
     } catch (error) {
       console.error("Login error:", error);
@@ -86,7 +90,7 @@ export default function SignIn() {
       // Dismiss loading toast
       toast.dismiss(loadingToast);
 
-      // Show error toast with action button
+      // Show error toast
       toast.error("Login failed", {
         description: "Invalid email or password. Please try again.",
         action: {
