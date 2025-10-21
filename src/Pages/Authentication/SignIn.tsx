@@ -112,7 +112,7 @@ export default function SignIn() {
       <div className="min-h-screen flex justify-center items-center bg-background p-4">
         {/* Form Container */}
         <div className="w-full max-w-xl">
-          <div className="w-full bg-card rounded-2xl p-8 sm:p-10 space-y-6 shadow-lg">
+          <div className="w-full bg-card rounded-2xl p-6 md:p-10 space-y-6 shadow-lg">
             {/* Logo */}
             <div className="flex items-center justify-center mb-2">
               <img

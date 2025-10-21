@@ -101,7 +101,7 @@ export default function ResetPassword() {
       <div className="min-h-screen flex items-center justify-center bg-background p-4">
         <div className="w-full max-w-xl">
           {/* Form Card with Shadow */}
-          <div className="w-full bg-card rounded-2xl p-8 sm:p-10 shadow-lg">
+          <div className="w-full bg-card rounded-2xl p-4 md:p-8 sm:p-10 shadow-lg">
             <div className="space-y-8">
               {/* Back Button */}
               <Link

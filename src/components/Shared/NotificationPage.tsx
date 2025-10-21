@@ -51,7 +51,7 @@ export default function NotificationPage() {
     <>
       <DashboardHeader title="Notification" />
 
-      <main className="p-8">
+      <main className="p-3 md:p-8">
         <div className="w-full mx-auto space-y-4">
           {mockNotifications.map((notification) => (
             <div

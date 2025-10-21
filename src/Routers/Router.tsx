@@ -22,6 +22,9 @@ import OrderDetailPage from "@/Pages/Dashboard/Chef/OrderDetailPage";
 import MenuPage from "@/Pages/Dashboard/Manager/MenuPage";
 import NotificationPage from "@/components/Shared/NotificationPage";
 import SettingsPage from "@/components/Shared/SettingsPage";
+import ProfilePage from "@/Pages/Settings/ProfilePage";
+import ChangePasswordPage from "@/Pages/Settings/ChangePasswordPage";
+
 
 // Role-based dashboard redirect component
 // eslint-disable-next-line react-refresh/only-export-components
@@ -180,9 +183,18 @@ const router = createBrowserRouter([
         path: "notification",
         element: <NotificationPage />,
       },
+      // Settings Routes (Common for all roles)
       {
         path: "settings",
         element: <SettingsPage />,
+      },
+      {
+        path: "settings/profile",
+        element: <ProfilePage />,
+      },
+      {
+        path: "settings/change-password",
+        element: <ChangePasswordPage />,
       },
     ],
   },

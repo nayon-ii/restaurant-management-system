@@ -56,12 +56,13 @@ export default function DashboardHeader({
   const showFallback = !profileImage || imageError;
 
   return (
-    <header
-      className="h-20 bg-card border-b border-border flex items-center justify-between px-5 mt-5 md:mt-10 mx-2 md:mx-8 rounded-xl"
-      style={{
-        boxShadow: "0px 8px 32px 0px #00000026",
-      }}
-    >
+    // <header
+    //   className="h-20 bg-card border-b border-border flex items-center justify-between px-5 mt-5 md:mt-10 mx-2 md:mx-8 rounded-xl"
+    //   style={{
+    //     boxShadow: "0px 8px 32px 0px #00000026",
+    //   }}
+    // >
+    <header className="h-20 bg-card border-b border-border flex items-center justify-between px-8">
       {/* Page Title */}
       <div className="">
         <h1 className="text-2xl font-bold text-foreground">{title}</h1>

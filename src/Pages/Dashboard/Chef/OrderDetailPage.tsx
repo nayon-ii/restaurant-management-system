@@ -232,7 +232,7 @@ export default function OrderDetailPage() {
     return (
       <>
         <DashboardHeader title="Order Details" />
-        <main className="p-8 flex items-center justify-center min-h-[calc(100vh-5rem)]">
+        <main className="p-3 md:p-8 flex items-center justify-center min-h-[calc(100vh-5rem)]">
           <LoadingSpinner size="lg" />
         </main>
       </>
@@ -243,7 +243,7 @@ export default function OrderDetailPage() {
     return (
       <>
         <DashboardHeader title="Order Details" />
-        <main className="p-8">
+        <main className="p-3 md:p-8">
           <div className="text-center">
             <p className="text-muted-foreground">Order not found</p>
           </div>
@@ -256,7 +256,7 @@ export default function OrderDetailPage() {
     <>
       <DashboardHeader title="Order Details" />
 
-      <main className="p-8">
+      <main className="p-3 md:p-8">
         <div className="w-full mx-auto">
           {/* Back Button & Title */}
           <div className="flex items-center gap-3 mb-6">

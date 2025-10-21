@@ -5,8 +5,8 @@ export default function MenuPage() {
   return (
     <>
       <DashboardHeader title="Menu Management" />
-      <main className="p-8">
-        <div className="bg-card rounded-2xl border border-border shadow-sm p-8">
+      <main className="p-3 md:p-8">
+        <div className="bg-card rounded-2xl border border-border shadow-sm p-4 md:p-8">
           <h2 className="text-xl font-bold text-foreground mb-4">
             Menu Management
           </h2>

@@ -71,7 +71,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                 )}
 
                 {/* Section Items */}
-                <div className="space-y-5">
+                <div className="space-y-2">
                   {section.items.map((item) => {
                     const isActive = location.pathname === item.path;
 

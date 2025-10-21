@@ -438,7 +438,7 @@ export default function OrdersPage() {
     <>
       <DashboardHeader title="Order Management" />
 
-      <main className="p-8 space-y-6">
+      <main className="p-3 md:p-8 space-y-3 md:space-y-6">
         {/* Statistics Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <StatCard
@@ -520,7 +520,7 @@ export default function OrdersPage() {
                   <TableSkeleton />
                 ) : paginatedOrders.length === 0 ? (
                   <tr>
-                    <td colSpan={7} className="p-8 text-center">
+                    <td colSpan={7} className="p-4 md:p-8 text-center">
                       <p className="text-muted-foreground">No orders found</p>
                     </td>
                   </tr>

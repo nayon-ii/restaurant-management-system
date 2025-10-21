@@ -59,7 +59,7 @@ export default function ForgotPassword() {
         noindex={true}
       />
       <div className="min-h-screen flex items-center justify-center bg-background p-4">
-        <div className="w-full max-w-md bg-card rounded-2xl p-8 shadow-lg">
+        <div className="w-full max-w-md bg-card rounded-2xl p-4 md:p-8 shadow-lg">
           {/* Header */}
           <div className="flex flex-col items-center space-y-4 mb-8">
             <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center">
