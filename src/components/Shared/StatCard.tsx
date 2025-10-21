@@ -27,6 +27,12 @@ export default function StatCard({
       style={{
         boxShadow: "0px 8px 32px 0px #00000026",
       }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.boxShadow = "0px 12px 48px 0px #00000040";
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.boxShadow = "0px 8px 32px 0px #00000026";
+      }}
     >
       <div className="flex items-center justify-between">
         <div className="space-y-2">

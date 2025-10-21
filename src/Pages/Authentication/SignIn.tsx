@@ -62,12 +62,11 @@ export default function SignIn() {
       const userData = {
         role: data.role,
         email: data.email,
-        rememberMe: data.rememberMe || false,
+        rememberMe: data.rememberMe,
         loginTime: new Date().toISOString(),
-        name: data.email.split("@")[0],
       };
 
-      // Use auth context to login
+      // Use Auth context to login
       login(userData);
 
       // Dismiss loading toast
@@ -80,9 +79,9 @@ export default function SignIn() {
 
       console.log("Sign in data:", data);
 
-      // Navigate after a short delay
+      // Navigate to dashboard based on role
       setTimeout(() => {
-        navigate("/dashboard", { replace: true });
+        navigate(`/dashboard/${data.role.toLowerCase()}`);
       }, 500);
     } catch (error) {
       console.error("Login error:", error);
@@ -90,7 +89,7 @@ export default function SignIn() {
       // Dismiss loading toast
       toast.dismiss(loadingToast);
 
-      // Show error toast
+      // Show error toast with action button
       toast.error("Login failed", {
         description: "Invalid email or password. Please try again.",
         action: {

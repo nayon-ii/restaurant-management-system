@@ -16,6 +16,7 @@ import InventoryPage from "@/Pages/Dashboard/Manager/InventoryPage";
 
 // Chef Pages
 import ChefOrdersPage from "@/Pages/Dashboard/Chef/OrdersPage";
+import OrderDetailPage from "@/Pages/Dashboard/Chef/OrderDetailPage";
 
 // Shared Pages
 import MenuPage from "@/Pages/Dashboard/Manager/MenuPage";
@@ -160,6 +161,10 @@ const router = createBrowserRouter([
       {
         path: "orders",
         element: <ChefOrdersPage />,
+      },
+      {
+        path: "orders/:orderId",
+        element: <OrderDetailPage />,
       },
       // Cashier Routes
       {

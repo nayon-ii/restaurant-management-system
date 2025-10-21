@@ -9,11 +9,13 @@ export function cn(...inputs: ClassValue[]) {
 export const getStatusColor = (status: string) => {
   switch (status.toLowerCase()) {
     case "receive":
-      return "bg-[#28a5dd] hover:bg-[#28a5dd]/90 text-white";
+      return "bg-[#2294C5] hover:bg-[#28a5dd]/90 text-white";
     case "ready":
-      return "bg-[#22c55e] hover:bg-[#22c55e]/90 text-white";
+      return "bg-[#22C55E] hover:bg-[#22c55e]/90 text-white";
     case "preparing":
-      return "bg-[#d4a12e] hover:bg-[#d4a12e]/90 text-white";
+      return "bg-[#B8860B] hover:bg-[#d4a12e]/90 text-white";
+    case "served":
+      return "bg-[#6B7280] hover:bg-[#6B7280]/90 text-white";
     default:
       return "bg-muted hover:bg-muted/90";
   }

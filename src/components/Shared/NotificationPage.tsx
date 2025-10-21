@@ -6,43 +6,43 @@ const mockNotifications = [
     id: 1,
     title: "Cheese is running low",
     time: "2 minutes ago",
-    image: "/placeholder-food.jpg",
+    image: "/order1.png",
   },
   {
     id: 2,
     title: "New Order: Table 5",
     time: "2 minutes ago",
-    image: "/placeholder-food.jpg",
+    image: "/order1.png",
   },
   {
     id: 3,
     title: "Cheese is running low",
     time: "2 minutes ago",
-    image: "/placeholder-food.jpg",
+    image: "/order1.png",
   },
   {
     id: 4,
     title: "New Order: Table 5",
     time: "2 minutes ago",
-    image: "/placeholder-food.jpg",
+    image: "/order1.png",
   },
   {
     id: 5,
     title: "Cheese is running low",
     time: "2 minutes ago",
-    image: "/placeholder-food.jpg",
+    image: "/order1.png",
   },
   {
     id: 6,
     title: "Cheese is running low",
     time: "2 minutes ago",
-    image: "/placeholder-food.jpg",
+    image: "/order1.png",
   },
   {
     id: 7,
     title: "New Order: Table 5",
     time: "2 minutes ago",
-    image: "/placeholder-food.jpg",
+    image: "/order1.png",
   },
 ];
 
@@ -52,11 +52,11 @@ export default function NotificationPage() {
       <DashboardHeader title="Notification" />
 
       <main className="p-8">
-        <div className="max-w-4xl mx-auto space-y-4">
+        <div className="w-full mx-auto space-y-4">
           {mockNotifications.map((notification) => (
             <div
               key={notification.id}
-              className="bg-card rounded-2xl p-6 border border-border shadow-sm hover:shadow-md transition-all cursor-pointer flex items-center gap-4"
+              className="bg-card rounded-2xl p-3 shadow-lg hover:shadow-md transition-all cursor-pointer flex items-center gap-4"
             >
               {/* Notification Image */}
               <div className="w-16 h-16 rounded-xl overflow-hidden flex-shrink-0 bg-gradient-to-br from-primary to-orange-600">

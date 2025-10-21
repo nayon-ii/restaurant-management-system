@@ -4,9 +4,13 @@ import { useAuth } from "@/contexts/AuthContext";
 
 interface DashboardHeaderProps {
   title: string;
+  subtitle?: string;
 }
 
-export default function DashboardHeader({ title }: DashboardHeaderProps) {
+export default function DashboardHeader({
+  title,
+  subtitle,
+}: DashboardHeaderProps) {
   const { user } = useAuth();
   const [imageError, setImageError] = useState(false);
 
@@ -59,7 +63,14 @@ export default function DashboardHeader({ title }: DashboardHeaderProps) {
       }}
     >
       {/* Page Title */}
-      <h1 className="text-2xl font-bold text-foreground">{title}</h1>
+      <div className="">
+        <h1 className="text-2xl font-bold text-foreground">{title}</h1>
+        {subtitle && (
+          <h3 className="text-base font-normal text-muted-foreground">
+            {subtitle}
+          </h3>
+        )}
+      </div>
 
       {/* User Info */}
       <div className="flex items-center gap-3">
@@ -83,7 +94,7 @@ export default function DashboardHeader({ title }: DashboardHeaderProps) {
 
         {/* User Details */}
         <div>
-          <p className="text-sm font-semibold text-foreground">
+          <p className="text-sm font-semibold text-foreground mb-1">
             {getUserName()}
           </p>
           <p className="text-xs text-muted-foreground">
