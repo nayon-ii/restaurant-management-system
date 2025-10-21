@@ -5,22 +5,22 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-
 export const getStatusColor = (status: string) => {
   switch (status.toLowerCase()) {
     case "receive":
-      return "bg-[#2294C5] hover:bg-[#28a5dd]/90 text-white";
+      return "bg-[#2294C5] hover:bg-[#28a5dd]/90 text-white flex items-center justify-center rounded-full";
     case "ready":
-      return "bg-[#22C55E] hover:bg-[#22c55e]/90 text-white";
+      return "bg-[#22C55E] hover:bg-[#22c55e]/90 text-white flex items-center justify-center rounded-full";
     case "preparing":
-      return "bg-[#B8860B] hover:bg-[#d4a12e]/90 text-white";
+      return "bg-[#B8860B] hover:bg-[#d4a12e]/90 text-white flex items-center justify-center rounded-full";
     case "served":
-      return "bg-[#6B7280] hover:bg-[#6B7280]/90 text-white";
+      return "bg-[#6B7280] hover:bg-[#6B7280]/90 text-white flex items-center justify-center rounded-full";
+    case "pending":
+      return "bg-[#A0B238] hover:bg-[#A0B238]/90 text-white flex items-center justify-center rounded-full";
     default:
       return "bg-muted hover:bg-muted/90";
   }
 };
-
 
 // Get today's date in YYYY-MM-DD format for min attribute
 export const getTodayDate = () => {
@@ -30,8 +30,6 @@ export const getTodayDate = () => {
   const day = String(today.getDate()).padStart(2, "0");
   return `${year}-${month}-${day}`;
 };
-
-
 
 // Convert date from input format to display format
 export const convertToDisplayDate = (dateStr: string) => {

@@ -23,7 +23,7 @@ export default function StatCard({
 
   return (
     <div
-      className="bg-card rounded-2xl p-4 hover:shadow-lg transition-shadow"
+      className="bg-card rounded-2xl p-5 hover:shadow-lg transition-shadow"
       style={{
         boxShadow: "0px 8px 32px 0px #00000026",
       }}
@@ -40,7 +40,7 @@ export default function StatCard({
             {title}
           </h3>
           <h2
-            className={`text-lg md:text-xl font-bold text-dark dark:text-foreground ${valueColor}`}
+            className={`text-lg md:text-2xl font-bold text-dark dark:text-foreground ${valueColor}`}
           >
             {value}
           </h2>

@@ -44,11 +44,14 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
       >
         {/* Logo */}
         <div className="h-20 flex items-center justify-between border-b border-border px-6">
-          <img
-            src="/logo.png"
-            alt="Foodie Logo"
-            className="w-20 h-16 object-contain"
-          />
+          <div className="flex justify-start items-center gap-2">
+            <img
+              src="/logo.png"
+              alt="Foodie Logo"
+              className="w-20 h-16 object-contain"
+            />
+            <p className="font-semibold text-xl">JVAI</p>
+          </div>
           {/* Close button for mobile */}
           <button
             onClick={onClose}

@@ -18,6 +18,7 @@ import { toast } from "sonner";
 import orderIcon from "@/assets/icons/order.svg";
 import processIcon from "@/assets/icons/process.svg";
 import deliverIcon from "@/assets/icons/deliver.svg";
+import { getStatusColor } from "@/lib/utils";
 // import orderImage from "@/assets/images/order1.svg";
 
 // Mock data structure
@@ -305,20 +306,7 @@ export default function OrdersPage() {
     return { total, inProgress, delivered };
   }, []);
 
-  const getStatusColor = (status: string) => {
-    switch (status.toLowerCase()) {
-      case "receive":
-        return "bg-[#2294C5] hover:bg-[#28a5dd]/90 text-white flex items-center justify-center rounded-full";
-      case "ready":
-        return "bg-[#22C55E] hover:bg-[#22c55e]/90 text-white flex items-center justify-center rounded-full";
-      case "preparing":
-        return "bg-[#B8860B] hover:bg-[#d4a12e]/90 text-white flex items-center justify-center rounded-full";
-      case "served":
-        return "bg-[#6B7280] hover:bg-[#6B7280]/90 text-white flex items-center justify-center rounded-full";
-      default:
-        return "bg-muted hover:bg-muted/90";
-    }
-  };
+
 
   const handleStatusChange = (orderId: string, newStatus: string) => {
     setSelectedStatus((prev) => ({
@@ -436,7 +424,7 @@ export default function OrdersPage() {
 
   return (
     <>
-      <DashboardHeader title="Order Management" />
+      <DashboardHeader title="Order Management" subtitle="Manage you orders" />
 
       <main className="p-3 md:p-8 space-y-3 md:space-y-6">
         {/* Statistics Cards */}
@@ -506,13 +494,13 @@ export default function OrdersPage() {
             <table className="w-full">
               <thead>
                 <tr className="bg-primary text-primary-foreground">
-                  <th className="text-center p-5 font-semibold">Date</th>
-                  <th className="text-center p-5 font-semibold">Order ID</th>
-                  <th className="text-center p-5 font-semibold">Table No</th>
-                  <th className="text-center p-5 font-semibold">Items</th>
-                  <th className="text-center p-5 font-semibold">Time Left</th>
-                  <th className="text-center p-5 font-semibold">Status</th>
-                  <th className="text-center p-5 font-semibold">Action</th>
+                  <th className="text-center p-4 font-semibold">Date</th>
+                  <th className="text-center p-4 font-semibold">Order ID</th>
+                  <th className="text-center p-4 font-semibold">Table No</th>
+                  <th className="text-center p-4 font-semibold">Items</th>
+                  <th className="text-center p-4 font-semibold">Time Left</th>
+                  <th className="text-center p-4 font-semibold">Status</th>
+                  <th className="text-center p-4 font-semibold">Action</th>
                 </tr>
               </thead>
               <tbody>
@@ -520,7 +508,7 @@ export default function OrdersPage() {
                   <TableSkeleton />
                 ) : paginatedOrders.length === 0 ? (
                   <tr>
-                    <td colSpan={7} className="p-4 md:p-8 text-center">
+                    <td colSpan={7} className="p-2 md:p-5 text-center">
                       <p className="text-muted-foreground">No orders found</p>
                     </td>
                   </tr>
@@ -532,22 +520,22 @@ export default function OrdersPage() {
                         index % 2 === 0 ? "bg-background" : "bg-card"
                       } hover:bg-accent/50 transition-colors`}
                     >
-                      <td className="p-5 text-sm text-foreground">
+                      <td className="p-2 text-sm text-foreground">
                         {order.date}
                       </td>
-                      <td className="p-5 text-sm font-medium text-foreground">
+                      <td className="p-2 text-sm font-medium text-foreground">
                         {order.id}
                       </td>
-                      <td className="p-5 text-sm text-foreground">
+                      <td className="p-2 text-sm text-foreground">
                         {order.tableNo}
                       </td>
-                      <td className="p-5 text-sm text-foreground">
+                      <td className="p-2 text-sm text-foreground">
                         {order.items}
                       </td>
-                      <td className="p-5 text-sm font-medium text-foreground">
+                      <td className="p-2 text-sm font-medium text-foreground">
                         {order.timeLeft}
                       </td>
-                      <td className="p-5 flex justify-center items-center">
+                      <td className="p-2 flex justify-center items-center">
                         <Select
                           value={selectedStatus[order.id] || order.status}
                           onValueChange={(value) =>
@@ -555,7 +543,7 @@ export default function OrdersPage() {
                           }
                         >
                           <SelectTrigger
-                            className={`w-36 border-0 ${getStatusColor(
+                            className={`w-32 border-0 ${getStatusColor(
                               selectedStatus[order.id] || order.status
                             )}`}
                           >
@@ -569,7 +557,7 @@ export default function OrdersPage() {
                           </SelectContent>
                         </Select>
                       </td>
-                      <td className="p-5 text-center">
+                      <td className="p-2 text-center">
                         <Button
                           variant="ghost"
                           size="icon"
