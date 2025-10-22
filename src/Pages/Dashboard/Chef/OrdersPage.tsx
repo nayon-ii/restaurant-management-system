@@ -20,6 +20,7 @@ import processIcon from "@/assets/icons/process.svg";
 import deliverIcon from "@/assets/icons/deliver.svg";
 import { getStatusColor } from "@/lib/utils";
 import { useAuth } from "@/contexts/AuthContext";
+import { TableSkeleton } from "@/components/Skeleton/TableSkeleton";
 // import orderImage from "@/assets/images/order1.svg";
 
 // Mock data structure
@@ -216,36 +217,6 @@ const mockOrdersData: Order[] = [
   },
 ];
 
-// Skeleton Loader Component
-const TableSkeleton = () => (
-  <>
-    {[1, 2, 3, 4, 5].map((i) => (
-      <tr key={i} className="border-b border-border">
-        <td className="p-5">
-          <div className="h-4 bg-muted rounded animate-pulse" />
-        </td>
-        <td className="p-5">
-          <div className="h-4 bg-muted rounded animate-pulse" />
-        </td>
-        <td className="p-5">
-          <div className="h-4 bg-muted rounded animate-pulse" />
-        </td>
-        <td className="p-5">
-          <div className="h-4 bg-muted rounded animate-pulse" />
-        </td>
-        <td className="p-5">
-          <div className="h-4 bg-muted rounded animate-pulse" />
-        </td>
-        <td className="p-5 flex justify-center">
-          <div className="h-10 w-36 bg-muted rounded-full animate-pulse" />
-        </td>
-        <td className="p-5">
-          <div className="h-10 w-10 bg-muted rounded animate-pulse mx-auto" />
-        </td>
-      </tr>
-    ))}
-  </>
-);
 
 export default function OrdersPage() {
   const navigate = useNavigate();

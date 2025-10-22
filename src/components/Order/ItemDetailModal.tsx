@@ -1,4 +1,4 @@
-// src/components/Modals/ItemDetailModal.tsx
+// src/components/Order/ItemDetailModal.tsx
 import {
   Dialog,
   DialogContent,
@@ -34,6 +34,7 @@ interface ItemDetailModalProps {
   item: OrderItem | null;
   currentStatus: string;
   onStatusChange: (itemId: string, newStatus: string) => void;
+  canChangeStatus?: boolean;
 }
 
 export default function ItemDetailModal({
@@ -42,6 +43,7 @@ export default function ItemDetailModal({
   item,
   currentStatus,
   onStatusChange,
+  canChangeStatus = true,
 }: ItemDetailModalProps) {
   if (!item) return null;
 
@@ -123,24 +125,27 @@ export default function ItemDetailModal({
           </div>
 
           {/* Status Update - Chef can only set Preparing, Ready, Served */}
-          <div>
-            <Label className="text-sm font-medium text-foreground mb-2">
-              Update Status
-            </Label>
-            <Select
-              value={currentStatus}
-              onValueChange={(value) => onStatusChange(item.id, value)}
-            >
-              <SelectTrigger className="w-full h-12 bg-background border-input mt-2">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="Preparing">Preparing</SelectItem>
-                <SelectItem value="Ready">Ready</SelectItem>
-                <SelectItem value="Served">Served</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
+
+          {canChangeStatus && (
+            <div>
+              <Label className="text-sm font-medium text-foreground mb-2">
+                Update Status
+              </Label>
+              <Select
+                value={currentStatus}
+                onValueChange={(value) => onStatusChange(item.id, value)}
+              >
+                <SelectTrigger className="w-full h-12 bg-background border-input mt-2">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Preparing">Preparing</SelectItem>
+                  <SelectItem value="Ready">Ready</SelectItem>
+                  <SelectItem value="Served">Served</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          )}
         </div>
       </DialogContent>
     </Dialog>

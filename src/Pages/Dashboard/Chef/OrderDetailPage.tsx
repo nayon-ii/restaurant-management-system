@@ -14,7 +14,7 @@ import {
 import { ArrowLeft } from "lucide-react";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import { toast } from "sonner";
-import ItemDetailModal from "@/components/Modals/ItemDetailModal";
+import ItemDetailModal from "@/components/Order/ItemDetailModal";
 
 // Mock data structure
 interface OrderItem {
