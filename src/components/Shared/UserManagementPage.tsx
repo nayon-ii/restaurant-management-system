@@ -223,7 +223,7 @@ export default function UserManagementPage() {
           key={i}
           onClick={() => setCurrentPage(i)}
           variant={currentPage === i ? "default" : "outline"}
-          className="w-10 h-10 p-0"
+          className="w-10 h-10 p-0 rounded-sm shadow-xl"
         >
           {i}
         </Button>

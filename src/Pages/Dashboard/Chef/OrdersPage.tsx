@@ -1,6 +1,6 @@
 // src/Pages/Dashboard/Chef/OrdersPage.tsx
 import { useState, useMemo, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import DashboardHeader from "@/components/Dashboard/DashboardHeader";
 import StatCard from "@/components/Shared/StatCard";
 import { Input } from "@/components/ui/input";
@@ -12,13 +12,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Search, SlidersHorizontal, Eye } from "lucide-react";
+import { Search, SlidersHorizontal, Eye, Plus } from "lucide-react";
 import { toast } from "sonner";
 
 import orderIcon from "@/assets/icons/order.svg";
 import processIcon from "@/assets/icons/process.svg";
 import deliverIcon from "@/assets/icons/deliver.svg";
 import { getStatusColor } from "@/lib/utils";
+import { useAuth } from "@/contexts/AuthContext";
 // import orderImage from "@/assets/images/order1.svg";
 
 // Mock data structure
@@ -256,7 +257,11 @@ export default function OrdersPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
 
-  const itemsPerPage = 5;
+  const { user } = useAuth();
+  const userRole = user?.role?.toLowerCase() || "guest";
+  const isCreateOrder = ["manager", "admin"].includes(userRole);
+
+  const itemsPerPage = 10;
 
   // Simulate initial data loading
   useEffect(() => {
@@ -305,8 +310,6 @@ export default function OrdersPage() {
 
     return { total, inProgress, delivered };
   }, []);
-
-
 
   const handleStatusChange = (orderId: string, newStatus: string) => {
     setSelectedStatus((prev) => ({
@@ -449,8 +452,18 @@ export default function OrdersPage() {
         {/* Orders Table Section */}
         <div className="bg-card rounded-2xl border border-border shadow-[0px_8px_32px_0px_#00000026] pb-5">
           {/* Header */}
-          <div className="p-5 border-b border-border">
+          <div className="p-5 border-b border-border flex justify-between items-center">
             <h2 className="text-2xl font-semibold text-foreground">Orders</h2>
+            {isCreateOrder && (
+              <Link
+                to="/dashboard/order/create"
+                className="flex items-center justify-center gap-1 bg-primary hover:bg-primary/80 shadow-lg hover:shadow-xl rounded-xl px-3 py-2 text-white"
+              >
+                {" "}
+                <Plus className="w-5 h-5" />
+                Create Order
+              </Link>
+            )}
           </div>
 
           {/* Search and Filter */}
