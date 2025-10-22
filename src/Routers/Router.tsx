@@ -24,6 +24,7 @@ import NotificationPage from "@/components/Shared/NotificationPage";
 import SettingsPage from "@/components/Shared/SettingsPage";
 import ProfilePage from "@/Pages/Settings/ProfilePage";
 import ChangePasswordPage from "@/Pages/Settings/ChangePasswordPage";
+import CreateOrderPage from "@/Pages/Dashboard/Order/CreateOrderPage";
 
 
 // Role-based dashboard redirect component
@@ -168,6 +169,10 @@ const router = createBrowserRouter([
       {
         path: "orders/:orderId",
         element: <OrderDetailPage />,
+      },
+      {
+        path: "order/create",
+        element: <CreateOrderPage />,
       },
       // Cashier Routes
       {

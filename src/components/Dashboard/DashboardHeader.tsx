@@ -62,7 +62,7 @@ export default function DashboardHeader({
     //     boxShadow: "0px 8px 32px 0px #00000026",
     //   }}
     // >
-    <header className="h-20 bg-card border-b border-border flex items-center justify-between px-8">
+    <header className="h-20 bg-card border-b border-border flex items-center justify-between px-8 sticky top-0 z-50">
       {/* Page Title */}
       <div className="">
         <h1 className="text-2xl font-bold text-foreground">{title}</h1>
