@@ -1,7 +1,7 @@
 // src/components/Order/CartItemCard.tsx
 import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import type { CartItem } from "@/Pages/Dashboard/Order/CreateOrderPage";
+import type { CartItem } from "@/types/order";
 
 interface CartItemCardProps {
   item: CartItem;

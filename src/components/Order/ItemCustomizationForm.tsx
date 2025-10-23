@@ -10,7 +10,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
-import type { MenuItem } from "@/Pages/Dashboard/Order/CreateOrderPage";
+import type { MenuItem } from "@/types/order";
 
 
 interface ItemCustomizationFormProps {

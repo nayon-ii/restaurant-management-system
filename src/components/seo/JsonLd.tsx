@@ -1,5 +1,5 @@
 // src/components/seo/JsonLd.tsx
-import { Meta } from "react-head";
+import { Helmet } from "react-helmet-async";
 
 interface JsonLdProps {
   type: "Organization" | "WebSite" | "WebPage" | "Article" | "BreadcrumbList";
@@ -14,11 +14,11 @@ export function JsonLd({ type, data }: JsonLdProps) {
   };
 
   return (
-    <Meta
-      name="structured-data"
-      content={JSON.stringify(structuredData)}
-      data-structured-data={JSON.stringify(structuredData)}
-    />
+    <Helmet>
+      <script type="application/ld+json">
+        {JSON.stringify(structuredData)}
+      </script>
+    </Helmet>
   );
 }
 

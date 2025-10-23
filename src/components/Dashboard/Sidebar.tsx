@@ -93,7 +93,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                         {item.icon}
                         <span className="truncate">{item.label}</span>
                         {item.badge && (
-                          <span className="ml-auto bg-destructive text-destructive-foreground text-xs px-2 py-0.5 rounded-full flex-shrink-0">
+                          <span className="ml-auto bg-destructive text-destructive-foreground text-xs px-2 py-0.5 rounded-full shrink-0">
                             {item.badge}
                           </span>
                         )}
@@ -112,7 +112,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
             onClick={logout}
             className="flex items-center gap-3 px-3 py-2.5 w-full rounded-lg text-sm font-medium text-destructive hover:bg-destructive/10 transition-colors"
           >
-            <LogOut className="h-5 w-5 flex-shrink-0" />
+            <LogOut className="h-5 w-5 shrink-0" />
             <span className="truncate">Logout</span>
           </button>
         </div>

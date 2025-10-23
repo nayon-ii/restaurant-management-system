@@ -12,87 +12,8 @@ import CartItemCard from "@/components/Order/CartItemCard";
 import OrderSummary from "@/components/Order/OrderSummary";
 import ItemCustomizationForm from "@/components/Order/ItemCustomizationForm";
 import ReviewSummaryCard from "@/components/Order/ReviewSummaryCard";
-
-// Interfaces
-export interface MenuItem {
-  id: string;
-  name: string;
-  category: string;
-  basePrice: number;
-  image: string;
-  sizes: { name: string; priceAdder: number }[];
-  extras: { name: string; price: number }[];
-  prepTime: number;
-}
-
-export interface CartItem {
-  cartId: string;
-  menuItem: MenuItem;
-  quantity: number;
-  size: string;
-  extras: string[];
-  note: string;
-  itemTotal: number;
-}
-
-// Mock Menu Data
-const mockMenuItems: MenuItem[] = [
-  {
-    id: "1",
-    name: "Cheese Pizza",
-    category: "Hot Cool Spot",
-    basePrice: 29.0,
-    image:
-      "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=300&h=300&fit=crop",
-    sizes: [
-      { name: "Small", priceAdder: 0 },
-      { name: "Medium", priceAdder: 5 },
-      { name: "Large", priceAdder: 10 },
-    ],
-    extras: [
-      { name: "Cheese", price: 2 },
-      { name: "Olive", price: 1.5 },
-      { name: "Mushroom", price: 2.5 },
-    ],
-    prepTime: 20,
-  },
-  {
-    id: "2",
-    name: "Cheese Burger",
-    category: "Hot Cool Spot",
-    basePrice: 29.0,
-    image:
-      "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=300&h=300&fit=crop",
-    sizes: [
-      { name: "Small", priceAdder: 0 },
-      { name: "Medium", priceAdder: 5 },
-      { name: "Large", priceAdder: 10 },
-    ],
-    extras: [
-      { name: "Cheese", price: 2 },
-      { name: "Bacon", price: 3 },
-    ],
-    prepTime: 20,
-  },
-  {
-    id: "3",
-    name: "Spicy Shawarma",
-    category: "Hot Cool Spot",
-    basePrice: 9.99,
-    image:
-      "https://images.unsplash.com/photo-1529006557810-274b9b2fc783?w=300&h=300&fit=crop",
-    sizes: [
-      { name: "Small", priceAdder: 0 },
-      { name: "Medium", priceAdder: 3 },
-      { name: "Large", priceAdder: 6 },
-    ],
-    extras: [
-      { name: "Cheese", price: 1 },
-      { name: "Olive", price: 1 },
-    ],
-    prepTime: 20,
-  },
-];
+import { mockMenuItems } from "@/data/mockOrders";
+import type { MenuItem, CartItem } from "@/types/order";
 
 export default function CreateOrderPage() {
   const navigate = useNavigate();
@@ -224,7 +145,6 @@ export default function CreateOrderPage() {
           </Button>
 
           <div className="flex flex-col lg:flex-row gap-6">
-            {/* Left: Search & Items Grid */}
             {step === 1 && (
               <div className="w-full lg:w-3/5">
                 <div className="bg-card rounded-2xl shadow-sm p-3 mb-4">
@@ -251,7 +171,6 @@ export default function CreateOrderPage() {
               </div>
             )}
 
-            {/* Right: Form & Cart */}
             <div
               className={`w-full ${
                 step === 1 ? "lg:w-2/5" : "lg:w-1/2 mx-auto"
@@ -323,7 +242,6 @@ export default function CreateOrderPage() {
               ) : (
                 <>
                   <div className="space-y-6">
-                    {/* Header */}
                     <div className="flex items-center justify-between">
                       <h3 className="text-2xl font-bold tracking-tight">
                         Order Review
@@ -333,14 +251,12 @@ export default function CreateOrderPage() {
                       </span>
                     </div>
 
-                    {/* Selected Items */}
                     <div className="space-y-3">
                       {cart.map((item) => (
                         <ReviewSummaryCard key={item.cartId} item={item} />
                       ))}
                     </div>
 
-                    {/* Order Details Grid */}
                     <div className="grid grid-cols-2 gap-4 pt-4">
                       <div className="space-y-1.5">
                         <Label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
@@ -380,7 +296,6 @@ export default function CreateOrderPage() {
                       </div>
                     </div>
 
-                    {/* Note Section - Always visible */}
                     <div className="space-y-1.5">
                       <Label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
                         Special Notes
@@ -390,7 +305,6 @@ export default function CreateOrderPage() {
                       </div>
                     </div>
 
-                    {/* Total Amount - Highlighted */}
                     <div className="bg-gradient-to-br from-primary/5 to-primary/10 border border-primary/20 rounded-xl p-4">
                       <div className="flex items-center justify-between">
                         <span className="text-sm font-medium text-muted-foreground">
@@ -402,7 +316,6 @@ export default function CreateOrderPage() {
                       </div>
                     </div>
 
-                    {/* Action Button */}
                     <Button
                       onClick={handleCreateOrder}
                       className="w-full h-12 bg-primary hover:bg-primary/90 text-white rounded-xl text-base font-semibold shadow-lg shadow-primary/25 transition-all hover:shadow-xl hover:shadow-primary/30"

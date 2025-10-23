@@ -163,7 +163,7 @@ export default function ProfilePage() {
               <div className="flex flex-col items-center text-center space-y-4">
                 {/* Avatar */}
                 <div className="relative">
-                  <div className="w-32 h-32 rounded-full overflow-hidden bg-gradient-to-br from-primary to-orange-600 flex items-center justify-center">
+                  <div className="w-32 h-32 rounded-full overflow-hidden bg-linear-to-br from-primary to-orange-600 flex items-center justify-center">
                     {profile.avatar ? (
                       <img
                         src={profile.avatar}

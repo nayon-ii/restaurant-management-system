@@ -1,6 +1,5 @@
 // src/Routers/Router.tsx
-import { createBrowserRouter, Navigate } from "react-router-dom";
-import MainLayout from "@/Layouts/MainLayout";
+import { createBrowserRouter } from "react-router-dom";
 import DashboardLayout from "@/Layouts/DashboardLayout";
 import SignIn from "@/Pages/Authentication/SignIn";
 import ForgetPassword from "@/Pages/Authentication/ForgetPassword";
@@ -25,52 +24,35 @@ import SettingsPage from "@/components/Shared/SettingsPage";
 import ProfilePage from "@/Pages/Settings/ProfilePage";
 import ChangePasswordPage from "@/Pages/Settings/ChangePasswordPage";
 import CreateOrderPage from "@/Pages/Dashboard/Order/CreateOrderPage";
-
-
-// Role-based dashboard redirect component
-// eslint-disable-next-line react-refresh/only-export-components
-const DashboardRedirect = () => {
-  const userStr = localStorage.getItem("user");
-
-  if (!userStr) {
-    return <Navigate to="/signin" replace />;
-  }
-
-  try {
-    const user = JSON.parse(userStr);
-    const role = user.role.toLowerCase();
-
-    // Redirect to role-specific dashboard
-    return <Navigate to={`/dashboard/${role}`} replace />;
-  } catch (error) {
-    console.error("Router page error", error);
-    return <Navigate to="/signin" replace />;
-  }
-};
+import AuthLayout from "@/Layouts/AuthLayout";
+import DashboardRedirect from "@/components/DashboardRedirect";
+import RootRedirect from "@/components/RootRedirect";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <MainLayout />,
+    element: <RootRedirect />,
+  },
+  // Public Routes (AuthLayout)
+  {
+    path: "/",
+    element: <AuthLayout />,
     children: [
       {
-        index: true,
-        element: <Navigate to="/signin" replace />,
+        path: "signin",
+        element: <SignIn />,
+      },
+      {
+        path: "forgot-password",
+        element: <ForgetPassword />,
+      },
+      {
+        path: "reset-password",
+        element: <ResetPassword />,
       },
     ],
   },
-  {
-    path: "/signin",
-    element: <SignIn />,
-  },
-  {
-    path: "/forgot-password",
-    element: <ForgetPassword />,
-  },
-  {
-    path: "/reset-password",
-    element: <ResetPassword />,
-  },
+  // Protected Routes (DashboardLayout)
   {
     path: "/dashboard",
     element: <DashboardLayout />,

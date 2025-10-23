@@ -1,7 +1,7 @@
 // src/components/Order/MenuItemCard.tsx
 import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import type { MenuItem } from "@/Pages/Dashboard/Order/CreateOrderPage";
+import type { MenuItem } from "@/types/order";
 
 interface MenuItemCardProps {
   item: MenuItem;

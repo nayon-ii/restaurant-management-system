@@ -1,7 +1,6 @@
 // src/components/Order/ReviewSummaryCard.tsx
 
-import type { CartItem } from "@/Pages/Dashboard/Order/CreateOrderPage";
-
+import type { CartItem } from "@/types/order";
 
 interface ReviewSummaryCardProps {
   item: CartItem;

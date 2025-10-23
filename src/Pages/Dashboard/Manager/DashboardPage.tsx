@@ -25,6 +25,7 @@ import processIcon from "@/assets/icons/process.svg";
 import deliverIcon from "@/assets/icons/deliver.svg";
 import { getStatusColor } from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
+import { UserRoleDisplay } from "@/components/UserRoleDisplay";
 
 const chartData = [
   { month: "Jan", orders: 50 },
@@ -270,6 +271,9 @@ export default function DashboardPage() {
       <DashboardHeader title="Dashboard" />
 
       <main className="p-3 md:p-8 space-y-3 md:space-y-6">
+        {/* Role-based Demo */}
+        <UserRoleDisplay />
+
         {/* Statistics Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <StatCard
@@ -353,7 +357,7 @@ export default function DashboardPage() {
                   key={index}
                   className="flex items-center gap-4 p-3 rounded-xl bg-card hover:bg-secondary transition-colors shadow-lg"
                 >
-                  <div className="w-12 h-12 rounded-lg overflow-hidden flex-shrink-0 bg-gradient-to-br from-primary to-orange-600">
+                  <div className="w-12 h-12 rounded-lg overflow-hidden  bg-linear-to-br from-primary to-orange-600">
                     <img
                       src={item.image}
                       alt={item.name}

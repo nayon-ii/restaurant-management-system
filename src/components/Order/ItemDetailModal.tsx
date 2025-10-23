@@ -6,7 +6,7 @@ import {
   DialogOverlay,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
@@ -14,26 +14,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Label } from "@/components/ui/label";
-
-interface OrderItem {
-  id: string;
-  name: string;
-  category: string;
-  image: string;
-  status: string;
-  timeLeft: string;
-  size?: string;
-  extraIngredients?: string;
-  note?: string;
-}
+import type { OrderItem, OrderStatus } from "@/types/order";
 
 interface ItemDetailModalProps {
   isOpen: boolean;
   onClose: () => void;
   item: OrderItem | null;
-  currentStatus: string;
-  onStatusChange: (itemId: string, newStatus: string) => void;
+  currentStatus: OrderStatus;
+  onStatusChange: (itemId: string, newStatus: OrderStatus) => void;
   canChangeStatus?: boolean;
 }
 
@@ -53,14 +41,14 @@ export default function ItemDetailModal({
       <DialogContent className="sm:max-w-lg bg-card border-border">
         <DialogHeader>
           <DialogTitle className="text-xl font-bold text-foreground">
-            Selected Items
+            Item Details
           </DialogTitle>
         </DialogHeader>
 
-        <div className="space-y-3">
+        <div className="space-y-4">
           {/* Item Info */}
-          <div className="flex items-center gap-4 p-3 bg-card rounded-xl border border-input">
-            <div className="w-16 h-16 rounded-lg overflow-hidden flex-shrink-0 bg-gradient-to-br from-primary to-orange-600">
+          <div className="flex items-center gap-4 p-3 bg-card rounded-xl border border-border">
+            <div className="w-16 h-16 rounded-lg overflow-hidden shrink-0 bg-linear-gradient-to-br from-primary to-orange-600">
               <img
                 src={item.image}
                 alt={item.name}
@@ -72,73 +60,80 @@ export default function ItemDetailModal({
             </div>
             <div className="flex-1">
               <p className="font-semibold text-foreground">{item.name}</p>
-              <p className="text-sm text-muted-foreground">{item.category}</p>
+              <p className="text-sm text-muted-foreground">{item.quantity}x</p>
             </div>
+            <p className="font-bold text-foreground">
+              ${item.price.toFixed(2)}
+            </p>
           </div>
 
           {/* Size & Extra Ingredients */}
           <div className="grid grid-cols-2 gap-4">
-            <div>
-              <Label className="text-sm font-medium text-foreground mb-2">
+            <div className="space-y-1.5">
+              <Label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
                 Size
               </Label>
-              <Input
-                value={item.size || "N/A"}
-                readOnly
-                className="bg-card border-input mt-2"
-              />
+              <div className="min-h-11 px-3 py-2.5 bg-card border border-border rounded-lg text-sm">
+                {item.size || "N/A"}
+              </div>
             </div>
-            <div>
-              <Label className="text-sm font-medium text-foreground mb-2">
+            <div className="space-y-1.5">
+              <Label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
                 Extra Ingredients
               </Label>
-              <Input
-                value={item.extraIngredients || "None"}
-                readOnly
-                className="bg-card border-input mt-2"
-              />
+              <div className="min-h-11 px-3 py-2.5 bg-card border border-border rounded-lg text-sm">
+                {item.extraIngredients || "None"}
+              </div>
             </div>
           </div>
 
           {/* Note */}
-          <div>
-            <Label className="text-sm font-medium text-foreground mb-2">
-              Note
+          <div className="space-y-1.5">
+            <Label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
+              Special Instructions
             </Label>
-            <Input
-              value={item.note || "No notes"}
-              readOnly
-              className="bg-card border-input mt-2"
-            />
+            <div className="min-h-11 px-3 py-2.5 bg-card border border-border rounded-lg text-sm">
+              {item.note || "No special instructions"}
+            </div>
           </div>
 
-          {/* Time Left */}
-          <div>
-            <Label className="text-sm font-medium text-foreground mb-2">
-              Time Left
-            </Label>
-            <Input
-              value={item.timeLeft}
-              readOnly
-              className="bg-card border-input mt-2"
-            />
+          {/* Time Left & Quantity */}
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-1.5">
+              <Label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
+                Time Left
+              </Label>
+              <div className="h-11 px-3 flex items-center bg-card border border-border rounded-lg text-sm font-medium">
+                {item.timeLeft}
+              </div>
+            </div>
+            <div className="space-y-1.5">
+              <Label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
+                Quantity
+              </Label>
+              <div className="h-11 px-3 flex items-center bg-card border border-border rounded-lg text-sm font-medium">
+                {item.quantity}x
+              </div>
+            </div>
           </div>
 
-          {/* Status Update - Chef can only set Preparing, Ready, Served */}
-
+          {/* Status Update */}
           {canChangeStatus && (
-            <div>
-              <Label className="text-sm font-medium text-foreground mb-2">
+            <div className="space-y-1.5">
+              <Label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
                 Update Status
               </Label>
               <Select
                 value={currentStatus}
-                onValueChange={(value) => onStatusChange(item.id, value)}
+                onValueChange={(value) =>
+                  onStatusChange(item.id, value as OrderStatus)
+                }
               >
-                <SelectTrigger className="w-full h-12 bg-background border-input mt-2">
+                <SelectTrigger className="w-full h-12 bg-card border-border">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
+                  <SelectItem value="Receive">Receive</SelectItem>
                   <SelectItem value="Preparing">Preparing</SelectItem>
                   <SelectItem value="Ready">Ready</SelectItem>
                   <SelectItem value="Served">Served</SelectItem>

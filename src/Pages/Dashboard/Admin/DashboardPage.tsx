@@ -181,7 +181,7 @@ export default function AdminDashboardPage() {
                   key={index}
                   className="flex items-center gap-4 p-3 rounded-xl hover:bg-accent transition-colors"
                 >
-                  <div className="w-12 h-12 rounded-lg overflow-hidden flex-shrink-0 bg-gradient-to-br from-primary to-orange-600">
+                  <div className="w-12 h-12 rounded-lg overflow-hidden shrink-0 bg-linear-gradient-to-br from-primary to-orange-600">
                     <img
                       src={item.image}
                       alt={item.name}

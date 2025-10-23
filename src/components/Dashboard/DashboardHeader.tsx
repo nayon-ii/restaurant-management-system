@@ -76,10 +76,10 @@ export default function DashboardHeader({
       {/* User Info */}
       <div className="flex items-center gap-3">
         {/* Avatar */}
-        <div className="relative w-12 h-12 rounded-full overflow-hidden flex-shrink-0 shadow-md">
+        <div className="relative w-12 h-12 rounded-full overflow-hidden shrink-0 shadow-md">
           {showFallback ? (
             // Fallback Avatar with Initials
-            <div className="w-full h-full bg-gradient-to-br from-primary to-orange-600 flex items-center justify-center text-white font-semibold text-lg">
+            <div className="w-full h-full bg-linear-to-br from-primary to-orange-600 flex items-center justify-center text-white font-semibold text-lg">
               {getInitials()}
             </div>
           ) : (

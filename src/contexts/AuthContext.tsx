@@ -1,52 +1,47 @@
 // src/contexts/AuthContext.tsx
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext, useEffect } from "react";
 import type { ReactNode } from "react";
-
-interface User {
-  role: string;
-  email: string;
-  rememberMe?: boolean;
-  loginTime: string;
-  name?: string;
-  profileImage?: string;
-  avatar?: string;
-  [key: string]: unknown;
-}
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
+import {
+  checkAuthStatus,
+  loginUser,
+  logoutUser,
+} from "../redux/features/auth/authSlice";
+import type { User, LoginCredentials } from "../redux/types/auth";
 
 interface AuthContextType {
   user: User | null;
-  login: (userData: User) => void;
-  logout: () => void;
+  login: (credentials: LoginCredentials) => Promise<void>;
+  logout: () => Promise<void>;
   isAuthenticated: boolean;
+  isLoading: boolean;
+  error: string | null;
+  clearError: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<User | null>(null);
+  const dispatch = useAppDispatch();
+  const { user, isAuthenticated, isLoading, error } = useAppSelector(
+    (state) => state.auth
+  );
 
   useEffect(() => {
-    // Check if user is already logged in
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      try {
-        const parsedUser = JSON.parse(storedUser);
-        setUser(parsedUser);
-      } catch (error) {
-        console.error("Failed to parse user data:", error);
-        localStorage.removeItem("user");
-      }
-    }
-  }, []);
+    // Check authentication status on app load
+    dispatch(checkAuthStatus());
+  }, [dispatch]);
 
-  const login = (userData: User) => {
-    setUser(userData);
-    localStorage.setItem("user", JSON.stringify(userData));
+  const login = async (credentials: LoginCredentials) => {
+    await dispatch(loginUser(credentials));
   };
 
-  const logout = () => {
-    setUser(null);
-    localStorage.removeItem("user");
+  const logout = async () => {
+    await dispatch(logoutUser());
+  };
+
+  const clearError = () => {
+    dispatch({ type: "auth/clearError" });
   };
 
   return (
@@ -55,7 +50,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         user,
         login,
         logout,
-        isAuthenticated: !!user,
+        isAuthenticated,
+        isLoading,
+        error,
+        clearError,
       }}
     >
       {children}

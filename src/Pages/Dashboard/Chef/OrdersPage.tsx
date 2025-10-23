@@ -14,227 +14,32 @@ import {
 } from "@/components/ui/select";
 import { Search, SlidersHorizontal, Eye, Plus } from "lucide-react";
 import { toast } from "sonner";
+import { useAuth } from "@/contexts/AuthContext";
+import { TableSkeleton } from "@/components/Skeleton/TableSkeleton";
+import { getStatusColor } from "@/lib/utils";
+import { mockOrders } from "@/data/mockOrders";
+import type { OrderStatus } from "@/types/order";
 
 import orderIcon from "@/assets/icons/order.svg";
 import processIcon from "@/assets/icons/process.svg";
 import deliverIcon from "@/assets/icons/deliver.svg";
-import { getStatusColor } from "@/lib/utils";
-import { useAuth } from "@/contexts/AuthContext";
-import { TableSkeleton } from "@/components/Skeleton/TableSkeleton";
-// import orderImage from "@/assets/images/order1.svg";
-
-// Mock data structure
-interface OrderItem {
-  id: string;
-  name: string;
-  category: string;
-  image: string;
-  status: string;
-  timeLeft: string;
-  size?: string;
-  extraIngredients?: string;
-  note?: string;
-}
-
-interface Order {
-  id: string;
-  date: string;
-  tableNo: string;
-  items: string;
-  timeLeft: string;
-  status: string;
-  fullItems: OrderItem[];
-}
-
-const mockOrdersData: Order[] = [
-  {
-    id: "001",
-    date: "20 Aug 2025",
-    tableNo: "6A",
-    items: "Cheese Pizza",
-    timeLeft: "0",
-    status: "Receive",
-    fullItems: [
-      {
-        id: "item-1",
-        name: "Spicy Shawarma",
-        category: "Hot Cool Spot",
-        image: "/order1.png",
-        status: "Ready",
-        timeLeft: "0 min",
-        size: "Medium",
-        extraIngredients: "Cheese, Chicken",
-        note: "Medium Rare, No salt",
-      },
-    ],
-  },
-  {
-    id: "002",
-    date: "20 Aug 2025",
-    tableNo: "6B",
-    items: "Cheese Pizza",
-    timeLeft: "00:05:10",
-    status: "Ready",
-    fullItems: [
-      {
-        id: "item-1",
-        name: "Spicy Shawarma",
-        category: "Hot Cool Spot",
-        image: "/order1.png",
-        status: "Ready",
-        timeLeft: "10 min",
-        size: "Medium (12 inch)",
-        extraIngredients: "Cheese, Chicken",
-        note: "ABC",
-      },
-    ],
-  },
-  {
-    id: "003",
-    date: "20 Aug 2025",
-    tableNo: "6C",
-    items: "Cheese Pizza",
-    timeLeft: "00:15:10",
-    status: "Preparing",
-    fullItems: [
-      {
-        id: "item-1",
-        name: "Cheese Pizza",
-        category: "Italian",
-        image: "/order1.png",
-        status: "Preparing",
-        timeLeft: "15 min",
-        size: "Large",
-        extraIngredients: "Extra Cheese",
-        note: "Well done",
-      },
-    ],
-  },
-  {
-    id: "004",
-    date: "20 Aug 2025",
-    tableNo: "6D",
-    items: "Cheese Pizza",
-    timeLeft: "00:25:10",
-    status: "Receive",
-    fullItems: [
-      {
-        id: "item-1",
-        name: "Cheese Pizza",
-        category: "Italian",
-        image: "/order1.png",
-        status: "Receive",
-        timeLeft: "25 min",
-        size: "Medium",
-        extraIngredients: "Mushroom",
-        note: "",
-      },
-    ],
-  },
-  {
-    id: "005",
-    date: "20 Aug 2025",
-    tableNo: "6E",
-    items: "Cheese Pizza",
-    timeLeft: "00:25:10",
-    status: "Receive",
-    fullItems: [
-      {
-        id: "item-1",
-        name: "Cheese Pizza",
-        category: "Italian",
-        image: "/order1.png",
-        status: "Receive",
-        timeLeft: "25 min",
-        size: "Small",
-        extraIngredients: "Olives, Peppers",
-        note: "Extra spicy",
-      },
-    ],
-  },
-  {
-    id: "006",
-    date: "20 Aug 2025",
-    tableNo: "7A",
-    items: "Burger Combo",
-    timeLeft: "00:10:00",
-    status: "Preparing",
-    fullItems: [
-      {
-        id: "item-1",
-        name: "Burger Combo",
-        category: "American",
-        image: "/order1.png",
-        status: "Preparing",
-        timeLeft: "10 min",
-        size: "Large",
-        extraIngredients: "Extra Bacon",
-        note: "",
-      },
-    ],
-  },
-  {
-    id: "007",
-    date: "20 Aug 2025",
-    tableNo: "7B",
-    items: "Pasta Alfredo",
-    timeLeft: "00:20:00",
-    status: "Receive",
-    fullItems: [
-      {
-        id: "item-1",
-        name: "Pasta Alfredo",
-        category: "Italian",
-        image: "/order1.png",
-        status: "Receive",
-        timeLeft: "20 min",
-        size: "Regular",
-        extraIngredients: "Parmesan",
-        note: "Extra creamy",
-      },
-    ],
-  },
-  {
-    id: "008",
-    date: "20 Aug 2025",
-    tableNo: "8A",
-    items: "Sushi Roll",
-    timeLeft: "00:12:00",
-    status: "Ready",
-    fullItems: [
-      {
-        id: "item-1",
-        name: "Sushi Roll",
-        category: "Japanese",
-        image: "/order1.png",
-        status: "Ready",
-        timeLeft: "12 min",
-        size: "8 pieces",
-        extraIngredients: "Wasabi, Ginger",
-        note: "",
-      },
-    ],
-  },
-];
-
 
 export default function OrdersPage() {
   const navigate = useNavigate();
-  const [searchQuery, setSearchQuery] = useState("");
-  const [statusFilter, setStatusFilter] = useState<string>("all");
-  const [selectedStatus, setSelectedStatus] = useState<Record<string, string>>(
-    {}
-  );
-  const [currentPage, setCurrentPage] = useState(1);
-  const [isLoading, setIsLoading] = useState(true);
-
   const { user } = useAuth();
   const userRole = user?.role?.toLowerCase() || "guest";
   const isCreateOrder = ["manager", "admin"].includes(userRole);
 
+  const [searchQuery, setSearchQuery] = useState("");
+  const [statusFilter, setStatusFilter] = useState<string>("all");
+  const [selectedStatus, setSelectedStatus] = useState<
+    Record<string, OrderStatus>
+  >({});
+  const [currentPage, setCurrentPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(true);
+
   const itemsPerPage = 10;
 
-  // Simulate initial data loading
   useEffect(() => {
     const loadData = async () => {
       setIsLoading(true);
@@ -244,13 +49,14 @@ export default function OrdersPage() {
     loadData();
   }, []);
 
-  // Filter and search logic
   const filteredOrders = useMemo(() => {
-    return mockOrdersData.filter((order) => {
+    return mockOrders.filter((order) => {
       const matchesSearch =
         order.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
         order.tableNo.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        order.items.toLowerCase().includes(searchQuery.toLowerCase());
+        order.items.some((item) =>
+          item.name.toLowerCase().includes(searchQuery.toLowerCase())
+        );
 
       const matchesStatus =
         statusFilter === "all" ||
@@ -260,20 +66,18 @@ export default function OrdersPage() {
     });
   }, [searchQuery, statusFilter]);
 
-  // Pagination logic
   const totalPages = Math.ceil(filteredOrders.length / itemsPerPage);
   const paginatedOrders = useMemo(() => {
     const startIndex = (currentPage - 1) * itemsPerPage;
     return filteredOrders.slice(startIndex, startIndex + itemsPerPage);
   }, [filteredOrders, currentPage]);
 
-  // Calculate statistics
   const stats = useMemo(() => {
-    const total = mockOrdersData.length;
-    const inProgress = mockOrdersData.filter(
+    const total = mockOrders.length;
+    const inProgress = mockOrders.filter(
       (o) => o.status.toLowerCase() === "preparing"
     ).length;
-    const delivered = mockOrdersData.filter(
+    const delivered = mockOrders.filter(
       (o) =>
         o.status.toLowerCase() === "ready" ||
         o.status.toLowerCase() === "served"
@@ -282,7 +86,7 @@ export default function OrdersPage() {
     return { total, inProgress, delivered };
   }, []);
 
-  const handleStatusChange = (orderId: string, newStatus: string) => {
+  const handleStatusChange = (orderId: string, newStatus: OrderStatus) => {
     setSelectedStatus((prev) => ({
       ...prev,
       [orderId]: newStatus,
@@ -293,8 +97,6 @@ export default function OrdersPage() {
   const handleViewDetails = (orderId: string) => {
     navigate(`/dashboard/orders/${orderId}`);
   };
-
-  // Function removed - not needed for current implementation
 
   const handlePageChange = (page: number) => {
     if (page >= 1 && page <= totalPages) {
@@ -401,7 +203,6 @@ export default function OrdersPage() {
       <DashboardHeader title="Order Management" subtitle="Manage you orders" />
 
       <main className="p-3 md:p-8 space-y-3 md:space-y-6">
-        {/* Statistics Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <StatCard
             title="Total Order"
@@ -420,9 +221,7 @@ export default function OrdersPage() {
           />
         </div>
 
-        {/* Orders Table Section */}
         <div className="bg-card rounded-2xl border border-border shadow-[0px_8px_32px_0px_#00000026] pb-5">
-          {/* Header */}
           <div className="p-5 border-b border-border flex justify-between items-center">
             <h2 className="text-2xl font-semibold text-foreground">Orders</h2>
             {isCreateOrder && (
@@ -430,14 +229,12 @@ export default function OrdersPage() {
                 to="/dashboard/order/create"
                 className="flex items-center justify-center gap-1 bg-primary hover:bg-primary/80 shadow-lg hover:shadow-xl rounded-xl px-3 py-2 text-white"
               >
-                {" "}
                 <Plus className="w-5 h-5" />
                 Create Order
               </Link>
             )}
           </div>
 
-          {/* Search and Filter */}
           <div className="p-5 flex items-center gap-4">
             <div className="flex-1 relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
@@ -459,7 +256,7 @@ export default function OrdersPage() {
                 setCurrentPage(1);
               }}
             >
-              <SelectTrigger className="w-40 !h-12 border-input">
+              <SelectTrigger className="w-40 h-12 border-input">
                 <SlidersHorizontal className="h-5 w-5 mr-2" />
                 <SelectValue placeholder="Filter" />
               </SelectTrigger>
@@ -473,7 +270,6 @@ export default function OrdersPage() {
             </Select>
           </div>
 
-          {/* Table */}
           <div className="overflow-x-auto scrollbar-thin mx-auto md:mx-5 border rounded-t-xl">
             <table className="w-full">
               <thead>
@@ -514,7 +310,7 @@ export default function OrdersPage() {
                         {order.tableNo}
                       </td>
                       <td className="p-2 text-sm text-foreground">
-                        {order.items}
+                        {order.items.map((item) => item.name).join(", ")}
                       </td>
                       <td className="p-2 text-sm font-medium text-foreground">
                         {order.timeLeft}
@@ -523,7 +319,7 @@ export default function OrdersPage() {
                         <Select
                           value={selectedStatus[order.id] || order.status}
                           onValueChange={(value) =>
-                            handleStatusChange(order.id, value)
+                            handleStatusChange(order.id, value as OrderStatus)
                           }
                         >
                           <SelectTrigger
@@ -560,7 +356,6 @@ export default function OrdersPage() {
           </div>
         </div>
 
-        {/* Pagination */}
         {!isLoading && paginatedOrders.length > 0 && (
           <div className="p-5 flex items-center justify-between">
             <Button

@@ -27,7 +27,7 @@ import { toast } from "sonner";
 const signInSchema = z.object({
   role: z.string().min(1, "Please select a role"),
   email: z.string().email("Invalid email address"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
+  password: z.string().min(4, "Password must be at least 4 characters"),
   rememberMe: z.boolean().optional(),
 });
 
@@ -35,9 +35,8 @@ type SignInFormData = z.infer<typeof signInSchema>;
 
 export default function SignIn() {
   const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { login, isLoading, clearError } = useAuth();
 
   const {
     register,
@@ -49,25 +48,19 @@ export default function SignIn() {
   });
 
   const onSubmit = async (data: SignInFormData) => {
-    setIsLoading(true);
+    // Clear any previous errors
+    clearError();
 
     // Show loading toast
     const loadingToast = toast.loading("Signing in...");
 
     try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-
-      // Create user data
-      const userData = {
-        role: data.role,
+      // Use Redux-based login
+      await login({
         email: data.email,
+        password: data.password,
         rememberMe: data.rememberMe,
-        loginTime: new Date().toISOString(),
-      };
-
-      // Use Auth context to login
-      login(userData);
+      });
 
       // Dismiss loading toast
       toast.dismiss(loadingToast);
@@ -90,15 +83,15 @@ export default function SignIn() {
       toast.dismiss(loadingToast);
 
       // Show error toast with action button
-      toast.error("Login failed", {
-        description: "Invalid email or password. Please try again.",
-        action: {
-          label: "Retry",
-          onClick: () => handleSubmit(onSubmit)(),
-        },
-      });
-    } finally {
-      setIsLoading(false);
+     toast.error("Login failed", {
+       description:
+         (error as Error)?.message ||
+         "Invalid email or password. Please try again.",
+       action: {
+         label: "Retry",
+         onClick: () => handleSubmit(onSubmit),
+       },
+     });
     }
   };
 
@@ -153,7 +146,7 @@ export default function SignIn() {
                     >
                       <SelectTrigger
                         id="role"
-                        className="w-full !h-12 bg-card border-input rounded-xl"
+                        className="w-full h-12! bg-card border-input rounded-xl"
                       >
                         <SelectValue placeholder="Select your role" />
                       </SelectTrigger>

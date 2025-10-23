@@ -1,0 +1,32 @@
+// src/components/DashboardRedirect.tsx
+import { Navigate } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
+
+const DashboardRedirect = () => {
+  const { user, isLoading } = useAuth();
+
+  // Show loading state while checking authentication
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return <Navigate to="/signin" replace />;
+  }
+
+  try {
+    const role = user.role.toLowerCase();
+
+    // Redirect to role-specific dashboard
+    return <Navigate to={`/dashboard/${role}`} replace />;
+  } catch (error) {
+    console.error("Dashboard redirect error", error);
+    return <Navigate to="/signin" replace />;
+  }
+};
+
+export default DashboardRedirect;
