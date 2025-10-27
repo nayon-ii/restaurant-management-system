@@ -1,6 +1,47 @@
 // src/data/mockOrders.ts
-
 import type { Order, MenuItem } from "@/types/order";
+
+export const chartData = {
+  Day: [
+    { month: "12 AM", orders: 5 },
+    { month: "3 AM", orders: 3 },
+    { month: "6 AM", orders: 8 },
+    { month: "9 AM", orders: 15 },
+    { month: "12 PM", orders: 25 },
+    { month: "3 PM", orders: 30 },
+    { month: "6 PM", orders: 35 },
+    { month: "9 PM", orders: 20 },
+  ],
+  Week: [
+    { month: "Mon", orders: 45 },
+    { month: "Tue", orders: 52 },
+    { month: "Wed", orders: 48 },
+    { month: "Thu", orders: 61 },
+    { month: "Fri", orders: 70 },
+    { month: "Sat", orders: 85 },
+    { month: "Sun", orders: 65 },
+  ],
+  Month: [
+    { month: "Week 1", orders: 180 },
+    { month: "Week 2", orders: 220 },
+    { month: "Week 3", orders: 195 },
+    { month: "Week 4", orders: 240 },
+  ],
+  Years: [
+    { month: "Jan", orders: 50 },
+    { month: "Feb", orders: 120 },
+    { month: "Mar", orders: 80 },
+    { month: "Apr", orders: 40 },
+    { month: "May", orders: 70 },
+    { month: "Jun", orders: 90 },
+    { month: "Jul", orders: 150 },
+    { month: "Aug", orders: 120 },
+    { month: "Sep", orders: 180 },
+    { month: "Oct", orders: 200 },
+    { month: "Nov", orders: 170 },
+    { month: "Dec", orders: 80 },
+  ],
+};
 
 export const mockOrders: Order[] = [
   {

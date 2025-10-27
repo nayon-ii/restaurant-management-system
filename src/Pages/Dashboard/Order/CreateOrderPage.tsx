@@ -305,7 +305,7 @@ export default function CreateOrderPage() {
                       </div>
                     </div>
 
-                    <div className="bg-gradient-to-br from-primary/5 to-primary/10 border border-primary/20 rounded-xl p-4">
+                    <div className="bg-linear-to-br from-primary/5 to-primary/10 border border-primary/20 rounded-xl p-4">
                       <div className="flex items-center justify-between">
                         <span className="text-sm font-medium text-muted-foreground">
                           Total Amount

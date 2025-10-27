@@ -14,8 +14,8 @@ import StaffPage from "@/Pages/Dashboard/Manager/StaffPage";
 import InventoryPage from "@/Pages/Dashboard/Inventory/InventoryPage";
 
 // Chef Pages
-import ChefOrdersPage from "@/Pages/Dashboard/Chef/OrdersPage";
-import OrderDetailPage from "@/Pages/Dashboard/Chef/OrderDetailPage";
+import OrdersPage from "@/Pages/Dashboard/Order/OrdersPage";
+import OrderDetailPage from "@/Pages/Dashboard/Order/OrderDetailPage";
 
 // Shared Pages
 import NotificationPage from "@/components/Shared/NotificationPage";
@@ -29,6 +29,7 @@ import RootRedirect from "@/components/RootRedirect";
 import MenuPage from "@/Pages/Dashboard/Menu/MenuPage";
 import AddMenuPage from "@/Pages/Dashboard/Menu/AddMenuPage";
 import EditMenuPage from "@/Pages/Dashboard/Menu/EditMenuPage";
+import SalesPage from "@/Pages/Dashboard/Admin/Sales/SalesPage";
 
 const router = createBrowserRouter([
   {
@@ -70,7 +71,7 @@ const router = createBrowserRouter([
       },
       {
         path: "sale",
-        element: <div>Sale Page</div>,
+        element: <SalesPage />,
       },
       {
         path: "kitchen",
@@ -145,11 +146,11 @@ const router = createBrowserRouter([
       // Chef Routes
       {
         path: "chef",
-        element: <ChefOrdersPage />,
+        element: <OrdersPage />,
       },
       {
         path: "orders",
-        element: <ChefOrdersPage />,
+        element: <OrdersPage />,
       },
       {
         path: "orders/:orderId",
@@ -162,7 +163,7 @@ const router = createBrowserRouter([
       // Cashier Routes
       {
         path: "cashier",
-        element: <ChefOrdersPage />,
+        element: <OrdersPage />,
       },
       // Shared Routes
       {

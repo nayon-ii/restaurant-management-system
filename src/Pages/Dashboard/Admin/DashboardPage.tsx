@@ -10,51 +10,11 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { DollarSign } from "lucide-react";
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-} from "recharts";
+import { topItems } from "@/data/mockTopItem";
+import { chartData } from "@/data/mockOrders";
+import CustomAreaChart from "@/components/Charts/AreaChart";
 
-const chartData = [
-  { month: "Jan", earnings: 50 },
-  { month: "Feb", earnings: 120 },
-  { month: "Mar", earnings: 80 },
-  { month: "Apr", earnings: 40 },
-  { month: "May", earnings: 70 },
-  { month: "Jun", earnings: 90 },
-  { month: "Jul", earnings: 150 },
-  { month: "Aug", earnings: 120 },
-  { month: "Sep", earnings: 180 },
-  { month: "Oct", earnings: 200 },
-  { month: "Nov", earnings: 170 },
-  { month: "Dec", earnings: 80 },
-];
-
-const topItems = [
-  {
-    name: "Pizza",
-    sold: "20 Sold",
-    price: "$4,825",
-    image: "/placeholder-food.jpg",
-  },
-  {
-    name: "Pizza",
-    sold: "20 Sold",
-    price: "$4,825",
-    image: "/placeholder-food.jpg",
-  },
-  {
-    name: "Pizza",
-    sold: "20 Sold",
-    price: "$4,825",
-    image: "/placeholder-food.jpg",
-  },
-];
+import deliverIcon from "@/assets/icons/order.svg";
 
 export default function AdminDashboardPage() {
   const [timeFilter, setTimeFilter] = useState("Years");
@@ -115,20 +75,16 @@ export default function AdminDashboardPage() {
             value="$5,326"
             icon={<DollarSign className="h-6 w-6 text-foreground" />}
           />
-          <StatCard
-            title="Total Orders"
-            value="5,326"
-            icon={<DollarSign className="h-6 w-6 text-foreground" />}
-          />
+          <StatCard title="Total Order" value="77" image={deliverIcon} />
         </div>
 
         {/* Chart and Top Items Section */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Earning Overview Chart */}
-          <div className="lg:col-span-2 bg-card rounded-2xl border border-border shadow-sm p-6">
+          {/* Order Overview Chart */}
+          <div className="lg:col-span-2 bg-card rounded-2xl shadow-md p-6">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-xl font-bold text-foreground">
-                Earning Overview
+                Order Overview
               </h2>
               <Select value={timeFilter} onValueChange={setTimeFilter}>
                 <SelectTrigger className="w-28 border-input">
@@ -138,40 +94,24 @@ export default function AdminDashboardPage() {
                   <SelectItem value="Day">Day</SelectItem>
                   <SelectItem value="Week">Week</SelectItem>
                   <SelectItem value="Month">Month</SelectItem>
-                  <SelectItem value="Years">Years</SelectItem>
+                  <SelectItem value="Years">Year</SelectItem>
                 </SelectContent>
               </Select>
             </div>
 
-            <ResponsiveContainer width="100%" height={300}>
-              <LineChart data={chartData}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#e5e5e5" />
-                <XAxis
-                  dataKey="month"
-                  stroke="#737373"
-                  style={{ fontSize: "12px" }}
-                />
-                <YAxis stroke="#737373" style={{ fontSize: "12px" }} />
-                <Tooltip
-                  contentStyle={{
-                    backgroundColor: "#ffffff",
-                    border: "1px solid #e5e5e5",
-                    borderRadius: "8px",
-                  }}
-                />
-                <Line
-                  type="monotone"
-                  dataKey="earnings"
-                  stroke="#22c55e"
-                  strokeWidth={3}
-                  dot={false}
-                />
-              </LineChart>
-            </ResponsiveContainer>
+            <CustomAreaChart
+              data={chartData[timeFilter as keyof typeof chartData]}
+              xDataKey="month"
+              yDataKey="orders"
+              strokeColor="#07AC5E"
+              gradientId="orderGradient"
+              gradientStart="rgba(7, 172, 94, 0.1)"
+              gradientEnd="rgba(7, 172, 94, 0.02)"
+            />
           </div>
 
           {/* Top Performing Items */}
-          <div className="bg-card rounded-2xl border border-border shadow-sm p-6">
+          <div className="bg-background p-3 md:p-6">
             <h2 className="text-xl font-bold text-foreground mb-6">
               Top Performing Items
             </h2>
@@ -179,9 +119,9 @@ export default function AdminDashboardPage() {
               {topItems.map((item, index) => (
                 <div
                   key={index}
-                  className="flex items-center gap-4 p-3 rounded-xl hover:bg-accent transition-colors"
+                  className="flex items-center gap-4 p-3 rounded-xl bg-card hover:bg-secondary transition-colors shadow-lg"
                 >
-                  <div className="w-12 h-12 rounded-lg overflow-hidden shrink-0 bg-linear-to-br from-primary to-orange-600">
+                  <div className="w-12 h-12 rounded-lg overflow-hidden  bg-linear-to-br from-primary to-orange-600">
                     <img
                       src={item.image}
                       alt={item.name}

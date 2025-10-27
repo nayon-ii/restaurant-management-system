@@ -1,4 +1,3 @@
-// src/components/RoleGuard.tsx
 import type { ReactNode } from "react";
 import { useHasRole, useHasAnyRole } from "@/hooks/useUserRole";
 
@@ -8,6 +7,7 @@ interface RoleGuardProps {
   allowedRole?: string;
   fallback?: ReactNode;
   requireAll?: boolean;
+  canTrigger?: string[]; // Roles that can interact with the element
 }
 
 /**
@@ -17,6 +17,7 @@ interface RoleGuardProps {
  * @param allowedRole - Single role that can access this content
  * @param fallback - Content to render if role check fails
  * @param requireAll - If true, user must have ALL roles (for multiple role users)
+ * @param canTrigger - Array of roles that can interact/trigger the element (others can see but not interact)
  */
 export const RoleGuard = ({
   children,
@@ -24,32 +25,73 @@ export const RoleGuard = ({
   allowedRole,
   fallback = null,
   requireAll = false,
+  canTrigger,
 }: RoleGuardProps) => {
   const hasRole = useHasRole(allowedRole || "");
   const hasAnyRole = useHasAnyRole(allowedRoles || []);
+  const canTriggerRole = useHasAnyRole(canTrigger || []);
 
   // If no role restrictions, show content
   if (!allowedRoles && !allowedRole) {
+    // If canTrigger is specified, check if user can interact
+    if (canTrigger) {
+      if (!canTriggerRole) {
+        // Hide icon if exists
+        return (
+          <div className="pointer-events-none opacity-50 [&_*[data-icon]]:hidden">
+            {children}
+          </div>
+        );
+      }
+    }
     return <>{children}</>;
   }
 
   // Check single role
   if (allowedRole) {
-    return hasRole ? <>{children}</> : <>{fallback}</>;
+    if (!hasRole) {
+      return <>{fallback}</>;
+    }
+
+    // User has access, now check if they can trigger
+    if (canTrigger && !canTriggerRole) {
+      return (
+        <div className="pointer-events-none [&_*[data-icon]]:hidden">
+          {children}
+        </div>
+      );
+    }
+
+    return <>{children}</>;
   }
 
   // Check multiple roles
   if (allowedRoles) {
+    let hasRequiredRole = false;
+
     if (requireAll) {
       // User must have ALL roles (for future multi-role support)
-      // Note: This is a simplified implementation. For complex multi-role logic,
-      // you might want to pass the roles to check as props to avoid hook rules
       const hasAllRoles = false; // Simplified for now
-      return hasAllRoles ? <>{children}</> : <>{fallback}</>;
+      hasRequiredRole = hasAllRoles;
     } else {
       // User needs ANY of the roles
-      return hasAnyRole ? <>{children}</> : <>{fallback}</>;
+      hasRequiredRole = hasAnyRole;
     }
+
+    if (!hasRequiredRole) {
+      return <>{fallback}</>;
+    }
+
+    // User has access, now check if they can trigger
+    if (canTrigger && !canTriggerRole) {
+      return (
+        <div className="pointer-events-none [&_*[data-icon]]:hidden">
+          {children}
+        </div>
+      );
+    }
+
+    return <>{children}</>;
   }
 
   return <>{fallback}</>;

@@ -14,7 +14,6 @@ import {
 } from "@/components/ui/select";
 import { Search, SlidersHorizontal, Eye, Plus } from "lucide-react";
 import { toast } from "sonner";
-import { useAuth } from "@/contexts/AuthContext";
 import { TableSkeleton } from "@/components/Skeleton/TableSkeleton";
 import { getStatusColor } from "@/lib/utils";
 import { mockOrders } from "@/data/mockOrders";
@@ -23,13 +22,10 @@ import type { OrderStatus } from "@/types/order";
 import orderIcon from "@/assets/icons/order.svg";
 import processIcon from "@/assets/icons/process.svg";
 import deliverIcon from "@/assets/icons/deliver.svg";
+import { RoleGuard } from "@/components/RoleGuard";
 
 export default function OrdersPage() {
   const navigate = useNavigate();
-  const { user } = useAuth();
-  const userRole = user?.role?.toLowerCase() || "guest";
-  const isCreateOrder = ["manager", "admin"].includes(userRole);
-
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const [selectedStatus, setSelectedStatus] = useState<
@@ -224,7 +220,7 @@ export default function OrdersPage() {
         <div className="bg-card rounded-2xl border border-border shadow-[0px_8px_32px_0px_#00000026] pb-5">
           <div className="p-5 border-b border-border flex justify-between items-center">
             <h2 className="text-2xl font-semibold text-foreground">Orders</h2>
-            {isCreateOrder && (
+            <RoleGuard allowedRole="manager">
               <Link
                 to="/dashboard/order/create"
                 className="flex items-center justify-center gap-1 bg-primary hover:bg-primary/80 shadow-lg hover:shadow-xl rounded-xl px-3 py-2 text-white"
@@ -232,7 +228,7 @@ export default function OrdersPage() {
                 <Plus className="w-5 h-5" />
                 Create Order
               </Link>
-            )}
+            </RoleGuard>
           </div>
 
           <div className="p-5 flex items-center gap-4">
@@ -316,27 +312,34 @@ export default function OrdersPage() {
                         {order.timeLeft}
                       </td>
                       <td className="p-2 flex justify-center items-center">
-                        <Select
-                          value={selectedStatus[order.id] || order.status}
-                          onValueChange={(value) =>
-                            handleStatusChange(order.id, value as OrderStatus)
-                          }
+                        <RoleGuard
+                          allowedRoles={["admin", "manager", "chef"]}
+                          canTrigger={["manager", "chef"]}
                         >
-                          <SelectTrigger
-                            className={`w-32 border-0 ${getStatusColor(
-                              selectedStatus[order.id] || order.status
-                            )}`}
-                            iconClassName="text-white"
+                          <Select
+                            value={selectedStatus[order.id] || order.status}
+                            onValueChange={(value) =>
+                              handleStatusChange(order.id, value as OrderStatus)
+                            }
                           >
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="Receive">Receive</SelectItem>
-                            <SelectItem value="Preparing">Preparing</SelectItem>
-                            <SelectItem value="Ready">Ready</SelectItem>
-                            <SelectItem value="Served">Served</SelectItem>
-                          </SelectContent>
-                        </Select>
+                            <SelectTrigger
+                              className={`w-32 border-0 ${getStatusColor(
+                                selectedStatus[order.id] || order.status
+                              )}`}
+                              iconClassName="text-white hidden"
+                            >
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="Receive">Receive</SelectItem>
+                              <SelectItem value="Preparing">
+                                Preparing
+                              </SelectItem>
+                              <SelectItem value="Ready">Ready</SelectItem>
+                              <SelectItem value="Served">Served</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </RoleGuard>
                       </td>
                       <td className="p-2 text-center">
                         <Button
