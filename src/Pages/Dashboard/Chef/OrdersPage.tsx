@@ -256,7 +256,7 @@ export default function OrdersPage() {
                 setCurrentPage(1);
               }}
             >
-              <SelectTrigger className="w-40 h-12 border-input">
+              <SelectTrigger className="w-40 h-12! border-input">
                 <SlidersHorizontal className="h-5 w-5 mr-2" />
                 <SelectValue placeholder="Filter" />
               </SelectTrigger>

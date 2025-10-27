@@ -11,14 +11,13 @@ import AdminDashboardPage from "@/Pages/Dashboard/Admin/DashboardPage";
 // Manager Pages
 import ManagerDashboardPage from "@/Pages/Dashboard/Manager/DashboardPage";
 import StaffPage from "@/Pages/Dashboard/Manager/StaffPage";
-import InventoryPage from "@/Pages/Dashboard/Manager/InventoryPage";
+import InventoryPage from "@/Pages/Dashboard/Inventory/InventoryPage";
 
 // Chef Pages
 import ChefOrdersPage from "@/Pages/Dashboard/Chef/OrdersPage";
 import OrderDetailPage from "@/Pages/Dashboard/Chef/OrderDetailPage";
 
 // Shared Pages
-import MenuPage from "@/Pages/Dashboard/Manager/MenuPage";
 import NotificationPage from "@/components/Shared/NotificationPage";
 import SettingsPage from "@/components/Shared/SettingsPage";
 import ProfilePage from "@/Pages/Settings/ProfilePage";
@@ -27,6 +26,9 @@ import CreateOrderPage from "@/Pages/Dashboard/Order/CreateOrderPage";
 import AuthLayout from "@/Layouts/AuthLayout";
 import DashboardRedirect from "@/components/DashboardRedirect";
 import RootRedirect from "@/components/RootRedirect";
+import MenuPage from "@/Pages/Dashboard/Menu/MenuPage";
+import AddMenuPage from "@/Pages/Dashboard/Menu/AddMenuPage";
+import EditMenuPage from "@/Pages/Dashboard/Menu/EditMenuPage";
 
 const router = createBrowserRouter([
   {
@@ -139,6 +141,7 @@ const router = createBrowserRouter([
         path: "inventory",
         element: <InventoryPage />,
       },
+
       // Chef Routes
       {
         path: "chef",
@@ -165,6 +168,14 @@ const router = createBrowserRouter([
       {
         path: "menu",
         element: <MenuPage />,
+      },
+      {
+        path: "menu/add",
+        element: <AddMenuPage />,
+      },
+      {
+        path: "menu/:id",
+        element: <EditMenuPage />,
       },
       {
         path: "notification",

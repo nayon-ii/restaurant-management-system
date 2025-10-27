@@ -179,7 +179,7 @@ export default function ProfilePage() {
                   {isEditing && (
                     <button
                       onClick={handleImageClick}
-                      className="absolute bottom-0 right-0 w-10 h-10 bg-primary rounded-full flex items-center justify-center hover:bg-primary/90 transition-colors shadow-lg"
+                      className="absolute bottom-0 right-0 w-10 h-10 bg-primary rounded-full flex items-center justify-center hover:bg-primary/80 transition-colors shadow-lg"
                     >
                       <Camera className="w-5 h-5 text-white" />
                     </button>

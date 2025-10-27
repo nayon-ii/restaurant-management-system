@@ -158,7 +158,7 @@ export default function OrderDetailPage() {
                       onClick={() => handleItemClick(singleItem)}
                       className="flex items-center gap-4 p-3 bg-card rounded-xl border border-border hover:border-primary cursor-pointer transition-all"
                     >
-                      <div className="w-16 h-16 rounded-lg overflow-hidden shrink-0 bg-linear-gradient-to-br from-primary to-orange-600">
+                      <div className="w-16 h-16 rounded-lg overflow-hidden shrink-0 bg-linear-to-br from-primary to-orange-600">
                         <img
                           src={singleItem.image}
                           alt={singleItem.name}
@@ -304,7 +304,7 @@ export default function OrderDetailPage() {
                 </div>
 
                 <div className="mt-6 pt-6 border-t border-border">
-                  <div className="bg-linear-gradient-to-br from-primary/5 to-primary/10 border border-primary/20 rounded-xl p-4">
+                  <div className="bg-linear-to-br from-primary/5 to-primary/10 border border-primary/20 rounded-xl p-4">
                     <div className="flex items-center justify-between">
                       <span className="text-sm font-medium text-muted-foreground">
                         Total Amount
@@ -591,7 +591,7 @@ export default function OrderDetailPage() {
 //                 </div>
 
 //                 <div className="mt-6 pt-6 border-t border-border">
-//                   <div className="bg-linear-gradient-to-br from-primary/5 to-primary/10 border border-primary/20 rounded-xl p-4">
+//                   <div className="bg-linear-to-br from-primary/5 to-primary/10 border border-primary/20 rounded-xl p-4">
 //                     <div className="flex items-center justify-between">
 //                       <span className="text-sm font-medium text-muted-foreground">
 //                         Total Amount
@@ -613,7 +613,7 @@ export default function OrderDetailPage() {
 //                       onClick={() => handleItemClick(item)}
 //                       className="flex items-center gap-4 p-3 bg-card rounded-xl border border-border hover:border-primary cursor-pointer transition-all"
 //                     >
-//                       <div className="w-16 h-16 rounded-lg overflow-hidden shrink-0 bg-linear-gradient-to-br from-primary to-orange-600">
+//                       <div className="w-16 h-16 rounded-lg overflow-hidden shrink-0 bg-linear-to-br from-primary to-orange-600">
 //                         <img
 //                           src={item.image}
 //                           alt={item.name}

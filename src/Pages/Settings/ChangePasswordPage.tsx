@@ -85,7 +85,7 @@ export default function ChangePasswordPage() {
   };
 
   return (
-    <main className="p-3 md:p-8 flex items-center justify-center min-h-[calc(100vh-5rem)]">
+    <main className="p-3 md:p-8 flex items-center justify-center bg-[#00000080] min-h-[calc(100vh-0rem)]">
       <div className="w-full max-w-lg">
         <div className="bg-card rounded-2xl border border-border shadow-lg p-4 md:p-8">
           {/* Header */}
@@ -216,7 +216,7 @@ export default function ChangePasswordPage() {
             <Button
               type="submit"
               disabled={isLoading}
-              className="w-full h-12 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold rounded-xl mt-6"
+              className="w-full h-12 bg-primary hover:bg-primary/80 text-primary-foreground font-semibold rounded-xl mt-6"
             >
               {isLoading ? "Saving..." : "Save"}
             </Button>

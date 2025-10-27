@@ -83,15 +83,15 @@ export default function SignIn() {
       toast.dismiss(loadingToast);
 
       // Show error toast with action button
-     toast.error("Login failed", {
-       description:
-         (error as Error)?.message ||
-         "Invalid email or password. Please try again.",
-       action: {
-         label: "Retry",
-         onClick: () => handleSubmit(onSubmit),
-       },
-     });
+      toast.error("Login failed", {
+        description:
+          (error as Error)?.message ||
+          "Invalid email or password. Please try again.",
+        action: {
+          label: "Retry",
+          onClick: () => handleSubmit(onSubmit),
+        },
+      });
     }
   };
 
@@ -266,7 +266,7 @@ export default function SignIn() {
               {/* Submit Button */}
               <Button
                 type="submit"
-                className="w-full h-12 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold rounded-xl mt-6"
+                className="w-full h-12 bg-primary hover:bg-primary/80 text-primary-foreground font-semibold rounded-xl mt-6"
                 disabled={isLoading}
               >
                 {isLoading ? (

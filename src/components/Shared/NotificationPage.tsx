@@ -59,7 +59,7 @@ export default function NotificationPage() {
               className="bg-card rounded-2xl p-3 shadow-lg hover:shadow-md transition-all cursor-pointer flex items-center gap-4"
             >
               {/* Notification Image */}
-              <div className="w-16 h-16 rounded-xl overflow-hidden shrink-0 bg-linear-gradient-to-br from-primary to-orange-600">
+              <div className="w-16 h-16 rounded-xl overflow-hidden shrink-0 bg-linear-to-br from-primary to-orange-600">
                 <img
                   src={notification.image}
                   alt={notification.title}

@@ -32,7 +32,7 @@ export default function DashboardLayout() {
       <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
       {/* Main Content */}
-      <div className="md:ml-[250px] h-screen overflow-y-auto scrollbar-thin bg-background">
+      <div className="md:ml-[250px] min-h-screen bg-background md:scrollbar-thin">
         {/* Mobile Header */}
         <div className="md:hidden sticky top-0 z-40 h-16 bg-sidebar border-b border-border flex items-center px-4 shadow-sm">
           <button

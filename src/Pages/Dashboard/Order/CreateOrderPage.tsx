@@ -234,7 +234,7 @@ export default function CreateOrderPage() {
                   <Button
                     onClick={handleNext}
                     disabled={cart.length === 0}
-                    className="w-full h-12 bg-primary hover:bg-primary/90 text-white rounded-xl text-base font-semibold"
+                    className="w-full h-12 bg-primary hover:bg-primary/80 text-white rounded-xl text-base font-semibold"
                   >
                     Next
                   </Button>
@@ -318,7 +318,7 @@ export default function CreateOrderPage() {
 
                     <Button
                       onClick={handleCreateOrder}
-                      className="w-full h-12 bg-primary hover:bg-primary/90 text-white rounded-xl text-base font-semibold shadow-lg shadow-primary/25 transition-all hover:shadow-xl hover:shadow-primary/30"
+                      className="w-full h-12 bg-primary hover:bg-primary/80 text-white rounded-xl text-base font-semibold shadow-lg shadow-primary/25 transition-all hover:shadow-xl hover:shadow-primary/30"
                     >
                       Create Order
                     </Button>

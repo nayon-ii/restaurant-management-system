@@ -12,7 +12,6 @@ import {
 import { Label } from "@/components/ui/label";
 import type { MenuItem } from "@/types/order";
 
-
 interface ItemCustomizationFormProps {
   selectedItem: MenuItem;
   quantity: number;
@@ -184,7 +183,7 @@ export default function ItemCustomizationForm({
 
       <Button
         onClick={onAddToCart}
-        className="w-full h-12 bg-primary hover:bg-primary/90 text-white rounded-xl text-base font-semibold mb-2"
+        className="w-full h-12 bg-primary hover:bg-primary/80 text-white rounded-xl text-base font-semibold mb-2"
       >
         Add
       </Button>
