@@ -1,5 +1,5 @@
-// EDIT INVENTORY MODAL - src/components/Inventory/EditInventoryModal.tsx
-import { useState, useEffect } from "react";
+// CREATE INVENTORY MODAL - src/components/Inventory/CreateInventoryModal.tsx
+import { useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -14,21 +14,19 @@ import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import { toast } from "sonner";
 import type { InventoryItem } from "@/types/inventory";
 
-interface EditInventoryModalProps {
+interface CreateInventoryModalProps {
   isOpen: boolean;
   onClose: () => void;
-  item: InventoryItem | null;
-  onSave: (item: InventoryItem) => void;
+  onSave: (item: Omit<InventoryItem, "id" | "createdAt" | "updatedAt">) => void;
   title?: string;
 }
 
-export default function EditInventoryModal({
+export default function CreateInventoryModal({
   isOpen,
   onClose,
-  item,
   onSave,
   title = "Ingredient",
-}: EditInventoryModalProps) {
+}: CreateInventoryModalProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
@@ -37,17 +35,6 @@ export default function EditInventoryModal({
     outOfStock: "",
   });
 
-  useEffect(() => {
-    if (item) {
-      setFormData({
-        name: item.name,
-        sufficient: item.sufficient,
-        low: item.low,
-        outOfStock: item.outOfStock,
-      });
-    }
-  }, [item]);
-
   const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
@@ -55,25 +42,28 @@ export default function EditInventoryModal({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!item) return;
-
     setIsSubmitting(true);
 
     // Simulate API call
     await new Promise((resolve) => setTimeout(resolve, 800));
 
-    const updatedItem: InventoryItem = {
-      ...item,
+    const newItem: Omit<InventoryItem, "id" | "createdAt" | "updatedAt"> = {
       ...formData,
-      updatedAt: new Date().toISOString(),
+      isActive: true,
     };
 
-    onSave(updatedItem);
-    toast.success(`${title} updated successfully!`);
+    onSave(newItem);
+    toast.success(`${title} created successfully!`);
     setIsSubmitting(false);
-  };
 
-  if (!item) return null;
+    // Reset form
+    setFormData({
+      name: "",
+      sufficient: "",
+      low: "",
+      outOfStock: "",
+    });
+  };
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -81,7 +71,7 @@ export default function EditInventoryModal({
       <DialogContent className="sm:max-w-2xl bg-card border-border">
         <DialogHeader>
           <DialogTitle className="text-xl font-bold text-foreground">
-            Edit {title}
+            Create {title}
           </DialogTitle>
         </DialogHeader>
 
@@ -164,10 +154,10 @@ export default function EditInventoryModal({
               {isSubmitting ? (
                 <>
                   <LoadingSpinner size="sm" className="mr-2" />
-                  Saving...
+                  Creating...
                 </>
               ) : (
-                "Save Changes"
+                `Create ${title}`
               )}
             </Button>
           </div>

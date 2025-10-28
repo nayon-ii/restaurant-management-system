@@ -30,6 +30,11 @@ import MenuPage from "@/Pages/Dashboard/Menu/MenuPage";
 import AddMenuPage from "@/Pages/Dashboard/Menu/AddMenuPage";
 import EditMenuPage from "@/Pages/Dashboard/Menu/EditMenuPage";
 import SalesPage from "@/Pages/Dashboard/Admin/Sales/SalesPage";
+import SalesDetailsPage from "@/Pages/Dashboard/Admin/Sales/SalesDetailsPage";
+import KitchenPage from "@/Pages/Dashboard/Admin/Kitchen/KitchenPage";
+import TablePage from "@/Pages/Dashboard/Admin/Table/TablePage";
+import CategoryPage from "@/Pages/Dashboard/Admin/Category/CategoryPage";
+import IngredientsPage from "@/Pages/Dashboard/Admin/Ingredients/IngredientsPage";
 
 const router = createBrowserRouter([
   {
@@ -70,20 +75,28 @@ const router = createBrowserRouter([
         element: <AdminDashboardPage />,
       },
       {
-        path: "sale",
+        path: "sales",
         element: <SalesPage />,
       },
       {
+        path: "sales/:orderId",
+        element: <SalesDetailsPage />,
+      },
+      {
         path: "kitchen",
-        element: <div>Kitchen Page</div>,
+        element: <KitchenPage />,
+      },
+      {
+        path: "table",
+        element: <TablePage />,
       },
       {
         path: "category",
-        element: <div>Category Page</div>,
+        element: <CategoryPage />,
       },
       {
         path: "ingredients",
-        element: <div>Ingredients Page</div>,
+        element: <IngredientsPage />,
       },
       {
         path: "user",

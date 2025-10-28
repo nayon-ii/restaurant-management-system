@@ -15,6 +15,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import type { OrderItem, OrderStatus } from "@/types/order";
+import { RoleGuard } from "../RoleGuard";
 
 interface ItemDetailModalProps {
   isOpen: boolean;
@@ -123,22 +124,27 @@ export default function ItemDetailModal({
               <Label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
                 Update Status
               </Label>
-              <Select
-                value={currentStatus}
-                onValueChange={(value) =>
-                  onStatusChange(item.id, value as OrderStatus)
-                }
+              <RoleGuard
+                allowedRoles={["admin", "manager", "chef"]}
+                canTrigger={["manager", "chef"]}
               >
-                <SelectTrigger className="w-full h-12 bg-card border-border">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="Receive">Receive</SelectItem>
-                  <SelectItem value="Preparing">Preparing</SelectItem>
-                  <SelectItem value="Ready">Ready</SelectItem>
-                  <SelectItem value="Served">Served</SelectItem>
-                </SelectContent>
-              </Select>
+                <Select
+                  value={currentStatus}
+                  onValueChange={(value) =>
+                    onStatusChange(item.id, value as OrderStatus)
+                  }
+                >
+                  <SelectTrigger className="w-full h-12 bg-card border-border">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Receive">Receive</SelectItem>
+                    <SelectItem value="Preparing">Preparing</SelectItem>
+                    <SelectItem value="Ready">Ready</SelectItem>
+                    <SelectItem value="Served">Served</SelectItem>
+                  </SelectContent>
+                </Select>
+              </RoleGuard>
             </div>
           )}
         </div>

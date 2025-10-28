@@ -2,7 +2,7 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Pencil } from "lucide-react";
+import { SquarePen } from "lucide-react";
 import type { MenuItem } from "@/types/menu";
 
 interface MenuItemCardProps {
@@ -48,7 +48,7 @@ export default function MenuItemCard({
           <div className="flex items-center gap-4 mt-auto">
             <Link to={`/dashboard/menu/${item.id}`} className="flex-1">
               <Button className="w-full gap-2 bg-primary hover:bg-primary/80 text-white rounded-md h-10">
-                <Pencil className="w-4 h-4" />
+                <SquarePen  className="w-4 h-4" />
                 Edit
               </Button>
             </Link>

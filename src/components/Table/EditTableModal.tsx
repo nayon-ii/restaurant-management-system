@@ -1,4 +1,4 @@
-// EDIT INVENTORY MODAL - src/components/Inventory/EditInventoryModal.tsx
+// EDIT TABLE MODAL - src/components/Table/EditTableModal.tsx
 import { useState, useEffect } from "react";
 import {
   Dialog,
@@ -12,41 +12,37 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import { toast } from "sonner";
-import type { InventoryItem } from "@/types/inventory";
+import type { Table } from "@/types/table";
 
-interface EditInventoryModalProps {
+interface EditTableModalProps {
   isOpen: boolean;
   onClose: () => void;
-  item: InventoryItem | null;
-  onSave: (item: InventoryItem) => void;
-  title?: string;
+  table: Table | null;
+  onSave: (table: Table) => void;
 }
 
-export default function EditInventoryModal({
+export default function EditTableModal({
   isOpen,
   onClose,
-  item,
+  table,
   onSave,
-  title = "Ingredient",
-}: EditInventoryModalProps) {
+}: EditTableModalProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
-    name: "",
-    sufficient: "",
-    low: "",
-    outOfStock: "",
+    tableNo: "",
+    capacity: "",
+    location: "",
   });
 
   useEffect(() => {
-    if (item) {
+    if (table) {
       setFormData({
-        name: item.name,
-        sufficient: item.sufficient,
-        low: item.low,
-        outOfStock: item.outOfStock,
+        tableNo: table.tableNo,
+        capacity: table.capacity.toString(),
+        location: table.location,
       });
     }
-  }, [item]);
+  }, [table]);
 
   const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -55,92 +51,77 @@ export default function EditInventoryModal({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!item) return;
+    if (!table) return;
 
     setIsSubmitting(true);
-
-    // Simulate API call
     await new Promise((resolve) => setTimeout(resolve, 800));
 
-    const updatedItem: InventoryItem = {
-      ...item,
-      ...formData,
+    const updatedTable: Table = {
+      ...table,
+      tableNo: formData.tableNo,
+      capacity: Number(formData.capacity),
+      location: formData.location,
       updatedAt: new Date().toISOString(),
     };
 
-    onSave(updatedItem);
-    toast.success(`${title} updated successfully!`);
+    onSave(updatedTable);
+    toast.success("Table updated successfully!");
     setIsSubmitting(false);
   };
 
-  if (!item) return null;
+  if (!table) return null;
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogOverlay className="fixed inset-0 z-50 bg-dark/50 backdrop-blur-xs" />
-      <DialogContent className="sm:max-w-2xl bg-card border-border">
+      <DialogContent className="sm:max-w-xl bg-card border-border">
         <DialogHeader>
           <DialogTitle className="text-xl font-bold text-foreground">
-            Edit {title}
+            Edit Table
           </DialogTitle>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-2">
             <Label className="text-sm font-medium text-foreground">
-              {title} Name
+              Table Number
             </Label>
             <Input
               type="text"
-              value={formData.name}
-              onChange={(e) => handleInputChange("name", e.target.value)}
+              value={formData.tableNo}
+              onChange={(e) => handleInputChange("tableNo", e.target.value)}
               className="h-12 bg-background"
-              placeholder={`Enter ${title.toLowerCase()} name`}
+              placeholder="e.g., 1A, 2B"
               required
             />
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label className="text-sm font-medium text-foreground">
-                Sufficient
+                Capacity
               </Label>
               <Input
-                type="text"
-                value={formData.sufficient}
-                onChange={(e) =>
-                  handleInputChange("sufficient", e.target.value)
-                }
+                type="number"
+                value={formData.capacity}
+                onChange={(e) => handleInputChange("capacity", e.target.value)}
                 className="h-12 bg-background"
-                placeholder="e.g., 100 kg"
-                required
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label className="text-sm font-medium text-foreground">Low</Label>
-              <Input
-                type="text"
-                value={formData.low}
-                onChange={(e) => handleInputChange("low", e.target.value)}
-                className="h-12 bg-background"
-                placeholder="e.g., 10 kg"
+                placeholder="e.g., 4"
+                min="1"
                 required
               />
             </div>
 
             <div className="space-y-2">
               <Label className="text-sm font-medium text-foreground">
-                Out of Stock
+                Location
               </Label>
               <Input
                 type="text"
-                value={formData.outOfStock}
-                onChange={(e) =>
-                  handleInputChange("outOfStock", e.target.value)
-                }
+                value={formData.location}
+                onChange={(e) => handleInputChange("location", e.target.value)}
                 className="h-12 bg-background"
-                placeholder="e.g., 0 kg"
+                placeholder="e.g., Main Hall"
                 required
               />
             </div>

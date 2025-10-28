@@ -1,5 +1,5 @@
-// EDIT INVENTORY MODAL - src/components/Inventory/EditInventoryModal.tsx
-import { useState, useEffect } from "react";
+// ADD TABLE MODAL - src/components/Table/AddTableModal.tsx
+import { useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -12,135 +12,108 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import { toast } from "sonner";
-import type { InventoryItem } from "@/types/inventory";
+import type { Table } from "@/types/table";
 
-interface EditInventoryModalProps {
+interface AddTableModalProps {
   isOpen: boolean;
   onClose: () => void;
-  item: InventoryItem | null;
-  onSave: (item: InventoryItem) => void;
-  title?: string;
+  onSave: (table: Omit<Table, "id" | "createdAt" | "updatedAt">) => void;
 }
 
-export default function EditInventoryModal({
+export default function AddTableModal({
   isOpen,
   onClose,
-  item,
   onSave,
-  title = "Ingredient",
-}: EditInventoryModalProps) {
+}: AddTableModalProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
-    name: "",
-    sufficient: "",
-    low: "",
-    outOfStock: "",
+    tableNo: "",
+    capacity: "",
+    location: "",
+    isActive: true,
   });
 
-  useEffect(() => {
-    if (item) {
-      setFormData({
-        name: item.name,
-        sufficient: item.sufficient,
-        low: item.low,
-        outOfStock: item.outOfStock,
-      });
-    }
-  }, [item]);
-
-  const handleInputChange = (field: string, value: string) => {
+  const handleInputChange = (
+    field: string,
+    value: string | number | boolean
+  ) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!item) return;
+    if (!formData.tableNo || !formData.capacity || !formData.location) {
+      toast.error("Please fill all fields");
+      return;
+    }
 
     setIsSubmitting(true);
-
-    // Simulate API call
     await new Promise((resolve) => setTimeout(resolve, 800));
 
-    const updatedItem: InventoryItem = {
-      ...item,
-      ...formData,
-      updatedAt: new Date().toISOString(),
-    };
+    onSave({
+      tableNo: formData.tableNo,
+      capacity: Number(formData.capacity),
+      location: formData.location,
+      isActive: formData.isActive,
+    });
 
-    onSave(updatedItem);
-    toast.success(`${title} updated successfully!`);
+    toast.success("Table added successfully!");
     setIsSubmitting(false);
+    setFormData({ tableNo: "", capacity: "", location: "", isActive: true });
   };
-
-  if (!item) return null;
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogOverlay className="fixed inset-0 z-50 bg-dark/50 backdrop-blur-xs" />
-      <DialogContent className="sm:max-w-2xl bg-card border-border">
+      <DialogContent className="sm:max-w-xl bg-card border-border">
         <DialogHeader>
           <DialogTitle className="text-xl font-bold text-foreground">
-            Edit {title}
+            Add New Table
           </DialogTitle>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-2">
             <Label className="text-sm font-medium text-foreground">
-              {title} Name
+              Table Number
             </Label>
             <Input
               type="text"
-              value={formData.name}
-              onChange={(e) => handleInputChange("name", e.target.value)}
+              value={formData.tableNo}
+              onChange={(e) => handleInputChange("tableNo", e.target.value)}
               className="h-12 bg-background"
-              placeholder={`Enter ${title.toLowerCase()} name`}
+              placeholder="e.g., 1A, 2B"
               required
             />
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label className="text-sm font-medium text-foreground">
-                Sufficient
+                Capacity
               </Label>
               <Input
-                type="text"
-                value={formData.sufficient}
-                onChange={(e) =>
-                  handleInputChange("sufficient", e.target.value)
-                }
+                type="number"
+                value={formData.capacity}
+                onChange={(e) => handleInputChange("capacity", e.target.value)}
                 className="h-12 bg-background"
-                placeholder="e.g., 100 kg"
-                required
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label className="text-sm font-medium text-foreground">Low</Label>
-              <Input
-                type="text"
-                value={formData.low}
-                onChange={(e) => handleInputChange("low", e.target.value)}
-                className="h-12 bg-background"
-                placeholder="e.g., 10 kg"
+                placeholder="e.g., 4"
+                min="1"
                 required
               />
             </div>
 
             <div className="space-y-2">
               <Label className="text-sm font-medium text-foreground">
-                Out of Stock
+                Location
               </Label>
               <Input
                 type="text"
-                value={formData.outOfStock}
-                onChange={(e) =>
-                  handleInputChange("outOfStock", e.target.value)
-                }
+                value={formData.location}
+                onChange={(e) => handleInputChange("location", e.target.value)}
                 className="h-12 bg-background"
-                placeholder="e.g., 0 kg"
+                placeholder="e.g., Main Hall"
                 required
               />
             </div>
@@ -164,10 +137,10 @@ export default function EditInventoryModal({
               {isSubmitting ? (
                 <>
                   <LoadingSpinner size="sm" className="mr-2" />
-                  Saving...
+                  Adding...
                 </>
               ) : (
-                "Save Changes"
+                "Add Table"
               )}
             </Button>
           </div>

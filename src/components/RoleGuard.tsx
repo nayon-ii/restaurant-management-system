@@ -36,9 +36,9 @@ export const RoleGuard = ({
     // If canTrigger is specified, check if user can interact
     if (canTrigger) {
       if (!canTriggerRole) {
-        // Hide icon if exists
+        // Disabled and hide all icons (Lucide + dropdown)
         return (
-          <div className="pointer-events-none opacity-50 [&_*[data-icon]]:hidden">
+          <div className="pointer-events-none opacity-50 [&_svg]:hidden **:data-icon:hidden">
             {children}
           </div>
         );
@@ -56,7 +56,7 @@ export const RoleGuard = ({
     // User has access, now check if they can trigger
     if (canTrigger && !canTriggerRole) {
       return (
-        <div className="pointer-events-none [&_*[data-icon]]:hidden">
+        <div className="pointer-events-none [&_svg]:hidden **:data-icon:hidden">
           {children}
         </div>
       );
@@ -85,7 +85,7 @@ export const RoleGuard = ({
     // User has access, now check if they can trigger
     if (canTrigger && !canTriggerRole) {
       return (
-        <div className="pointer-events-none [&_*[data-icon]]:hidden">
+        <div className="pointer-events-none [&_svg]:hidden **:data-icon:hidden">
           {children}
         </div>
       );

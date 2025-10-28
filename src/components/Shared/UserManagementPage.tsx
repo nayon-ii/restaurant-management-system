@@ -1,6 +1,6 @@
 // src/pages/UserManagementPage.tsx
 import { useState, useMemo, useEffect } from "react";
-import { Eye, Pencil, Search, SlidersHorizontal, Plus } from "lucide-react";
+import { Eye, Search, SlidersHorizontal, Plus, SquarePen } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Toggle } from "@/components/ui/toggle";
@@ -399,7 +399,7 @@ export default function UserManagementPage() {
                           className="p-2 hover:bg-gray-200 rounded-lg transition-colors"
                           title="Edit"
                         >
-                          <Pencil className="w-4 h-4 text-gray-700" />
+                          <SquarePen className="w-4 h-4 text-gray-700" />
                         </button>
                         <Toggle
                           checked={user.isActive}

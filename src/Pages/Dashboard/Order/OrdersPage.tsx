@@ -24,7 +24,17 @@ import processIcon from "@/assets/icons/process.svg";
 import deliverIcon from "@/assets/icons/deliver.svg";
 import { RoleGuard } from "@/components/RoleGuard";
 
-export default function OrdersPage() {
+interface OrdersPageProps {
+  basePath?: string;
+  headerTitle?: string;
+  headerSubtitle?: string;
+}
+
+export default function OrdersPage({
+  basePath = "/dashboard/orders",
+  headerTitle = "Order Management",
+  headerSubtitle = "Manage your orders",
+}: OrdersPageProps) {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
@@ -91,7 +101,7 @@ export default function OrdersPage() {
   };
 
   const handleViewDetails = (orderId: string) => {
-    navigate(`/dashboard/orders/${orderId}`);
+    navigate(`${basePath}/${orderId}`);
   };
 
   const handlePageChange = (page: number) => {
@@ -196,7 +206,7 @@ export default function OrdersPage() {
 
   return (
     <>
-      <DashboardHeader title="Order Management" subtitle="Manage you orders" />
+      <DashboardHeader title={headerTitle} subtitle={headerSubtitle} />
 
       <main className="p-3 md:p-8 space-y-3 md:space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -222,7 +232,7 @@ export default function OrdersPage() {
             <h2 className="text-2xl font-semibold text-foreground">Orders</h2>
             <RoleGuard allowedRole="manager">
               <Link
-                to="/dashboard/order/create"
+                to={`${basePath}/create`}
                 className="flex items-center justify-center gap-1 bg-primary hover:bg-primary/80 shadow-lg hover:shadow-xl rounded-xl px-3 py-2 text-white"
               >
                 <Plus className="w-5 h-5" />
@@ -326,7 +336,7 @@ export default function OrdersPage() {
                               className={`w-32 border-0 ${getStatusColor(
                                 selectedStatus[order.id] || order.status
                               )}`}
-                              iconClassName="text-white hidden"
+                              iconClassName="text-white"
                             >
                               <SelectValue />
                             </SelectTrigger>

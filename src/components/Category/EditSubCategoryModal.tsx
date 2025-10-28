@@ -1,4 +1,4 @@
-// EDIT INVENTORY MODAL - src/components/Inventory/EditInventoryModal.tsx
+// src/components/Category/EditSubCategoryModal.tsx
 import { useState, useEffect } from "react";
 import {
   Dialog,
@@ -10,137 +10,152 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import { toast } from "sonner";
-import type { InventoryItem } from "@/types/inventory";
+import type { SubCategory, Category } from "@/types/category";
 
-interface EditInventoryModalProps {
+interface EditSubCategoryModalProps {
   isOpen: boolean;
   onClose: () => void;
-  item: InventoryItem | null;
-  onSave: (item: InventoryItem) => void;
-  title?: string;
+  categories: Category[];
+  subCategory: SubCategory | null;
+  onSave: (subCategory: SubCategory) => void;
 }
 
-export default function EditInventoryModal({
+export default function EditSubCategoryModal({
   isOpen,
   onClose,
-  item,
+  categories,
+  subCategory,
   onSave,
-  title = "Ingredient",
-}: EditInventoryModalProps) {
+}: EditSubCategoryModalProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
-    sufficient: "",
-    low: "",
-    outOfStock: "",
+    number: "",
+    categoryId: "",
+    categoryName: "",
   });
 
   useEffect(() => {
-    if (item) {
+    if (subCategory) {
       setFormData({
-        name: item.name,
-        sufficient: item.sufficient,
-        low: item.low,
-        outOfStock: item.outOfStock,
+        name: subCategory.name,
+        number: subCategory.number,
+        categoryId: subCategory.categoryId,
+        categoryName: subCategory.categoryName,
       });
     }
-  }, [item]);
+  }, [subCategory]);
 
   const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
+  const handleCategoryChange = (categoryId: string) => {
+    const category = categories.find((cat) => cat.id === categoryId);
+    setFormData((prev) => ({
+      ...prev,
+      categoryId,
+      categoryName: category?.name || "",
+    }));
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!item) return;
+    if (
+      !subCategory ||
+      !formData.name ||
+      !formData.number ||
+      !formData.categoryId
+    ) {
+      toast.error("Please fill all required fields");
+      return;
+    }
 
     setIsSubmitting(true);
-
-    // Simulate API call
     await new Promise((resolve) => setTimeout(resolve, 800));
 
-    const updatedItem: InventoryItem = {
-      ...item,
-      ...formData,
+    onSave({
+      ...subCategory,
+      name: formData.name,
+      number: formData.number,
+      categoryId: formData.categoryId,
+      categoryName: formData.categoryName,
       updatedAt: new Date().toISOString(),
-    };
+    });
 
-    onSave(updatedItem);
-    toast.success(`${title} updated successfully!`);
+    toast.success("Sub-category updated successfully!");
     setIsSubmitting(false);
   };
 
-  if (!item) return null;
+  if (!subCategory) return null;
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogOverlay className="fixed inset-0 z-50 bg-dark/50 backdrop-blur-xs" />
-      <DialogContent className="sm:max-w-2xl bg-card border-border">
+      <DialogContent className="sm:max-w-xl bg-card border-border">
         <DialogHeader>
           <DialogTitle className="text-xl font-bold text-foreground">
-            Edit {title}
+            Edit Sub-Category
           </DialogTitle>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-2">
             <Label className="text-sm font-medium text-foreground">
-              {title} Name
+              Parent Category
             </Label>
-            <Input
-              type="text"
-              value={formData.name}
-              onChange={(e) => handleInputChange("name", e.target.value)}
-              className="h-12 bg-background"
-              placeholder={`Enter ${title.toLowerCase()} name`}
-              required
-            />
+            <Select
+              value={formData.categoryId}
+              onValueChange={handleCategoryChange}
+            >
+              <SelectTrigger className="h-12 bg-background">
+                <SelectValue placeholder="Select a category" />
+              </SelectTrigger>
+              <SelectContent>
+                {categories.map((category) => (
+                  <SelectItem key={category.id} value={category.id}>
+                    {category.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label className="text-sm font-medium text-foreground">
-                Sufficient
+                Sub-Category Name
               </Label>
               <Input
                 type="text"
-                value={formData.sufficient}
-                onChange={(e) =>
-                  handleInputChange("sufficient", e.target.value)
-                }
+                value={formData.name}
+                onChange={(e) => handleInputChange("name", e.target.value)}
                 className="h-12 bg-background"
-                placeholder="e.g., 100 kg"
-                required
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label className="text-sm font-medium text-foreground">Low</Label>
-              <Input
-                type="text"
-                value={formData.low}
-                onChange={(e) => handleInputChange("low", e.target.value)}
-                className="h-12 bg-background"
-                placeholder="e.g., 10 kg"
+                placeholder="e.g., Pizza"
                 required
               />
             </div>
 
             <div className="space-y-2">
               <Label className="text-sm font-medium text-foreground">
-                Out of Stock
+                Sub-Category Number
               </Label>
               <Input
                 type="text"
-                value={formData.outOfStock}
-                onChange={(e) =>
-                  handleInputChange("outOfStock", e.target.value)
-                }
+                value={formData.number}
+                onChange={(e) => handleInputChange("number", e.target.value)}
                 className="h-12 bg-background"
-                placeholder="e.g., 0 kg"
+                placeholder="e.g., 001"
                 required
               />
             </div>
@@ -164,10 +179,10 @@ export default function EditInventoryModal({
               {isSubmitting ? (
                 <>
                   <LoadingSpinner size="sm" className="mr-2" />
-                  Saving...
+                  Updating...
                 </>
               ) : (
-                "Save Changes"
+                "Update Sub-Category"
               )}
             </Button>
           </div>

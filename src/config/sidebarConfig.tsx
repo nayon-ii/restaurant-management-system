@@ -21,6 +21,9 @@ import {
 } from "lucide-react";
 import type { ReactNode } from "react";
 
+import { HugeiconsIcon } from "@hugeicons/react";
+import { RestaurantTableIcon } from "@hugeicons/core-free-icons";
+
 export interface SidebarItem {
   id: string;
   label: string;
@@ -50,7 +53,7 @@ export const sidebarConfig: Record<string, SidebarSection[]> = {
           id: "sale",
           label: "Sale",
           icon: <Receipt className="h-5 w-5" />,
-          path: "/dashboard/sale",
+          path: "/dashboard/sales",
           roles: ["admin"],
         },
       ],
@@ -63,6 +66,13 @@ export const sidebarConfig: Record<string, SidebarSection[]> = {
           label: "Kitchen",
           icon: <ChefHat className="h-5 w-5" />,
           path: "/dashboard/kitchen",
+          roles: ["admin"],
+        },
+        {
+          id: "table",
+          label: "Table",
+          icon: <HugeiconsIcon icon={RestaurantTableIcon} size={20} />,
+          path: "/dashboard/table",
           roles: ["admin"],
         },
       ],

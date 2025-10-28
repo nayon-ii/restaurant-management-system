@@ -14,7 +14,7 @@ export const getStatusColor = (status: string) => {
     case "preparing":
       return "bg-[#B8860B] hover:bg-[#d4a12e]/90 text-white flex items-center justify-center rounded-full";
     case "served":
-      return "bg-[#6B7280] hover:bg-[#6B7280]/90 text-white flex items-center justify-center rounded-full";
+      return "bg-[#00A789] hover:bg-[#00A789]/90 text-white flex items-center justify-center rounded-full";
     case "pending":
       return "bg-[#A0B238] hover:bg-[#A0B238]/90 text-white flex items-center justify-center rounded-full";
     default:
