@@ -36,6 +36,8 @@ import TablePage from "@/Pages/Dashboard/Admin/Table/TablePage";
 import CategoryPage from "@/Pages/Dashboard/Admin/Category/CategoryPage";
 import IngredientsPage from "@/Pages/Dashboard/Admin/Ingredients/IngredientsPage";
 import UserPage from "@/Pages/Dashboard/Admin/User/UserPage";
+import UserRolesPage from "@/Pages/Dashboard/Admin/UserRole/UserRolesPage";
+import PermissionPage from "@/components/UserRole/PermissionPage";
 
 const router = createBrowserRouter([
   {
@@ -105,7 +107,11 @@ const router = createBrowserRouter([
       },
       {
         path: "user-roles",
-        element: <div>User Roles Page</div>,
+        element: <UserRolesPage />,
+      },
+      {
+        path: "user-roles/:roleId/permissions",
+        element: <PermissionPage />,
       },
       {
         path: "supplier",
