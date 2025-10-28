@@ -1,4 +1,4 @@
-// MAIN TABLE PAGE - src/Pages/Dashboard/Table/TablePage.tsx
+// src/Pages/Dashboard/Table/TablePage.tsx
 import { useState, useMemo, useEffect } from "react";
 import DashboardHeader from "@/components/Dashboard/DashboardHeader";
 import { Input } from "@/components/ui/input";
@@ -19,6 +19,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { toast } from "sonner";
 
 export default function TablePage() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -64,25 +65,35 @@ export default function TablePage() {
     return filteredTables.slice(startIndex, startIndex + itemsPerPage);
   }, [filteredTables, currentPage]);
 
+  // Unified toggle handler: always opens modal for both activate & deactivate
   const handleStatusToggle = (table: Table) => {
-    if (table.isActive) {
-      setSelectedTable(table);
-      setIsDeactivateModalOpen(true);
-    } else {
-      setTables((prev) =>
-        prev.map((t) => (t.id === table.id ? { ...t, isActive: true } : t))
-      );
-    }
+    setSelectedTable(table);
+    setIsDeactivateModalOpen(true);
   };
 
-  const handleDeactivate = () => {
-    if (selectedTable) {
-      setTables((prev) =>
-        prev.map((t) =>
-          t.id === selectedTable.id ? { ...t, isActive: false } : t
-        )
-      );
+  const handleConfirmToggle = () => {
+    if (!selectedTable) return;
+
+    const willBeActive = !selectedTable.isActive;
+
+    setTables((prev) =>
+      prev.map((t) =>
+        t.id === selectedTable.id ? { ...t, isActive: willBeActive } : t
+      )
+    );
+
+    // Show correct toast based on final state
+    if (willBeActive) {
+      toast.success("Table activated successfully", {
+        description: `Table ${selectedTable.tableNo} is now active`,
+      });
+    } else {
+      toast.warning("Table deactivated", {
+        description: `Table ${selectedTable.tableNo} has been deactivated`,
+      });
     }
+
+    // Close modal
     setIsDeactivateModalOpen(false);
     setSelectedTable(null);
   };
@@ -112,6 +123,9 @@ export default function TablePage() {
     };
     setTables((prev) => [table, ...prev]);
     setIsAddModalOpen(false);
+    toast.success("Table added successfully", {
+      description: `Table ${table.tableNo} has been created`,
+    });
   };
 
   const handleSaveEdit = (updatedTable: Table) => {
@@ -120,6 +134,9 @@ export default function TablePage() {
     );
     setIsEditModalOpen(false);
     setSelectedTable(null);
+    toast.success("Table updated successfully", {
+      description: `Table ${updatedTable.tableNo} has been updated`,
+    });
   };
 
   const handlePageChange = (page: number) => {
@@ -249,7 +266,7 @@ export default function TablePage() {
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
               <Input
                 type="text"
-                placeholder="Search Order..."
+                placeholder="Search Table..."
                 value={searchQuery}
                 onChange={(e) => {
                   setSearchQuery(e.target.value);
@@ -259,14 +276,14 @@ export default function TablePage() {
               />
             </div>
             <Select value={statusFilter} onValueChange={setStatusFilter}>
-              <SelectTrigger className="h-12! border-input">
+              <SelectTrigger className="h-12 border-input">
                 <SlidersHorizontal className="h-5 w-5" />
                 <SelectValue placeholder="Filter" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All</SelectItem>
                 <SelectItem value="active">Active</SelectItem>
-                <SelectItem value="deactivate">Deactivate</SelectItem>
+                <SelectItem value="deactivate">Deactivated</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -365,15 +382,20 @@ export default function TablePage() {
         )}
       </main>
 
-      {/* Modals */}
+      {/* Reusable Deactivate/Activate Modal */}
       <DeactivateModal
         isOpen={isDeactivateModalOpen}
         onClose={() => {
           setIsDeactivateModalOpen(false);
           setSelectedTable(null);
         }}
-        onConfirm={handleDeactivate}
-        title="Are you sure you want to deactivate this table?"
+        onConfirm={handleConfirmToggle}
+        title={
+          selectedTable?.isActive
+            ? `Are you sure you want to deactivate Table ${selectedTable.tableNo}?`
+            : `Are you sure you want to activate Table ${selectedTable?.tableNo}?`
+        }
+        buttonText={selectedTable?.isActive ? `Deactivate` : `Activate`}
       />
 
       <AddTableModal

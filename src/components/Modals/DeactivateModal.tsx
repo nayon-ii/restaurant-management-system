@@ -7,6 +7,7 @@ interface DeactivateModalProps {
   onClose: () => void;
   onConfirm: () => void;
   title?: string;
+  buttonText?: string;
 }
 
 export default function DeactivateModal({
@@ -14,6 +15,7 @@ export default function DeactivateModal({
   onClose,
   onConfirm,
   title,
+  buttonText = "Deactivate",
 }: DeactivateModalProps) {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -35,7 +37,7 @@ export default function DeactivateModal({
               onClick={onConfirm}
               className="flex-1 h-12 rounded-xl bg-primary hover:bg-primary/80"
             >
-              Deactivate
+              {buttonText}
             </Button>
           </div>
         </div>

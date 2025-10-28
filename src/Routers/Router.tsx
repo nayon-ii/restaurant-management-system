@@ -35,6 +35,7 @@ import KitchenPage from "@/Pages/Dashboard/Admin/Kitchen/KitchenPage";
 import TablePage from "@/Pages/Dashboard/Admin/Table/TablePage";
 import CategoryPage from "@/Pages/Dashboard/Admin/Category/CategoryPage";
 import IngredientsPage from "@/Pages/Dashboard/Admin/Ingredients/IngredientsPage";
+import UserPage from "@/Pages/Dashboard/Admin/User/UserPage";
 
 const router = createBrowserRouter([
   {
@@ -100,7 +101,7 @@ const router = createBrowserRouter([
       },
       {
         path: "user",
-        element: <div>User Page</div>,
+        element: <UserPage />,
       },
       {
         path: "user-roles",

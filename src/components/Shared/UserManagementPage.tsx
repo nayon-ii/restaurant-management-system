@@ -7,110 +7,29 @@ import { Toggle } from "@/components/ui/toggle";
 import EditUserModal from "@/components/Modals/EditUserModal";
 import ViewUserModal from "@/components/Modals/ViewUserModal";
 import AddUserModal from "@/components/Modals/AddUserModal";
+import DeactivateModal from "@/components/Modals/DeactivateModal";
 import { TableSkeleton } from "../Skeleton/TableSkeleton";
 import { toast } from "sonner";
-
-interface User {
-  id: string;
-  name: string;
-  number?: string;
-  gmail: string;
-  role?: string;
-  joiningDate?: string;
-  salary?: number;
-  image?: string;
-  isActive: boolean;
-}
-
-// ✅ Mock User Data with PROPER TYPES
-const mockUsersData: User[] = [
-  {
-    id: "1021",
-    name: "Rahik",
-    number: "01840005456",
-    gmail: "ra@gmail.com",
-    role: "Waiter",
-    joiningDate: "2025-01-20",
-    salary: 15000,
-    image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Rahik",
-    isActive: true,
-  },
-  {
-    id: "1022",
-    name: "John Doe",
-    number: "01840005457",
-    gmail: "john@gmail.com",
-    role: "Chef",
-    joiningDate: "2025-01-15",
-    salary: 25000,
-    image: "https://api.dicebear.com/7.x/avataaars/svg?seed=John",
-    isActive: true,
-  },
-  {
-    id: "1023",
-    name: "Jane Smith",
-    number: "01840005458",
-    gmail: "jane@gmail.com",
-    role: "Cleaner",
-    joiningDate: "2025-01-10",
-    salary: 12000,
-    image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Jane",
-    isActive: true,
-  },
-  {
-    id: "1024",
-    name: "Mike Wilson",
-    number: "01840005459",
-    gmail: "mike@gmail.com",
-    role: "Cashier",
-    joiningDate: "2025-01-05",
-    salary: 18000,
-    image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Mike",
-    isActive: false,
-  },
-  {
-    id: "1025",
-    name: "Sarah Brown",
-    number: "01840005460",
-    gmail: "sarah@gmail.com",
-    role: "Waiter",
-    joiningDate: "2025-01-01",
-    salary: 15000,
-    image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah",
-    isActive: true,
-  },
-  {
-    id: "1026",
-    name: "David Lee",
-    number: "01840005461",
-    gmail: "david@gmail.com",
-    role: "Waiter",
-    joiningDate: "2024-12-25",
-    salary: 15000,
-    image: "https://api.dicebear.com/7.x/avataaars/svg?seed=David",
-    isActive: false,
-  },
-  {
-    id: "1027",
-    name: "Emma Davis",
-    number: "01840005462",
-    gmail: "emma@gmail.com",
-    role: "Cleaner",
-    joiningDate: "2024-12-20",
-    salary: 12000,
-    image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Emma",
-    isActive: true,
-  },
-];
+import { RoleGuard } from "../RoleGuard";
+import { mockUsersData } from "@/data/mockUsersData";
+import type { User } from "@/types/user";
 
 const roles = ["All", "Chef", "Cashier", "Waiter", "Cleaner"];
 
+interface UserManagementPageProps {
+  title?: string;
+}
+
 // Main Component
-export default function UserManagementPage() {
+export default function UserManagementPage({
+  title = "Staff",
+}: UserManagementPageProps) {
   const [users, setUsers] = useState<User[]>(mockUsersData);
   const [searchQuery, setSearchQuery] = useState("");
   const [roleFilter, setRoleFilter] = useState("All");
-  const [activeTab, setActiveTab] = useState<"all" | "deactivated">("all");
+  const [activeTab, setActiveTab] = useState<"all" | "active" | "deactivated">(
+    "all"
+  );
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
   const [showRoleDropdown, setShowRoleDropdown] = useState(false);
@@ -118,9 +37,11 @@ export default function UserManagementPage() {
   const [addModalOpen, setAddModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [viewModalOpen, setViewModalOpen] = useState(false);
+  const [deactivateModalOpen, setDeactivateModalOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [userToToggle, setUserToToggle] = useState<User | null>(null);
 
-  const itemsPerPage = 5;
+  const itemsPerPage = 15;
 
   useEffect(() => {
     setTimeout(() => setIsLoading(false), 1000);
@@ -134,7 +55,12 @@ export default function UserManagementPage() {
         user.gmail.toLowerCase().includes(searchQuery.toLowerCase());
 
       const matchesRole = roleFilter === "All" || user.role === roleFilter;
-      const matchesTab = activeTab === "all" ? user.isActive : !user.isActive;
+
+      // Tab logic: "all" shows everyone, "active" shows only active, "deactivated" shows only inactive
+      const matchesTab =
+        activeTab === "all" ||
+        (activeTab === "active" && user.isActive) ||
+        (activeTab === "deactivated" && !user.isActive);
 
       return matchesSearch && matchesRole && matchesTab;
     });
@@ -146,26 +72,34 @@ export default function UserManagementPage() {
     return filteredUsers.slice(startIndex, startIndex + itemsPerPage);
   }, [filteredUsers, currentPage]);
 
-  const handleToggleActive = (userId: string) => {
-    const user = users.find((u) => u.id === userId);
-    if (!user) return;
+  const handleToggleActive = (user: User) => {
+    setUserToToggle(user);
+    setDeactivateModalOpen(true);
+  };
 
-    const newStatus = !user.isActive;
+  const confirmToggle = () => {
+    if (!userToToggle) return;
 
-    setUsers(
-      users.map((u) => (u.id === userId ? { ...u, isActive: newStatus } : u))
+    const newStatus = !userToToggle.isActive;
+
+    setUsers((prev) =>
+      prev.map((u) =>
+        u.id === userToToggle.id ? { ...u, isActive: newStatus } : u
+      )
     );
 
-    // Show toast notification
     if (newStatus) {
       toast.success("User activated successfully", {
-        description: `${user.name} has been activated`,
+        description: `${userToToggle.name} has been activated`,
       });
     } else {
       toast.warning("User deactivated", {
-        description: `${user.name} has been deactivated`,
+        description: `${userToToggle.name} has been deactivated`,
       });
     }
+
+    setDeactivateModalOpen(false);
+    setUserToToggle(null);
   };
 
   const handleView = (user: User) => {
@@ -179,18 +113,18 @@ export default function UserManagementPage() {
   };
 
   const handleSave = (updatedUser: User) => {
-    setUsers(users.map((u) => (u.id === updatedUser.id ? updatedUser : u)));
+    setUsers((prev) =>
+      prev.map((u) => (u.id === updatedUser.id ? updatedUser : u))
+    );
     setEditModalOpen(false);
     setSelectedUser(null);
 
-    // Show success toast
     toast.success("User updated successfully", {
       description: `${updatedUser.name}'s information has been updated`,
     });
   };
 
   const handleAdd = (newUser: User) => {
-    // Generate a unique ID
     const newId = (
       Math.max(...users.map((u) => parseInt(u.id))) + 1
     ).toString();
@@ -201,10 +135,9 @@ export default function UserManagementPage() {
       image: `https://api.dicebear.com/7.x/avataaars/svg?seed=${newUser.name}`,
     };
 
-    setUsers([...users, userToAdd]);
+    setUsers((prev) => [...prev, userToAdd]);
     setAddModalOpen(false);
 
-    // Show success toast
     toast.success("User added successfully", {
       description: `${newUser.name} has been added to the system`,
     });
@@ -246,18 +179,21 @@ export default function UserManagementPage() {
         {/* Title and Add Button */}
         <div className="px-5 py-3 flex items-center justify-between">
           <h2 className="text-2xl font-bold text-gray-900">User Management</h2>
-          <Button
-            onClick={() => setAddModalOpen(true)}
-            className="h-10 md:w-32 shadow-lg"
-          >
-            <Plus className="w-5 h-5 mr-2" />
-            Add Staff
-          </Button>
+
+          <RoleGuard allowedRoles={["admin", "manager"]}>
+            <Button
+              onClick={() => setAddModalOpen(true)}
+              className="h-10 md:w-32 shadow-lg"
+            >
+              <Plus className="w-5 h-5 mr-1" />
+              Add {title}
+            </Button>
+          </RoleGuard>
         </div>
 
         {/* Tabs */}
         <div className="px-5">
-          <div className="flex gap-4 bg-card shadow-md rounded-2xl p-1">
+          <div className="flex gap-2 bg-card shadow-md rounded-2xl p-1">
             <button
               onClick={() => {
                 setActiveTab("all");
@@ -269,7 +205,20 @@ export default function UserManagementPage() {
                   : "bg-card text-foreground hover:bg-primary/30"
               }`}
             >
-              All User
+              All Users
+            </button>
+            <button
+              onClick={() => {
+                setActiveTab("active");
+                setCurrentPage(1);
+              }}
+              className={`flex-1 py-2 rounded-xl font-semibold transition-all cursor-pointer ${
+                activeTab === "active"
+                  ? "bg-primary text-white"
+                  : "bg-card text-foreground hover:bg-primary/30"
+              }`}
+            >
+              Active
             </button>
             <button
               onClick={() => {
@@ -282,7 +231,7 @@ export default function UserManagementPage() {
                   : "bg-card text-foreground hover:bg-primary/30"
               }`}
             >
-              Deactivated User
+              Deactivated
             </button>
           </div>
         </div>
@@ -403,7 +352,7 @@ export default function UserManagementPage() {
                         </button>
                         <Toggle
                           checked={user.isActive}
-                          onChange={() => handleToggleActive(user.id)}
+                          onChange={() => handleToggleActive(user)}
                           className="data-[state=on]:bg-green-500"
                         />
                       </div>
@@ -463,6 +412,22 @@ export default function UserManagementPage() {
           user={selectedUser}
         />
       )}
+
+      {/* Reusable Deactivate Modal */}
+      <DeactivateModal
+        isOpen={deactivateModalOpen}
+        onClose={() => {
+          setDeactivateModalOpen(false);
+          setUserToToggle(null);
+        }}
+        onConfirm={confirmToggle}
+        title={
+          userToToggle?.isActive
+            ? `Are you sure you want to deactivate ${userToToggle.name}?`
+            : `Are you sure you want to activate ${userToToggle?.name}?`
+        }
+        buttonText={userToToggle?.isActive ? `Deactivate` : `Activate`}
+      />
     </div>
   );
 }
