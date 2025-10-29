@@ -166,14 +166,14 @@ export default function EditSubCategoryModal({
               type="button"
               variant="outline"
               onClick={onClose}
-              className="flex-1 h-12 rounded-xl"
+              className="flex-1 h-12 rounded-md"
               disabled={isSubmitting}
             >
               Cancel
             </Button>
             <Button
               type="submit"
-              className="flex-1 h-12 rounded-xl bg-primary hover:bg-primary/80"
+              className="flex-1 h-12 rounded-md bg-primary hover:bg-primary/80"
               disabled={isSubmitting}
             >
               {isSubmitting ? (

@@ -45,7 +45,7 @@ export default function StatCard({
             {value}
           </h2>
         </div>
-        <div className="p-1 rounded-xl flex items-center justify-center w-12 h-12">
+        <div className="p-1 rounded-md flex items-center justify-center w-12 h-12">
           {showImage ? (
             <img
               src={image}

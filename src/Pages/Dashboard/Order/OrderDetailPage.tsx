@@ -139,7 +139,7 @@ export default function OrderDetailPage({
                     <Label className="text-sm font-medium text-foreground">
                       Order ID
                     </Label>
-                    <div className="h-12 px-4 flex items-center bg-card border border-border rounded-xl text-sm">
+                    <div className="h-12 px-4 flex items-center bg-card border border-border rounded-md text-sm">
                       {order.id}
                     </div>
                   </div>
@@ -149,7 +149,7 @@ export default function OrderDetailPage({
                     <Label className="text-sm font-medium text-foreground">
                       Date
                     </Label>
-                    <div className="h-12 px-4 flex items-center bg-card border border-border rounded-xl text-sm">
+                    <div className="h-12 px-4 flex items-center bg-card border border-border rounded-md text-sm">
                       {order.date}
                     </div>
                   </div>
@@ -163,7 +163,7 @@ export default function OrderDetailPage({
                     </Label>
                     <div
                       onClick={() => handleItemClick(singleItem)}
-                      className="flex items-center gap-4 p-3 bg-card rounded-xl border border-border hover:border-primary cursor-pointer transition-all"
+                      className="flex items-center gap-4 p-3 bg-card rounded-md border border-border hover:border-primary cursor-pointer transition-all"
                     >
                       <div className="w-16 h-16 rounded-lg overflow-hidden shrink-0 bg-linear-to-br from-primary to-orange-600">
                         <img
@@ -196,7 +196,7 @@ export default function OrderDetailPage({
                     <Label className="text-sm font-medium text-foreground">
                       Table No
                     </Label>
-                    <div className="h-12 px-4 flex items-center bg-card border border-border rounded-xl text-sm">
+                    <div className="h-12 px-4 flex items-center bg-card border border-border rounded-md text-sm">
                       {order.tableNo}
                     </div>
                   </div>
@@ -205,7 +205,7 @@ export default function OrderDetailPage({
                     <Label className="text-sm font-medium text-foreground">
                       Order Type
                     </Label>
-                    <div className="h-12 px-4 flex items-center bg-card border border-border rounded-xl text-sm capitalize">
+                    <div className="h-12 px-4 flex items-center bg-card border border-border rounded-md text-sm capitalize">
                       {order.orderType}
                     </div>
                   </div>
@@ -219,7 +219,7 @@ export default function OrderDetailPage({
                         <Label className="text-sm font-medium text-foreground">
                           Size
                         </Label>
-                        <div className="h-12 px-4 flex items-center bg-card border border-border rounded-xl text-sm">
+                        <div className="h-12 px-4 flex items-center bg-card border border-border rounded-md text-sm">
                           {singleItem.size || "N/A"}
                         </div>
                       </div>
@@ -228,7 +228,7 @@ export default function OrderDetailPage({
                         <Label className="text-sm font-medium text-foreground">
                           Extra Ingredients
                         </Label>
-                        <div className="h-12 px-4 flex items-center bg-card border border-border rounded-xl text-sm">
+                        <div className="h-12 px-4 flex items-center bg-card border border-border rounded-md text-sm">
                           {singleItem.extraIngredients || "None"}
                         </div>
                       </div>
@@ -238,7 +238,7 @@ export default function OrderDetailPage({
                       <Label className="text-sm font-medium text-foreground">
                         Note
                       </Label>
-                      <div className="min-h-12 px-4 flex items-center bg-card border border-border rounded-xl text-sm">
+                      <div className="min-h-12 px-4 flex items-center bg-card border border-border rounded-md text-sm">
                         {singleItem.note || "No notes"}
                       </div>
                     </div>
@@ -251,7 +251,7 @@ export default function OrderDetailPage({
                     <Label className="text-sm font-medium text-foreground">
                       Time Left
                     </Label>
-                    <div className="h-12 px-4 flex items-center bg-card border border-border rounded-xl text-sm font-bold text-red-500">
+                    <div className="h-12 px-4 flex items-center bg-card border border-border rounded-md text-sm font-bold text-red-500">
                       {order.timeLeft}
                     </div>
                   </div>
@@ -277,7 +277,7 @@ export default function OrderDetailPage({
                             )
                           }
                         >
-                          <SelectTrigger className="w-full h-12! shadow-none bg-card text-foreground border border-border rounded-xl">
+                          <SelectTrigger className="w-full h-12! shadow-none bg-card text-foreground border border-border rounded-md">
                             <SelectValue />
                           </SelectTrigger>
                           <SelectContent>
@@ -307,7 +307,7 @@ export default function OrderDetailPage({
                             handleOverallStatusChange(value as OrderStatus)
                           }
                         >
-                          <SelectTrigger className="w-full h-12! shadow-none bg-card text-foreground border border-border rounded-xl">
+                          <SelectTrigger className="w-full h-12! shadow-none bg-card text-foreground border border-border rounded-md">
                             <SelectValue />
                           </SelectTrigger>
                           <SelectContent>
@@ -323,7 +323,7 @@ export default function OrderDetailPage({
                 </div>
 
                 <div className="mt-6 pt-6 border-t border-border">
-                  <div className="bg-linear-to-br from-primary/5 to-primary/10 border border-primary/20 rounded-xl p-4">
+                  <div className="bg-linear-to-br from-primary/5 to-primary/10 border border-primary/20 rounded-md p-4">
                     <div className="flex items-center justify-between">
                       <span className="text-sm font-medium text-muted-foreground">
                         Total Amount
@@ -346,7 +346,7 @@ export default function OrderDetailPage({
                     <div
                       key={item.id}
                       onClick={() => !isSingleItem && handleItemClick(item)}
-                      className={`flex items-center gap-3 p-3 bg-card rounded-xl border border-border ${
+                      className={`flex items-center gap-3 p-3 bg-card rounded-md border border-border ${
                         !isSingleItem
                           ? "hover:border-primary cursor-pointer transition-all"
                           : ""

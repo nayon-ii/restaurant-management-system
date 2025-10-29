@@ -159,7 +159,7 @@ export default function ProfilePage() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Left Side - Profile Card */}
           <div className="lg:col-span-1">
-            <div className="bg-card rounded-xl shadow-lg p-4 md:p-8">
+            <div className="bg-card rounded-md shadow-lg p-4 md:p-8">
               <div className="flex flex-col items-center text-center space-y-4">
                 {/* Avatar */}
                 <div className="relative">
@@ -206,7 +206,7 @@ export default function ProfilePage() {
 
           {/* Right Side - Form */}
           <div className="lg:col-span-2">
-            <div className="bg-card rounded-xl shadow-lg p-4 md:p-8 space-y-3 md:space-y-6">
+            <div className="bg-card rounded-md shadow-lg p-4 md:p-8 space-y-3 md:space-y-6">
               {/* Name */}
               <div>
                 <Label className="text-sm font-medium text-foreground mb-2">

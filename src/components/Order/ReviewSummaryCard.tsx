@@ -8,7 +8,7 @@ interface ReviewSummaryCardProps {
 
 export default function ReviewSummaryCard({ item }: ReviewSummaryCardProps) {
   return (
-    <div className="flex items-center gap-3 p-3 bg-background rounded-xl border border-border">
+    <div className="flex items-center gap-3 p-3 bg-background rounded-md border border-border">
       <img
         src={item.menuItem.image}
         alt={item.menuItem.name}
@@ -21,7 +21,6 @@ export default function ReviewSummaryCard({ item }: ReviewSummaryCardProps) {
       <p className="font-bold">
         ${(item.itemTotal * item.quantity).toFixed(2)}
       </p>
-      
     </div>
   );
 }

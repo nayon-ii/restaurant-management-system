@@ -49,7 +49,7 @@ export default function ItemCustomizationForm({
 }: ItemCustomizationFormProps) {
   return (
     <div className="space-y-3 border-b border-[#ABABAB]">
-      <div className="flex items-center gap-4 bg-background p-3 rounded-xl border border-border">
+      <div className="flex items-center gap-4 bg-background p-3 rounded-md border border-border">
         <img
           src={selectedItem.image}
           alt={selectedItem.name}
@@ -183,7 +183,7 @@ export default function ItemCustomizationForm({
 
       <Button
         onClick={onAddToCart}
-        className="w-full h-12 bg-primary hover:bg-primary/80 text-white rounded-xl text-base font-semibold mb-2"
+        className="w-full h-12 bg-primary hover:bg-primary/80 text-white rounded-md text-base font-semibold mb-2"
       >
         Add
       </Button>

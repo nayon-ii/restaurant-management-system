@@ -37,7 +37,7 @@ export default function ViewTableModal({
             <Label className="text-sm font-medium text-muted-foreground uppercase tracking-wide">
               Table Number
             </Label>
-            <div className="h-12 px-4 flex items-center bg-background border border-border rounded-xl text-sm text-foreground">
+            <div className="h-12 px-4 flex items-center bg-background border border-border rounded-md text-sm text-foreground">
               {table.tableNo}
             </div>
           </div>
@@ -47,7 +47,7 @@ export default function ViewTableModal({
               <Label className="text-sm font-medium text-muted-foreground uppercase tracking-wide">
                 Capacity
               </Label>
-              <div className="h-12 px-4 flex items-center bg-background border border-border rounded-xl text-sm text-foreground">
+              <div className="h-12 px-4 flex items-center bg-background border border-border rounded-md text-sm text-foreground">
                 {table.capacity} People
               </div>
             </div>
@@ -56,7 +56,7 @@ export default function ViewTableModal({
               <Label className="text-sm font-medium text-muted-foreground uppercase tracking-wide">
                 Location
               </Label>
-              <div className="h-12 px-4 flex items-center bg-background border border-border rounded-xl text-sm text-foreground">
+              <div className="h-12 px-4 flex items-center bg-background border border-border rounded-md text-sm text-foreground">
                 {table.location}
               </div>
             </div>
@@ -66,7 +66,7 @@ export default function ViewTableModal({
             <Label className="text-sm font-medium text-muted-foreground uppercase tracking-wide">
               Status
             </Label>
-            <div className="h-12 px-4 flex items-center bg-background border border-border rounded-xl text-sm">
+            <div className="h-12 px-4 flex items-center bg-background border border-border rounded-md text-sm">
               <span
                 className={`px-3 py-1 rounded-full text-xs font-medium ${
                   table.isActive

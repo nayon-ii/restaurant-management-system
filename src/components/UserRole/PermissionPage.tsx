@@ -1,9 +1,8 @@
-// PERMISSION PAGE - src/Pages/Dashboard/UserRole/PermissionPage.tsx
-// ============================================
 import { useState, useEffect, useMemo } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Switch } from "@/components/ui/switch";
 import { Checkbox } from "@/components/ui/checkbox";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import { toast } from "sonner";
@@ -28,8 +27,8 @@ export default function PermissionPage() {
         setRole(foundRole);
         setPermissions(
           foundRole.permissions.length > 0
-            ? foundRole.permissions
-            : mockPermissions
+            ? JSON.parse(JSON.stringify(foundRole.permissions))
+            : JSON.parse(JSON.stringify(mockPermissions))
         );
       } else {
         toast.error("Role not found");
@@ -53,23 +52,28 @@ export default function PermissionPage() {
     return groups;
   }, [permissions]);
 
-  const handlePermissionToggle = (permissionId: string) => {
+  const handleParentToggle = (parentId: string) => {
     setPermissions((prev) =>
       prev.map((p) =>
-        p.id === permissionId ? { ...p, isEnabled: !p.isEnabled } : p
+        p.id === parentId ? { ...p, isEnabled: !p.isEnabled } : p
       )
     );
   };
 
-  const handleCategoryToggle = (category: string, isEnabled: boolean) => {
+  const handleChildToggle = (parentId: string, childId: string) => {
     setPermissions((prev) =>
-      prev.map((p) => (p.category === category ? { ...p, isEnabled } : p))
+      prev.map((p) => {
+        if (p.id === parentId && p.children) {
+          return {
+            ...p,
+            children: p.children.map((c) =>
+              c.id === childId ? { ...c, isEnabled: !c.isEnabled } : c
+            ),
+          };
+        }
+        return p;
+      })
     );
-  };
-
-  const isCategoryEnabled = (category: string) => {
-    const categoryPerms = groupedPermissions[category];
-    return categoryPerms?.some((p) => p.isEnabled) || false;
   };
 
   const handleSave = async () => {
@@ -80,7 +84,7 @@ export default function PermissionPage() {
   if (isLoading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
-        <LoadingSpinner size="lg" />
+        <LoadingSpinner />
       </div>
     );
   }
@@ -91,7 +95,7 @@ export default function PermissionPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="bg-card border-b border-border p-4 md:p-6">
+      <div className="bg-card border-b border-border p-4 md:p-5.5">
         <div className="flex items-center gap-3">
           <Button
             variant="ghost"
@@ -111,45 +115,77 @@ export default function PermissionPage() {
             <table className="w-full">
               <thead>
                 <tr className="bg-primary text-primary-foreground">
-                  <th className="text-left p-4 font-semibold">Role</th>
-                  <th className="text-left p-4 font-semibold">Permission</th>
+                  <th className="text-left p-4 font-semibold w-1/4">Role</th>
+                  <th className="text-left p-4 font-semibold w-3/4">
+                    Permission
+                  </th>
                 </tr>
               </thead>
               <tbody>
                 <tr className="border-b border-border">
-                  <td className="p-4 align-top">
-                    <span className="font-medium text-foreground">
+                  <td className="p-6 align-top bg-background">
+                    <span className="font-medium text-foreground text-lg">
                       {role.name}
                     </span>
                   </td>
-                  <td className="p-4">
-                    <div className="space-y-6">
+                  <td className="p-6 bg-background">
+                    <div className="space-y-8">
                       {Object.entries(groupedPermissions).map(
                         ([category, perms]) => (
-                          <div key={category} className="space-y-3">
-                            <h3 className="text-primary font-semibold text-sm">
+                          <div key={category} className="space-y-4">
+                            <h3 className="text-primary font-semibold text-base">
                               {category}
                             </h3>
-                            <div className="space-y-2">
+                            <div className="space-y-4">
                               {perms.map((permission) => (
-                                <div
-                                  key={permission.id}
-                                  className="flex items-center gap-2"
-                                >
-                                  <Checkbox
-                                    id={permission.id}
-                                    checked={permission.isEnabled}
-                                    onCheckedChange={() =>
-                                      handlePermissionToggle(permission.id)
-                                    }
-                                    className="data-[state=checked]:bg-primary data-[state=checked]:border-primary"
-                                  />
-                                  <label
-                                    htmlFor={permission.id}
-                                    className="text-sm text-foreground cursor-pointer"
-                                  >
-                                    {permission.name}
-                                  </label>
+                                <div key={permission.id} className="space-y-2">
+                                  {/* Parent Permission with Switch */}
+                                  <div className="flex items-center gap-3">
+                                    <Switch
+                                      id={permission.id}
+                                      checked={permission.isEnabled}
+                                      onCheckedChange={() =>
+                                        handleParentToggle(permission.id)
+                                      }
+                                    />
+                                    <label
+                                      htmlFor={permission.id}
+                                      className="text-sm font-medium text-foreground cursor-pointer select-none"
+                                    >
+                                      {permission.name}
+                                    </label>
+                                  </div>
+
+                                  {/* Child Permissions with Checkboxes */}
+                                  {permission.children &&
+                                    permission.children.length > 0 && (
+                                      <div className="ml-12 space-y-2">
+                                        {permission.children.map((child) => (
+                                          <div
+                                            key={child.id}
+                                            className="flex items-center gap-2"
+                                          >
+                                            <Checkbox
+                                              id={child.id}
+                                              checked={child.isEnabled}
+                                              onCheckedChange={() =>
+                                                handleChildToggle(
+                                                  permission.id,
+                                                  child.id
+                                                )
+                                              }
+                                              className="data-[state=checked]:bg-primary data-[state=checked]:border-primary"
+                                            />
+                                            <label
+                                              htmlFor={child.id}
+                                              className="text-sm text-foreground cursor-pointer select-none"
+                                            >
+                                              {child.name}
+                                            </label>
+                                          </div>
+                                        ))}
+                                      </div>
+                                    )}
                                 </div>
                               ))}
                             </div>
@@ -163,13 +199,13 @@ export default function PermissionPage() {
             </table>
           </div>
 
-          <div className="p-6 border-t border-border">
-            <Button
+          <div className="p-6 border-t border-border w-full flex justify-end items-center bg-background">
+            <button
               onClick={handleSave}
-              className="w-full md:w-auto px-8 h-12 rounded-xl bg-primary hover:bg-primary/80"
+              className="w-full md:w-auto px-8 h-12 rounded-md bg-primary hover:bg-primary/80"
             >
               Save Permissions
-            </Button>
+            </button>
           </div>
         </div>
       </div>

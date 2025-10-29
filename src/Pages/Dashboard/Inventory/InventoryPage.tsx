@@ -1,4 +1,4 @@
-// src/Pages/Dashboard/Inventory
+// src/Pages/Dashboard/Inventory/InventoryPage.tsx
 import { useState, useMemo, useEffect } from "react";
 import DashboardHeader from "@/components/Dashboard/DashboardHeader";
 import StatCard from "@/components/Shared/StatCard";
@@ -20,6 +20,7 @@ import { mockInventoryItems } from "@/data/mockInventory";
 import type { InventoryItem } from "@/types/inventory";
 import { Switch } from "@/components/ui/switch";
 import { RoleGuard } from "@/components/RoleGuard";
+import { toast } from "sonner"; // <-- added
 
 interface InventoryPageProps {
   title?: string;
@@ -82,25 +83,35 @@ export default function InventoryPage({
     return { monthlySpend, todaySpend };
   }, []);
 
+  // Unified toggle – always open modal for confirmation (activate or deactivate)
   const handleStatusToggle = (item: InventoryItem) => {
-    if (item.isActive) {
-      setSelectedItem(item);
-      setIsDeactivateModalOpen(true);
-    } else {
-      setInventoryItems((prev) =>
-        prev.map((i) => (i.id === item.id ? { ...i, isActive: true } : i))
-      );
-    }
+    setSelectedItem(item);
+    setIsDeactivateModalOpen(true);
   };
 
-  const handleDeactivate = () => {
-    if (selectedItem) {
-      setInventoryItems((prev) =>
-        prev.map((i) =>
-          i.id === selectedItem.id ? { ...i, isActive: false } : i
-        )
-      );
+  const handleConfirmToggle = () => {
+    if (!selectedItem) return;
+
+    const willBeActive = !selectedItem.isActive;
+
+    setInventoryItems((prev) =>
+      prev.map((i) =>
+        i.id === selectedItem.id ? { ...i, isActive: willBeActive } : i
+      )
+    );
+
+    // Show correct toast based on final state
+    if (willBeActive) {
+      toast.success("Inventory item activated successfully", {
+        description: `${selectedItem.name} is now active`,
+      });
+    } else {
+      toast.warning("Inventory item deactivated", {
+        description: `${selectedItem.name} has been deactivated`,
+      });
     }
+
+    // Close modal
     setIsDeactivateModalOpen(false);
     setSelectedItem(null);
   };
@@ -265,7 +276,7 @@ export default function InventoryPage({
             <RoleGuard allowedRole="admin">
               <Button
                 onClick={handleCreate}
-                className="flex items-center justify-center gap-1 bg-primary hover:bg-primary/80 shadow-lg hover:shadow-xl rounded-xl px-3 py-2 text-white"
+                className="flex items-center justify-center gap-1 bg-primary hover:bg-primary/80 shadow-lg hover:shadow-xl rounded-md px-3 py-2 text-white"
               >
                 <Plus className="w-5 h-5" />
                 Create {title}
@@ -428,8 +439,13 @@ export default function InventoryPage({
           setIsDeactivateModalOpen(false);
           setSelectedItem(null);
         }}
-        onConfirm={handleDeactivate}
-        title={`Are you sure you want to deactivate this ${title.toLowerCase()}?`}
+        onConfirm={handleConfirmToggle}
+        title={
+          selectedItem?.isActive
+            ? `Are you sure you want to deactivate "${selectedItem.name}"?`
+            : `Are you sure you want to activate "${selectedItem?.name}"?`
+        }
+        buttonText={selectedItem?.isActive ? `Deactivate` : `Activate`}
       />
 
       <CreateInventoryModal

@@ -234,7 +234,7 @@ export default function CreateOrderPage() {
                   <Button
                     onClick={handleNext}
                     disabled={cart.length === 0}
-                    className="w-full h-12 bg-primary hover:bg-primary/80 text-white rounded-xl text-base font-semibold"
+                    className="w-full h-12 bg-primary hover:bg-primary/80 text-white rounded-md text-base font-semibold"
                   >
                     Next
                   </Button>
@@ -305,7 +305,7 @@ export default function CreateOrderPage() {
                       </div>
                     </div>
 
-                    <div className="bg-linear-to-br from-primary/5 to-primary/10 border border-primary/20 rounded-xl p-4">
+                    <div className="bg-linear-to-br from-primary/5 to-primary/10 border border-primary/20 rounded-md p-4">
                       <div className="flex items-center justify-between">
                         <span className="text-sm font-medium text-muted-foreground">
                           Total Amount
@@ -318,7 +318,7 @@ export default function CreateOrderPage() {
 
                     <Button
                       onClick={handleCreateOrder}
-                      className="w-full h-12 bg-primary hover:bg-primary/80 text-white rounded-xl text-base font-semibold shadow-lg shadow-primary/25 transition-all hover:shadow-xl hover:shadow-primary/30"
+                      className="w-full h-12 bg-primary hover:bg-primary/80 text-white rounded-md text-base font-semibold shadow-lg shadow-primary/25 transition-all hover:shadow-xl hover:shadow-primary/30"
                     >
                       Create Order
                     </Button>

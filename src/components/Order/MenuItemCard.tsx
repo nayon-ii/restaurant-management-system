@@ -11,7 +11,7 @@ interface MenuItemCardProps {
 export default function MenuItemCard({ item, onSelect }: MenuItemCardProps) {
   return (
     <div
-      className="bg-background rounded-xl border border-border p-3 cursor-pointer hover:shadow-lg hover:border-primary transition-all"
+      className="bg-background rounded-md border border-border p-3 cursor-pointer hover:shadow-lg hover:border-primary transition-all"
       onClick={() => onSelect(item)}
     >
       <div className="relative">

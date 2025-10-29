@@ -146,7 +146,7 @@ export default function SignIn() {
                     >
                       <SelectTrigger
                         id="role"
-                        className="w-full h-12! bg-card border-input rounded-xl"
+                        className="w-full h-12! bg-card border-input rounded-md"
                       >
                         <SelectValue placeholder="Select your role" />
                       </SelectTrigger>
@@ -266,7 +266,7 @@ export default function SignIn() {
               {/* Submit Button */}
               <Button
                 type="submit"
-                className="w-full h-12 bg-primary hover:bg-primary/80 text-primary-foreground font-semibold rounded-xl mt-6"
+                className="w-full h-12 bg-primary hover:bg-primary/80 text-primary-foreground font-semibold rounded-md mt-6"
                 disabled={isLoading}
               >
                 {isLoading ? (

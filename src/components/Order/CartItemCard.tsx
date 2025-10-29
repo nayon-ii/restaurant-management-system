@@ -10,7 +10,7 @@ interface CartItemCardProps {
 
 export default function CartItemCard({ item, onRemove }: CartItemCardProps) {
   return (
-    <div className="flex items-start gap-3 p-3 bg-background rounded-xl border border-border">
+    <div className="flex items-start gap-3 p-3 bg-background rounded-md border border-border">
       <img
         src={item.menuItem.image}
         alt={item.menuItem.name}

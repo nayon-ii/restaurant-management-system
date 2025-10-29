@@ -129,7 +129,7 @@ export default function EditCategoryModal({
                 type="button"
                 variant="outline"
                 onClick={() => imageInputRef.current?.click()}
-                className="gap-3 w-40 h-10 rounded-xl font-semibold"
+                className="gap-3 w-40 h-10 rounded-md font-semibold"
               >
                 <ImageUp className="w-4 h-4" />
                 Change Image
@@ -172,14 +172,14 @@ export default function EditCategoryModal({
               type="button"
               variant="outline"
               onClick={onClose}
-              className="flex-1 h-12 rounded-xl"
+              className="flex-1 h-12 rounded-md"
               disabled={isSubmitting}
             >
               Cancel
             </Button>
             <Button
               type="submit"
-              className="flex-1 h-12 rounded-xl bg-primary hover:bg-primary/80"
+              className="flex-1 h-12 rounded-md bg-primary hover:bg-primary/80"
               disabled={isSubmitting}
             >
               {isSubmitting ? (

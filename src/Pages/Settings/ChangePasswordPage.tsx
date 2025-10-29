@@ -216,7 +216,7 @@ export default function ChangePasswordPage() {
             <Button
               type="submit"
               disabled={isLoading}
-              className="w-full h-12 bg-primary hover:bg-primary/80 text-primary-foreground font-semibold rounded-xl mt-6"
+              className="w-full h-12 bg-primary hover:bg-primary/80 text-primary-foreground font-semibold rounded-md mt-6"
             >
               {isLoading ? "Saving..." : "Save"}
             </Button>

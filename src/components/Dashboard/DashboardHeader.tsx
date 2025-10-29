@@ -57,7 +57,7 @@ export default function DashboardHeader({
 
   return (
     // <header
-    //   className="h-20 bg-card border-b border-border flex items-center justify-between px-5 mt-5 md:mt-10 mx-2 md:mx-8 rounded-xl"
+    //   className="h-20 bg-card border-b border-border flex items-center justify-between px-5 mt-5 md:mt-10 mx-2 md:mx-8 rounded-md"
     //   style={{
     //     boxShadow: "0px 8px 32px 0px #00000026",
     //   }}

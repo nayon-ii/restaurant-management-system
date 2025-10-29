@@ -65,7 +65,7 @@ export default function AddUserRoleModal({
 
           <Button
             type="submit"
-            className="w-full h-12 rounded-xl bg-primary hover:bg-primary/80"
+            className="w-full h-12 rounded-md bg-primary hover:bg-primary/80"
           >
             Create Role
           </Button>

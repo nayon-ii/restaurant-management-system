@@ -199,7 +199,7 @@ export default function UserManagementPage({
                 setActiveTab("all");
                 setCurrentPage(1);
               }}
-              className={`flex-1 py-2 rounded-xl font-semibold transition-all cursor-pointer ${
+              className={`flex-1 py-2 rounded-md font-semibold transition-all cursor-pointer ${
                 activeTab === "all"
                   ? "bg-primary text-white"
                   : "bg-card text-foreground hover:bg-primary/30"
@@ -212,7 +212,7 @@ export default function UserManagementPage({
                 setActiveTab("active");
                 setCurrentPage(1);
               }}
-              className={`flex-1 py-2 rounded-xl font-semibold transition-all cursor-pointer ${
+              className={`flex-1 py-2 rounded-md font-semibold transition-all cursor-pointer ${
                 activeTab === "active"
                   ? "bg-primary text-white"
                   : "bg-card text-foreground hover:bg-primary/30"
@@ -225,7 +225,7 @@ export default function UserManagementPage({
                 setActiveTab("deactivated");
                 setCurrentPage(1);
               }}
-              className={`flex-1 py-2 rounded-xl font-semibold transition-all cursor-pointer ${
+              className={`flex-1 py-2 rounded-md font-semibold transition-all cursor-pointer ${
                 activeTab === "deactivated"
                   ? "bg-primary text-white"
                   : "bg-card text-foreground hover:bg-primary/30"
@@ -280,7 +280,7 @@ export default function UserManagementPage({
         </div>
 
         {/* Table */}
-        <div className="overflow-x-auto scrollbar-thin mx-auto md:mx-5 border rounded-xl">
+        <div className="overflow-x-auto scrollbar-thin mx-auto md:mx-5 border rounded-md">
           <table className="w-full">
             <thead>
               <tr className="bg-primary text-white">

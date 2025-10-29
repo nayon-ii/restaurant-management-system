@@ -48,7 +48,7 @@ export default function ItemDetailModal({
 
         <div className="space-y-4">
           {/* Item Info */}
-          <div className="flex items-center gap-4 p-3 bg-card rounded-xl border border-border">
+          <div className="flex items-center gap-4 p-3 bg-card rounded-md border border-border">
             <div className="w-16 h-16 rounded-lg overflow-hidden shrink-0 bg-linear-to-br from-primary to-orange-600">
               <img
                 src={item.image}

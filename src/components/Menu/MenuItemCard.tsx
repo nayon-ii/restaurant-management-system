@@ -18,11 +18,11 @@ export default function MenuItemCard({
     <Card className="overflow-hidden hover:shadow-lg transition-shadow py-0">
       <CardContent className="p-4 flex flex-col h-full">
         {/* Image Container - Fixed Height */}
-        <div className="w-full h-64 mb-3 rounded-xl overflow-hidden">
+        <div className="w-full h-64 mb-3 rounded-md overflow-hidden">
           <img
             src={item.image}
             alt={item.name}
-            className="w-full h-full object-scale-down rounded-xl"
+            className="w-full h-full object-scale-down rounded-md"
             onError={(e) => {
               e.currentTarget.src = "https://via.placeholder.com/400";
             }}
@@ -48,7 +48,7 @@ export default function MenuItemCard({
           <div className="flex items-center gap-4 mt-auto">
             <Link to={`/dashboard/menu/${item.id}`} className="flex-1">
               <Button className="w-full gap-2 bg-primary hover:bg-primary/80 text-white rounded-md h-10">
-                <SquarePen  className="w-4 h-4" />
+                <SquarePen className="w-4 h-4" />
                 Edit
               </Button>
             </Link>

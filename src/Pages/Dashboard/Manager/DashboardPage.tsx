@@ -90,7 +90,7 @@ export default function DashboardPage() {
               {topItems.map((item, index) => (
                 <div
                   key={index}
-                  className="flex items-center gap-4 p-3 rounded-xl bg-card hover:bg-secondary transition-colors shadow-lg"
+                  className="flex items-center gap-4 p-3 rounded-md bg-card hover:bg-secondary transition-colors shadow-lg"
                 >
                   <div className="w-12 h-12 rounded-lg overflow-hidden  bg-linear-to-br from-primary to-orange-600">
                     <img

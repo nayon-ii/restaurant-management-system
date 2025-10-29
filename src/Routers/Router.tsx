@@ -38,6 +38,8 @@ import IngredientsPage from "@/Pages/Dashboard/Admin/Ingredients/IngredientsPage
 import UserPage from "@/Pages/Dashboard/Admin/User/UserPage";
 import UserRolesPage from "@/Pages/Dashboard/Admin/UserRole/UserRolesPage";
 import PermissionPage from "@/components/UserRole/PermissionPage";
+import PurchasePage from "@/Pages/Dashboard/Admin/Purchase/PurchasePage";
+import AddEditPurchasePage from "@/Pages/Dashboard/Admin/Purchase/AddEditPurchasePage";
 
 const router = createBrowserRouter([
   {
@@ -123,7 +125,15 @@ const router = createBrowserRouter([
       },
       {
         path: "purchase",
-        element: <div>Purchase Page</div>,
+        element: <PurchasePage />,
+      },
+      {
+        path: "purchase/add",
+        element: <AddEditPurchasePage />,
+      },
+      {
+        path: "purchase/:id",
+        element: <AddEditPurchasePage />,
       },
       {
         path: "expense-type",

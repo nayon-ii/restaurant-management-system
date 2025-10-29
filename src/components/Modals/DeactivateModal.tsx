@@ -29,13 +29,13 @@ export default function DeactivateModal({
             <Button
               variant="outline"
               onClick={onClose}
-              className="flex-1 h-12 rounded-xl"
+              className="flex-1 h-12 rounded-md"
             >
               Cancel
             </Button>
             <Button
               onClick={onConfirm}
-              className="flex-1 h-12 rounded-xl bg-primary hover:bg-primary/80"
+              className="flex-1 h-12 rounded-md bg-primary hover:bg-primary/80"
             >
               {buttonText}
             </Button>

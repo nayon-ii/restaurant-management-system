@@ -317,7 +317,7 @@ export default function MenuForm({
             type="button"
             variant="outline"
             onClick={() => imageInputRef.current?.click()}
-            className="gap-3 w-52 h-12 rounded-xl font-semibold"
+            className="gap-3 w-52 h-12 rounded-md font-semibold"
           >
             <ImageUp className="w-4 h-4" />
             Replace image
@@ -371,7 +371,7 @@ export default function MenuForm({
             type="button"
             variant="outline"
             onClick={() => airViewInputRef.current?.click()}
-            className="gap-3 w-52 h-12 rounded-xl font-semibold"
+            className="gap-3 w-52 h-12 rounded-md font-semibold"
           >
             <ImageUp className="w-4 h-4" />
             Replace 3D Air View

@@ -233,7 +233,7 @@ export default function OrdersPage({
             <RoleGuard allowedRole="manager">
               <Link
                 to={`${basePath}/create`}
-                className="flex items-center justify-center gap-1 bg-primary hover:bg-primary/80 shadow-lg hover:shadow-xl rounded-xl px-3 py-2 text-white"
+                className="flex items-center justify-center gap-1 bg-primary hover:bg-primary/80 shadow-lg hover:shadow-xl rounded-md px-3 py-2 text-white"
               >
                 <Plus className="w-5 h-5" />
                 Create Order
