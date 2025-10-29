@@ -8,6 +8,7 @@ import { TableSkeleton } from "@/components/Skeleton/TableSkeleton";
 import AddUserRoleModal from "@/components/UserRole/AddUserRoleModal";
 import { mockUserRoles } from "@/data/mockUserRoles";
 import type { UserRole } from "@/types/userRole";
+import { RoleGuard } from "@/components/RoleGuard";
 
 export default function UserRolesPage() {
   const navigate = useNavigate();
@@ -174,13 +175,15 @@ export default function UserRolesPage() {
         <div className="bg-card rounded-2xl border border-border shadow-[0px_8px_32px_0px_#00000026] pb-5">
           <div className="p-5 border-b border-border flex justify-between items-center">
             <h2 className="text-2xl font-semibold text-foreground">User</h2>
-            <Button
-              onClick={handleAdd}
-              className="flex items-center justify-center gap-1 bg-primary hover:bg-primary/80 shadow-lg hover:shadow-xl rounded-xl px-4 py-2.5 text-white transition-all"
-            >
-              <Plus className="w-5 h-5" />
-              Add User Role
-            </Button>
+            <RoleGuard allowedRole="admin">
+              <Button
+                onClick={handleAdd}
+                className="flex items-center justify-center gap-1 bg-primary hover:bg-primary/80 shadow-lg hover:shadow-xl rounded-xl px-4 py-2.5 text-white transition-all"
+              >
+                <Plus className="w-5 h-5" />
+                Add User Role
+              </Button>
+            </RoleGuard>
           </div>
 
           <div className="p-5 flex items-center gap-4">

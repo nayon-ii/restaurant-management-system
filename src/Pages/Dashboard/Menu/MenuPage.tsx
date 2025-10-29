@@ -1,5 +1,4 @@
-// src\Pages\Dashboard\Menu\MenuPage.tsx
-
+// src/Pages/Dashboard/Menu/MenuPage.tsx
 import { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
 import DashboardHeader from "@/components/Dashboard/DashboardHeader";
@@ -17,10 +16,12 @@ import MenuItemCard from "@/components/Menu/MenuItemCard";
 import DeactivateModal from "@/components/Modals/DeactivateModal";
 import { mockMenuItems, mockCategories } from "@/data/mockMenu";
 import type { MenuItem } from "@/types/menu";
+import { toast } from "sonner";
 
 import menuIcon from "@/assets/icons/deliver.svg";
 import categoryIcon from "@/assets/icons/deliver.svg";
 import subCategoryIcon from "@/assets/icons/deliver.svg";
+import { RoleGuard } from "@/components/RoleGuard";
 
 export default function MenuPage() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -68,25 +69,35 @@ export default function MenuPage() {
     return category?.subCategories || [];
   }, [categoryFilter]);
 
+  // Unified toggle: always open modal for confirmation (activate or deactivate)
   const handleStatusToggle = (item: MenuItem) => {
-    if (item.isActive) {
-      setSelectedItem(item);
-      setIsDeactivateModalOpen(true);
-    } else {
-      setMenuItems((prev) =>
-        prev.map((i) => (i.id === item.id ? { ...i, isActive: true } : i))
-      );
-    }
+    setSelectedItem(item);
+    setIsDeactivateModalOpen(true);
   };
 
-  const handleDeactivate = () => {
-    if (selectedItem) {
-      setMenuItems((prev) =>
-        prev.map((i) =>
-          i.id === selectedItem.id ? { ...i, isActive: false } : i
-        )
-      );
+  const handleConfirmToggle = () => {
+    if (!selectedItem) return;
+
+    const willBeActive = !selectedItem.isActive;
+
+    setMenuItems((prev) =>
+      prev.map((i) =>
+        i.id === selectedItem.id ? { ...i, isActive: willBeActive } : i
+      )
+    );
+
+    // Show correct toast based on final state
+    if (willBeActive) {
+      toast.success("Menu item activated successfully", {
+        description: `${selectedItem.name} is now active`,
+      });
+    } else {
+      toast.warning("Menu item deactivated", {
+        description: `${selectedItem.name} has been deactivated`,
+      });
     }
+
+    // Close modal
     setIsDeactivateModalOpen(false);
     setSelectedItem(null);
   };
@@ -120,13 +131,15 @@ export default function MenuPage() {
           {/* Header */}
           <div className="flex justify-between items-center">
             <h2 className="text-2xl font-semibold text-foreground">Menu</h2>
-            <Link
-              to="/dashboard/menu/add"
-              className="flex items-center justify-center gap-1 bg-primary hover:bg-primary/80 shadow-lg hover:shadow-xl rounded-xl px-4 py-2.5 text-white transition-all"
-            >
-              <Plus className="w-5 h-5" />
-              Add Menu
-            </Link>
+            <RoleGuard allowedRole="admin">
+              <Link
+                to="/dashboard/menu/add"
+                className="flex items-center justify-center gap-1 bg-primary hover:bg-primary/80 shadow-lg hover:shadow-xl rounded-xl px-4 py-2.5 text-white transition-all"
+              >
+                <Plus className="w-5 h-5" />
+                Add Menu
+              </Link>
+            </RoleGuard>
           </div>
 
           {/* Filters */}
@@ -208,11 +221,20 @@ export default function MenuPage() {
         </div>
       </main>
 
+      {/* Reusable Activate/Deactivate Modal */}
       <DeactivateModal
         isOpen={isDeactivateModalOpen}
-        onClose={() => setIsDeactivateModalOpen(false)}
-        onConfirm={handleDeactivate}
-        title="Are you sure you want to deactivate this Menu Item?"
+        onClose={() => {
+          setIsDeactivateModalOpen(false);
+          setSelectedItem(null);
+        }}
+        onConfirm={handleConfirmToggle}
+        title={
+          selectedItem?.isActive
+            ? `Are you sure you want to deactivate "${selectedItem.name}"?`
+            : `Are you sure you want to activate "${selectedItem?.name}"?`
+        }
+        buttonText={selectedItem?.isActive ? `Deactivate` : `Activate`}
       />
     </>
   );
