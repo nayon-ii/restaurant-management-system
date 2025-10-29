@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import DashboardHeader from "@/components/Dashboard/DashboardHeader";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Search, SlidersHorizontal, Plus, Eye, Pencil } from "lucide-react";
+import { Search, SlidersHorizontal, Plus, Eye, SquarePen } from "lucide-react";
 import { TableSkeleton } from "@/components/Skeleton/TableSkeleton";
 import ViewPurchaseModal from "@/components/Purchase/ViewPurchaseModal";
 import { mockPurchases, mockPurchaseStats } from "@/data/mockPurchases";
@@ -16,13 +16,14 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { RoleGuard } from "@/components/RoleGuard";
 
 export default function PurchasePage() {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
-  const [purchases, ] = useState<Purchase[]>(mockPurchases);
+  const [purchases] = useState<Purchase[]>(mockPurchases);
   const [selectedPurchase, setSelectedPurchase] = useState<Purchase | null>(
     null
   );
@@ -192,13 +193,15 @@ export default function PurchasePage() {
             <h2 className="text-2xl font-semibold text-foreground">
               Recent Purchase
             </h2>
-            <Button
-              onClick={handleAdd}
-              className="flex items-center justify-center gap-1 bg-primary hover:bg-primary/80 shadow-lg hover:shadow-xl rounded-md px-4 py-2.5 text-white transition-all"
-            >
-              <Plus className="w-5 h-5" />
-              Add Purchase
-            </Button>
+            <RoleGuard allowedRole="admin">
+              <Button
+                onClick={handleAdd}
+                className="flex items-center justify-center gap-1 bg-primary hover:bg-primary/80 shadow-lg hover:shadow-xl rounded-md px-4 py-2.5 text-white transition-all"
+              >
+                <Plus className="w-5 h-5" />
+                Add Purchase
+              </Button>
+            </RoleGuard>
           </div>
 
           <div className="p-5 flex items-center gap-4">
@@ -278,26 +281,26 @@ export default function PurchasePage() {
                         index % 2 === 0 ? "bg-background" : "bg-card"
                       } hover:bg-accent/50 transition-colors`}
                     >
-                      <td className="p-4 text-sm text-foreground">
+                      <td className="p-2 text-sm text-foreground">
                         {purchase.invoiceNo}
                       </td>
-                      <td className="p-4 text-sm text-foreground">
+                      <td className="p-2 text-sm text-foreground">
                         {purchase.items[0]?.name || "N/A"}
                       </td>
-                      <td className="p-4 text-sm text-foreground">
+                      <td className="p-2 text-sm text-foreground">
                         {purchase.items[0]?.quantity}
                         {purchase.items[0]?.unit}
                       </td>
-                      <td className="p-4 text-sm text-foreground">
+                      <td className="p-2 text-sm text-foreground">
                         ${purchase.totalPrice}
                       </td>
-                      <td className="p-4 text-sm text-foreground">
+                      <td className="p-2 text-sm text-foreground">
                         {purchase.purchaseDate}
                       </td>
-                      <td className="p-4 text-sm text-foreground">
+                      <td className="p-2 text-sm text-foreground">
                         {purchase.supplier}
                       </td>
-                      <td className="p-4">
+                      <td className="p-2">
                         <div className="flex items-center justify-center gap-2">
                           <Button
                             variant="ghost"
@@ -313,7 +316,7 @@ export default function PurchasePage() {
                             className="hover:bg-accent"
                             onClick={() => handleEdit(purchase.id)}
                           >
-                            <Pencil className="h-5 w-5 text-foreground" />
+                            <SquarePen className="h-5 w-5 text-primary" />
                           </Button>
                         </div>
                       </td>

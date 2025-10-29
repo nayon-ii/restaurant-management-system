@@ -1,13 +1,13 @@
 import { cn } from "@/lib/utils";
 
 interface LoadingSpinnerProps {
-  size?: "sm" | "md" | "lg" | "xl";
+  size?: "sm" | "md" | "lg" | "xl" | "2xl";
   variant?: "spinner" | "dots" | "pulse" | "ring";
   className?: string;
 }
 
 export function LoadingSpinner({
-  size = "md",
+  size = "xl",
   variant = "ring",
   className,
 }: LoadingSpinnerProps) {
@@ -16,6 +16,7 @@ export function LoadingSpinner({
     md: "h-6 w-6",
     lg: "h-8 w-8",
     xl: "h-12 w-12",
+    "2xl": "h-16 w-16",
   };
 
   // Modern Spinner (default)
@@ -35,6 +36,7 @@ export function LoadingSpinner({
       md: "h-2 w-2",
       lg: "h-3 w-3",
       xl: "h-4 w-4",
+      "2xl": "h-5 w-5",
     };
 
     return (

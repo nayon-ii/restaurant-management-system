@@ -20,6 +20,7 @@ import {
   mockSupplierOptions,
 } from "@/data/mockPurchases";
 import type { PurchaseItem } from "@/types/purchase";
+import { RoleGuard } from "@/components/RoleGuard";
 
 export default function AddEditPurchasePage() {
   const navigate = useNavigate();
@@ -422,19 +423,21 @@ export default function AddEditPurchasePage() {
   return (
     <div className="min-h-screen bg-background">
       <div className="bg-card border-b border-border p-4 md:p-5.5">
-        <div className="flex items-center gap-3">
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => navigate("/dashboard/purchase")}
-            className="hover:bg-accent"
-          >
-            <ArrowLeft className="h-5 w-5" />
-          </Button>
-          <h1 className="text-2xl font-bold text-foreground">
-            {isEdit ? "Edit Purchase" : "Add Purchase"}
-          </h1>
-        </div>
+        <RoleGuard allowedRole="admin">
+          <div className="flex items-center gap-3">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => navigate("/dashboard/purchase")}
+              className="hover:bg-accent"
+            >
+              <ArrowLeft className="h-5 w-5" />
+            </Button>
+            <h1 className="text-2xl font-bold text-foreground">
+              {isEdit ? "Edit Purchase" : "Add Purchase"}
+            </h1>
+          </div>
+        </RoleGuard>
       </div>
 
       <div className="p-4 md:p-8">
@@ -589,7 +592,7 @@ export default function AddEditPurchasePage() {
                             onClick={() => handleRemoveItem(item.id)}
                             className="hover:bg-red-50 hover:text-red-600"
                           >
-                            <Trash2 className="h-5 w-5" />
+                            <Trash2 className="h-5 w-5 text-red-400" />
                           </Button>
                         </td>
                       </tr>
