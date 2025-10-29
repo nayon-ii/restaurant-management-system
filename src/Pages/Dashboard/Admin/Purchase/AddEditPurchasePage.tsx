@@ -579,13 +579,13 @@ export default function AddEditPurchasePage() {
                           index % 2 === 0 ? "bg-background" : "bg-card"
                         }`}
                       >
-                        <td className="p-4">{item.name}</td>
-                        <td className="p-4 text-center">
+                        <td className="p-2">{item.name}</td>
+                        <td className="p-2 text-center">
                           {item.quantity} {item.unit}
                         </td>
-                        <td className="p-4 text-center">${item.unitPrice}</td>
-                        <td className="p-4 text-center">${item.totalPrice}</td>
-                        <td className="p-4 text-center">
+                        <td className="p-2 text-center">${item.unitPrice}</td>
+                        <td className="p-2 text-center">${item.totalPrice}</td>
+                        <td className="p-2 text-center">
                           <Button
                             variant="ghost"
                             size="icon"
