@@ -35,7 +35,7 @@ export default function MenuItemCard({
           <div className="flex items-start justify-between mb-2">
             <h3 className="font-bold text-lg">{item.name}</h3>
             <span className="font-bold text-lg whitespace-nowrap ml-2">
-              ${item.sizes[0]?.offerPrice.toFixed(2) || "0.00"}
+              ${item.sizes?.[0]?.offerPrice.toFixed(2) || "0.00"}
             </span>
           </div>
 

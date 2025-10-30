@@ -7,7 +7,7 @@ import { Search, Plus, SquarePen, SlidersHorizontal } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { TableSkeleton } from "@/components/Skeleton/TableSkeleton";
 import DeactivateModal from "@/components/Modals/DeactivateModal";
-import { Pagination } from "@/components/ui/pagination";
+import { Pagination } from "@/components/ui/Pagination";
 import {
   Select,
   SelectContent,

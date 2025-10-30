@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/select";
 import { toast } from "sonner";
 import { RoleGuard } from "@/components/RoleGuard";
-import { Pagination } from "@/components/ui/pagination";
+import { Pagination } from "@/components/ui/Pagination";
 
 export default function TablePage() {
   const [searchQuery, setSearchQuery] = useState("");

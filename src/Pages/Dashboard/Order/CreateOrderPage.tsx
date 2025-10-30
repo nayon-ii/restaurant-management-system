@@ -54,7 +54,7 @@ export default function CreateOrderPage() {
   const handleSelectItem = (item: MenuItem) => {
     setSelectedItem(item);
     setQuantity(1);
-    setSize(item.sizes[0]?.name || "");
+    setSize(item?.sizes[0]?.name || "");
     setSelectedExtras([]);
     setNote("");
   };

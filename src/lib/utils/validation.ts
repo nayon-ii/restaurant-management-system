@@ -77,9 +77,9 @@ export function validateEmail(email: string): boolean {
   return signInSchema.shape.email.safeParse(email).success;
 }
 
-export function validatePassword(password: string): boolean {
-  return signUpSchema.shape.password.safeParse(password).success;
-}
+// export function validatePassword(password: string): boolean {
+//   return signUpSchema.shape.password.safeParse(password).success;
+// }
 
 export const forgotPasswordSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
