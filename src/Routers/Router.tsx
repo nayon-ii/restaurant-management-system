@@ -43,6 +43,10 @@ import AddEditPurchasePage from "@/Pages/Dashboard/Admin/Purchase/AddEditPurchas
 import ExpensesPage from "@/Pages/Dashboard/Admin/Expense/ExpensesPage";
 import AddEditExpensePage from "@/Pages/Dashboard/Admin/Expense/AddEditExpensePage";
 import ExpenseTypePage from "@/Pages/Dashboard/Admin/Expense/ExpenseTypePage";
+import OverallExpenseReportPage from "@/Pages/Dashboard/Admin/Reports/OverallExpenseReportPage";
+import OverallSalesReportPage from "@/Pages/Dashboard/Admin/Reports/OverallSalesReportPage";
+import PurchaseReportPage from "@/Pages/Dashboard/Admin/Reports/PurchaseReportPage";
+import TopSellingItemsPage from "@/Pages/Dashboard/Admin/Reports/TopSellingItemsPage";
 
 const router = createBrowserRouter([
   {
@@ -152,19 +156,19 @@ const router = createBrowserRouter([
       },
       {
         path: "reports/overall-sales",
-        element: <div>Overall Sales Report</div>,
+        element: <OverallSalesReportPage />,
       },
       {
         path: "reports/overall-expense",
-        element: <div>Overall Expense Report</div>,
+        element: <OverallExpenseReportPage />,
       },
       {
         path: "reports/most-sold-item",
-        element: <div>Most Sold Item Report</div>,
+        element: <TopSellingItemsPage />,
       },
       {
         path: "reports/purchase-report",
-        element: <div>Purchase Report</div>,
+        element: <PurchaseReportPage />,
       },
       // Manager Routes
       {

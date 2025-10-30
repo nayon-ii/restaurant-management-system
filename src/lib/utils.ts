@@ -22,6 +22,16 @@ export const getStatusColor = (status: string) => {
   }
 };
 
+
+export const formatDate = (dateString: string): string => {
+  const date = new Date(dateString);
+  return new Intl.DateTimeFormat("en-US", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  }).format(date);
+};
+
 // Get today's date in YYYY-MM-DD format for min attribute
 export const getTodayDate = () => {
   const today = new Date();

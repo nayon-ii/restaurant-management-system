@@ -1,6 +1,4 @@
-// ============================================
-// TYPES - src/types/menu.ts
-// ============================================
+// src/types/menu.ts
 export interface MenuItem {
   id: string;
   name: string;
@@ -10,9 +8,10 @@ export interface MenuItem {
   image: string;
   airViewImage?: string;
   cookingTime: string;
-  ingredients: Ingredient[];
+  ingredients?: Ingredient[];
   extraIngredients: ExtraIngredient[];
-  sizes: MenuSize[];
+  sizes?: MenuSize[];
+  variants?: MenuVariant[];
   isActive: boolean;
   createdAt: string;
   updatedAt: string;
@@ -36,6 +35,15 @@ export interface MenuSize {
   size: string;
   regularPrice: number;
   offerPrice: number;
+}
+
+export interface MenuVariant {
+  id: string;
+  name: string;
+  cost: number;
+  price: number;
+  discount: number;
+  ingredients: Ingredient[];
 }
 
 export interface Category {
