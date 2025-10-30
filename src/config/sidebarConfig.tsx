@@ -13,7 +13,6 @@ import {
   Soup,
   UserCog,
   UserCircle,
-  ShoppingCart,
   FileText,
   TrendingUp,
   CreditCard,
@@ -132,13 +131,6 @@ export const sidebarConfig: Record<string, SidebarSection[]> = {
     {
       title: "Purchases",
       items: [
-        {
-          id: "purchase-type",
-          label: "Purchase Type",
-          icon: <ShoppingCart className="h-5 w-5" />,
-          path: "/dashboard/purchase-type",
-          roles: ["admin"],
-        },
         {
           id: "purchase",
           label: "Purchase",

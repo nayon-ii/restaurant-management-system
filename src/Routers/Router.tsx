@@ -123,10 +123,6 @@ const router = createBrowserRouter([
         element: <div>Supplier Page</div>,
       },
       {
-        path: "purchase-type",
-        element: <div>Purchase Type Page</div>,
-      },
-      {
         path: "purchase",
         element: <PurchasePage />,
       },

@@ -33,19 +33,80 @@ const signInSchema = z.object({
 
 type SignInFormData = z.infer<typeof signInSchema>;
 
+// Development mode credentials mapping
+const DEV_CREDENTIALS: Record<string, { email: string; password: string }> = {
+  admin: {
+    email: "admin@example.com",
+    password: "admin123",
+  },
+  manager: {
+    email: "manager@example.com",
+    password: "manager123",
+  },
+  chef: {
+    email: "chef@example.com",
+    password: "chef123",
+  },
+  cashier: {
+    email: "cashier@example.com",
+    password: "cashier123",
+  },
+};
+
 export default function SignIn() {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const { login, isLoading, clearError } = useAuth();
+
+  // Check if we're in development mode
+  const isDevelopment = import.meta.env.VITE_APP_ENV === "development";
 
   const {
     register,
     handleSubmit,
     control,
     formState: { errors },
+    setValue,
   } = useForm<SignInFormData>({
     resolver: zodResolver(signInSchema),
+    defaultValues: {
+      role: "",
+      email: "",
+      password: "",
+      rememberMe: false,
+    },
   });
+
+  // Handler for role change
+  const handleRoleChange = (role: string) => {
+    console.log("Role changed to:", role);
+
+    if (isDevelopment && role && DEV_CREDENTIALS[role]) {
+      const credentials = DEV_CREDENTIALS[role];
+      console.log("Auto-filling credentials:", credentials);
+
+      // Set email and password with validation trigger
+      setValue("email", credentials.email, {
+        shouldValidate: true,
+        shouldDirty: true,
+        shouldTouch: true,
+      });
+
+      setValue("password", credentials.password, {
+        shouldValidate: true,
+        shouldDirty: true,
+        shouldTouch: true,
+      });
+
+      // Show a toast notification in dev mode
+      toast.info("🔧 Dev Mode: Credentials Auto-filled", {
+        description: `Email: ${credentials.email}\nPassword: ${credentials.password}`,
+        duration: 3000,
+      });
+    }
+
+    return role;
+  };
 
   const onSubmit = async (data: SignInFormData) => {
     // Clear any previous errors
@@ -89,7 +150,7 @@ export default function SignIn() {
           "Invalid email or password. Please try again.",
         action: {
           label: "Retry",
-          onClick: () => handleSubmit(onSubmit),
+          onClick: () => handleSubmit(onSubmit)(),
         },
       });
     }
@@ -123,6 +184,16 @@ export default function SignIn() {
               <p className="text-sm text-muted-foreground">
                 Sign in to your account
               </p>
+              {isDevelopment && (
+                <div className="bg-amber-500/10 border border-amber-500/20 rounded-lg p-3 mt-3">
+                  <p className="text-xs text-amber-600 dark:text-amber-400 font-medium">
+                    🔧 Development Mode Active
+                  </p>
+                  <p className="text-xs text-amber-600/80 dark:text-amber-400/80 mt-1">
+                    Select a role to auto-fill credentials
+                  </p>
+                </div>
+              )}
             </div>
 
             {/* Form */}
@@ -141,8 +212,11 @@ export default function SignIn() {
                   defaultValue=""
                   render={({ field }) => (
                     <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
+                      onValueChange={(value) => {
+                        field.onChange(value);
+                        handleRoleChange(value);
+                      }}
+                      value={field.value}
                     >
                       <SelectTrigger
                         id="role"

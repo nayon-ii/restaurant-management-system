@@ -11,7 +11,7 @@ export interface Expense {
   totalAmount: number;
   paidAmount: number;
   dueAmount: number;
-  supplier: string;
+  supplier?: string;
   date: string;
   invoiceNo?: string;
   createdAt: string;

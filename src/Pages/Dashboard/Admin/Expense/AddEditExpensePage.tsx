@@ -1,7 +1,7 @@
 // src/Pages/Dashboard/Expense/AddEditExpensePage.tsx
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { ArrowLeft, Printer } from "lucide-react";
+import { ArrowLeft, Printer, Check, ChevronsUpDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -12,8 +12,22 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import { toast } from "sonner";
+import { cn } from "@/lib/utils";
 import {
   mockExpenses,
   mockExpenseTypes,
@@ -27,6 +41,7 @@ export default function AddEditExpensePage() {
 
   const [isLoading, setIsLoading] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [open, setOpen] = useState(false);
 
   // Form state
   const [expenseType, setExpenseType] = useState("");
@@ -62,7 +77,6 @@ export default function AddEditExpensePage() {
           setUnitPrice(expense.unitPrice.toString());
           setTotalDiscount(expense.totalDiscount.toString());
           setPaidAmount(expense.paidAmount.toString());
-          setSupplier(expense.supplier);
           setDate(expense.createdAt);
         } else {
           toast.error("Expense not found");
@@ -102,7 +116,6 @@ export default function AddEditExpensePage() {
       newErrors.quantity = "Valid quantity is required";
     if (!unitPrice || parseFloat(unitPrice) <= 0)
       newErrors.unitPrice = "Valid unit price is required";
-    if (!supplier) newErrors.supplier = "Supplier is required";
     if (!date) newErrors.date = "Date is required";
 
     setErrors(newErrors);
@@ -517,29 +530,65 @@ export default function AddEditExpensePage() {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* Combobox Supplier Field */}
                 <div className="space-y-2">
                   <Label className="text-sm flex items-center gap-1">
-                    Supplier <span className="text-red-500">*</span>
+                    Supplier
                   </Label>
-                  <Select value={supplier} onValueChange={setSupplier}>
-                    <SelectTrigger
-                      className={`h-12! w-full ${
-                        errors.supplier ? "border-red-500" : ""
-                      }`}
-                    >
-                      <SelectValue placeholder="Supplier name" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {mockSupplierOptions.map((option) => (
-                        <SelectItem key={option} value={option}>
-                          {option}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  {errors.supplier && (
-                    <p className="text-sm text-red-500">{errors.supplier}</p>
-                  )}
+                  <Popover open={open} onOpenChange={setOpen}>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="outline"
+                        role="combobox"
+                        aria-expanded={open}
+                        className={cn(
+                          "w-full h-12 justify-between bg-card",
+                          !supplier && "text-muted-foreground"
+                        )}
+                      >
+                        {supplier || "Type or select supplier name"}
+                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-full p-0" align="start">
+                      <Command>
+                        <CommandInput
+                          placeholder="Search or type supplier..."
+                          value={supplier}
+                          onValueChange={setSupplier}
+                        />
+                        <CommandList>
+                          <CommandEmpty>
+                            <div className="p-2 text-sm text-muted-foreground">
+                              Press Enter to use "{supplier}"
+                            </div>
+                          </CommandEmpty>
+                          <CommandGroup>
+                            {mockSupplierOptions.map((option) => (
+                              <CommandItem
+                                key={option}
+                                value={option}
+                                onSelect={(currentValue) => {
+                                  setSupplier(currentValue);
+                                  setOpen(false);
+                                }}
+                              >
+                                <Check
+                                  className={cn(
+                                    "mr-2 h-4 w-4",
+                                    supplier === option
+                                      ? "opacity-100"
+                                      : "opacity-0"
+                                  )}
+                                />
+                                {option}
+                              </CommandItem>
+                            ))}
+                          </CommandGroup>
+                        </CommandList>
+                      </Command>
+                    </PopoverContent>
+                  </Popover>
                 </div>
 
                 <div className="space-y-2">
