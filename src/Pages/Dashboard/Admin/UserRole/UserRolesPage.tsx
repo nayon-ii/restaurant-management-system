@@ -117,7 +117,7 @@ export default function UserRolesPage() {
             </Button>
           </div>
 
-          <div className="overflow-x-auto scrollbar-thin mx-auto md:mx-5 border rounded-t-xl">
+          <div className="overflow-x-auto scrollbar-thin mx-auto md:mx-5 border rounded-md">
             <table className="w-full">
               <thead>
                 <tr className="bg-primary text-primary-foreground">

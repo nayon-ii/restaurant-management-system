@@ -42,6 +42,7 @@ import PurchasePage from "@/Pages/Dashboard/Admin/Purchase/PurchasePage";
 import AddEditPurchasePage from "@/Pages/Dashboard/Admin/Purchase/AddEditPurchasePage";
 import ExpensesPage from "@/Pages/Dashboard/Admin/Expense/ExpensesPage";
 import AddEditExpensePage from "@/Pages/Dashboard/Admin/Expense/AddEditExpensePage";
+import ExpenseTypePage from "@/Pages/Dashboard/Admin/Expense/ExpenseTypePage";
 
 const router = createBrowserRouter([
   {
@@ -139,7 +140,7 @@ const router = createBrowserRouter([
       },
       {
         path: "expense-type",
-        element: <div>Expense Type Page</div>,
+        element: <ExpenseTypePage />,
       },
       {
         path: "expenses",

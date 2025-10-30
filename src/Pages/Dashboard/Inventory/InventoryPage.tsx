@@ -20,7 +20,8 @@ import { mockInventoryItems } from "@/data/mockInventory";
 import type { InventoryItem } from "@/types/inventory";
 import { Switch } from "@/components/ui/switch";
 import { RoleGuard } from "@/components/RoleGuard";
-import { toast } from "sonner"; // <-- added
+import { toast } from "sonner";
+import { Pagination } from "@/components/ui/pagination";
 
 interface InventoryPageProps {
   title?: string;
@@ -75,7 +76,7 @@ export default function InventoryPage({
   const paginatedItems = useMemo(() => {
     const startIndex = (currentPage - 1) * itemsPerPage;
     return filteredItems.slice(startIndex, startIndex + itemsPerPage);
-  }, [filteredItems, currentPage]);
+  }, [filteredItems, currentPage, itemsPerPage]);
 
   const stats = useMemo(() => {
     const monthlySpend = 5326;
@@ -152,98 +153,6 @@ export default function InventoryPage({
       setIsLoading(true);
       setTimeout(() => setIsLoading(false), 500);
     }
-  };
-
-  const renderPageNumbers = () => {
-    const pages = [];
-    const maxVisiblePages = 5;
-
-    if (totalPages <= maxVisiblePages) {
-      for (let i = 1; i <= totalPages; i++) {
-        pages.push(
-          <Button
-            key={i}
-            onClick={() => handlePageChange(i)}
-            className={`w-10 h-10 rounded-md ${
-              currentPage === i
-                ? "bg-primary text-primary-foreground"
-                : "bg-transparent text-foreground hover:bg-accent"
-            }`}
-            variant={currentPage === i ? "default" : "ghost"}
-          >
-            {i}
-          </Button>
-        );
-      }
-    } else {
-      pages.push(
-        <Button
-          key={1}
-          onClick={() => handlePageChange(1)}
-          className={`w-10 h-10 rounded-md ${
-            currentPage === 1
-              ? "bg-primary text-primary-foreground"
-              : "bg-transparent text-foreground hover:bg-accent"
-          }`}
-          variant={currentPage === 1 ? "default" : "ghost"}
-        >
-          1
-        </Button>
-      );
-
-      if (currentPage > 3) {
-        pages.push(
-          <span key="ellipsis1" className="text-muted-foreground">
-            ...
-          </span>
-        );
-      }
-
-      const start = Math.max(2, currentPage - 1);
-      const end = Math.min(totalPages - 1, currentPage + 1);
-
-      for (let i = start; i <= end; i++) {
-        pages.push(
-          <Button
-            key={i}
-            onClick={() => handlePageChange(i)}
-            className={`w-10 h-10 rounded-md ${
-              currentPage === i
-                ? "bg-primary text-primary-foreground"
-                : "bg-transparent text-foreground hover:bg-accent"
-            }`}
-            variant={currentPage === i ? "default" : "ghost"}
-          >
-            {i}
-          </Button>
-        );
-      }
-
-      if (currentPage < totalPages - 2) {
-        pages.push(
-          <span key="ellipsis2" className="text-muted-foreground">
-            ...
-          </span>
-        );
-      }
-
-      pages.push(
-        <Button
-          key={totalPages}
-          onClick={() => handlePageChange(totalPages)}
-          className={`w-10 h-10 rounded-md ${
-            currentPage === totalPages
-              ? "bg-primary text-primary-foreground"
-              : "bg-transparent text-foreground hover:bg-accent"
-          }`}
-          variant={currentPage === totalPages ? "default" : "ghost"}
-        >
-          {totalPages}
-        </Button>
-      );
-    }
-
-    return pages;
   };
 
   return (
@@ -339,7 +248,7 @@ export default function InventoryPage({
           </div>
 
           {/* Table */}
-          <div className="overflow-x-auto scrollbar-thin mx-auto md:mx-5 border rounded-t-xl">
+          <div className="overflow-x-auto scrollbar-thin mx-auto md:mx-5 border rounded-md">
             <table className="w-full">
               <thead>
                 <tr className="bg-primary text-primary-foreground">
@@ -410,25 +319,14 @@ export default function InventoryPage({
 
         {/* Pagination */}
         {!isLoading && paginatedItems.length > 0 && (
-          <div className="flex items-center justify-between">
-            <Button
-              variant="outline"
-              className="rounded-md bg-card shadow-[0px_8px_32px_0px_#00000026]"
-              onClick={() => handlePageChange(currentPage - 1)}
-              disabled={currentPage === 1}
-            >
-              ← Previous
-            </Button>
-            <div className="flex items-center gap-2">{renderPageNumbers()}</div>
-            <Button
-              variant="outline"
-              className="rounded-md bg-card shadow-[0px_8px_32px_0px_#00000026]"
-              onClick={() => handlePageChange(currentPage + 1)}
-              disabled={currentPage === totalPages}
-            >
-              Next →
-            </Button>
-          </div>
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+            maxVisiblePages={5}
+            showPrevNext={true}
+            showIfSinglePage={false}
+          />
         )}
       </main>
 

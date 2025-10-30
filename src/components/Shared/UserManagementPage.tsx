@@ -13,6 +13,7 @@ import { toast } from "sonner";
 import { RoleGuard } from "../RoleGuard";
 import { mockUsersData } from "@/data/mockUsersData";
 import type { User } from "@/types/user";
+import { Pagination } from "@/components/ui/pagination";
 
 const roles = ["All", "Chef", "Cashier", "Waiter", "Cleaner"];
 
@@ -70,7 +71,7 @@ export default function UserManagementPage({
   const paginatedUsers = useMemo(() => {
     const startIndex = (currentPage - 1) * itemsPerPage;
     return filteredUsers.slice(startIndex, startIndex + itemsPerPage);
-  }, [filteredUsers, currentPage]);
+  }, [filteredUsers, currentPage, itemsPerPage]);
 
   const handleToggleActive = (user: User) => {
     setUserToToggle(user);
@@ -148,28 +149,10 @@ export default function UserManagementPage({
     setSelectedUser(null);
   };
 
-  const renderPageNumbers = () => {
-    const pages = [];
-    for (let i = 1; i <= Math.min(totalPages, 5); i++) {
-      pages.push(
-        <Button
-          key={i}
-          onClick={() => setCurrentPage(i)}
-          variant={currentPage === i ? "default" : "outline"}
-          className="w-10 h-10 p-0 rounded-sm shadow-xl"
-        >
-          {i}
-        </Button>
-      );
+  const handlePageChange = (page: number) => {
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
     }
-    if (totalPages > 5) {
-      pages.push(
-        <span key="ellipsis" className="px-2">
-          ...
-        </span>
-      );
-    }
-    return pages;
   };
 
   return (
@@ -348,7 +331,7 @@ export default function UserManagementPage({
                           className="p-2 hover:bg-gray-200 rounded-lg transition-colors"
                           title="Edit"
                         >
-                          <SquarePen className="w-4 h-4 text-gray-700" />
+                          <SquarePen className="w-4 h-4 text-primary" />
                         </button>
                         <Toggle
                           checked={user.isActive}
@@ -367,27 +350,14 @@ export default function UserManagementPage({
 
       {/* Pagination */}
       {!isLoading && paginatedUsers.length > 0 && (
-        <div className="p-6 flex items-center justify-between ">
-          <Button
-            variant="outline"
-            onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
-            disabled={currentPage === 1}
-            className="rounded-md bg-card shadow-[0px_8px_32px_0px_#00000026]"
-          >
-            ← Previous
-          </Button>
-          <div className="flex items-center gap-2">{renderPageNumbers()}</div>
-          <Button
-            variant="outline"
-            onClick={() =>
-              setCurrentPage(Math.min(totalPages, currentPage + 1))
-            }
-            disabled={currentPage === totalPages}
-            className="rounded-md bg-card shadow-[0px_8px_32px_0px_#00000026]"
-          >
-            Next →
-          </Button>
-        </div>
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+          maxVisiblePages={5}
+          showPrevNext={true}
+          showIfSinglePage={false}
+        />
       )}
 
       <AddUserModal

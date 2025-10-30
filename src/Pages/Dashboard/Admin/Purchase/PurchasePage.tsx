@@ -160,7 +160,7 @@ export default function PurchasePage() {
             </DropdownMenu>
           </div>
 
-          <div className="overflow-x-auto scrollbar-thin mx-auto md:mx-5 border rounded-t-xl">
+          <div className="overflow-x-auto scrollbar-thin mx-auto md:mx-5 border rounded-md">
             <table className="w-full">
               <thead>
                 <tr className="bg-primary text-primary-foreground">
@@ -269,9 +269,9 @@ export default function PurchasePage() {
                     ${stat.amount.toLocaleString()}
                   </span>
                 </div>
-                <div className="w-full bg-gray-200 rounded-full h-2">
+                <div className="w-full bg-gray-200 rounded-full h-3">
                   <div
-                    className="bg-blue-600 h-2 rounded-full transition-all"
+                    className="bg-blue-600 h-3 rounded-full transition-all"
                     style={{ width: `${stat.percentage}%` }}
                   />
                 </div>
