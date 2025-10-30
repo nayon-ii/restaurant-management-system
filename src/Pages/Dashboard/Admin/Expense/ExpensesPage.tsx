@@ -1,5 +1,3 @@
-// PURCHASE PAGE - src/Pages/Dashboard/Purchase/PurchasePage.tsx
-// ============================================
 import { useState, useMemo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import DashboardHeader from "@/components/Dashboard/DashboardHeader";
@@ -7,27 +5,24 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Search, SlidersHorizontal, Plus, Eye, SquarePen } from "lucide-react";
 import { TableSkeleton } from "@/components/Skeleton/TableSkeleton";
-import ViewPurchaseModal from "@/components/Purchase/ViewPurchaseModal";
-import { mockPurchases, mockPurchaseStats } from "@/data/mockPurchases";
-import type { Purchase } from "@/types/purchase";
+import ViewExpenseModal from "@/components/Expense/ViewExpenseModal";
+import { mockExpenses } from "@/data/mockExpenses";
+import type { Expense } from "@/types/expense";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { RoleGuard } from "@/components/RoleGuard";
 import { Pagination } from "@/components/ui/pagination";
 
-export default function PurchasePage() {
+export default function ExpensesPage() {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
-  const [purchases] = useState<Purchase[]>(mockPurchases);
-  const [selectedPurchase, setSelectedPurchase] = useState<Purchase | null>(
-    null
-  );
+  const [expenses] = useState<Expense[]>(mockExpenses);
+  const [selectedExpense, setSelectedExpense] = useState<Expense | null>(null);
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
   const [filterType, setFilterType] = useState<string>("all");
 
@@ -42,50 +37,44 @@ export default function PurchasePage() {
     loadData();
   }, []);
 
-  // Get unique ingredient names dynamically from purchase items
-  const uniqueIngredients = useMemo(() => {
-    const ingredients = purchases.flatMap((purchase) =>
-      purchase.items.map((item) => item.name)
-    );
-    return Array.from(new Set(ingredients)).sort();
-  }, [purchases]);
+  // Get unique expense types dynamically
+  const uniqueExpenseTypes = useMemo(() => {
+    const types = expenses.map((expense) => expense.expenseType);
+    return Array.from(new Set(types)).sort();
+  }, [expenses]);
 
-  const filteredPurchases = useMemo(() => {
-    return purchases.filter((purchase) => {
+  const filteredExpenses = useMemo(() => {
+    return expenses.filter((expense) => {
       const matchesSearch =
-        purchase.invoiceNo.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        purchase.supplier.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        purchase.items.some((item) =>
-          item.name.toLowerCase().includes(searchQuery.toLowerCase())
-        );
+        expense.expenseId.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        expense.expenseType.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        expense.name.toLowerCase().includes(searchQuery.toLowerCase());
 
       const matchesFilter =
         filterType === "all" ||
-        purchase.items.some(
-          (item) => item.name.toLowerCase() === filterType.toLowerCase()
-        );
+        expense.expenseType.toLowerCase() === filterType.toLowerCase();
 
       return matchesSearch && matchesFilter;
     });
-  }, [searchQuery, purchases, filterType]);
+  }, [searchQuery, expenses, filterType]);
 
-  const totalPages = Math.ceil(filteredPurchases.length / itemsPerPage);
-  const paginatedPurchases = useMemo(() => {
+  const totalPages = Math.ceil(filteredExpenses.length / itemsPerPage);
+  const paginatedExpenses = useMemo(() => {
     const startIndex = (currentPage - 1) * itemsPerPage;
-    return filteredPurchases.slice(startIndex, startIndex + itemsPerPage);
-  }, [filteredPurchases, currentPage, itemsPerPage]);
+    return filteredExpenses.slice(startIndex, startIndex + itemsPerPage);
+  }, [filteredExpenses, currentPage, itemsPerPage]);
 
-  const handleView = (purchase: Purchase) => {
-    setSelectedPurchase(purchase);
+  const handleView = (expense: Expense) => {
+    setSelectedExpense(expense);
     setIsViewModalOpen(true);
   };
 
-  const handleEdit = (purchaseId: string) => {
-    navigate(`/dashboard/purchase/${purchaseId}`);
+  const handleEdit = (expenseId: string) => {
+    navigate(`/dashboard/expenses/${expenseId}`);
   };
 
   const handleAdd = () => {
-    navigate("/dashboard/purchase/add");
+    navigate("/dashboard/expenses/add");
   };
 
   const handlePageChange = (page: number) => {
@@ -99,26 +88,23 @@ export default function PurchasePage() {
   return (
     <>
       <DashboardHeader
-        title="Purchase"
-        subtitle="Track and manage business Purchase"
+        title="Expenses"
+        subtitle="Create Your Restaurant Expense"
       />
 
       <main className="p-3 md:p-8 space-y-3 md:space-y-6">
-        {/* Recent Purchase Section */}
-        <div className="bg-card rounded-2xl border border-border shadow-[0px_8px_32px_0px_#00000026] pb-5">
+        <div className="bg-card rounded-2xl border border-border shadow-sm pb-5">
           <div className="p-5 border-b border-border flex justify-between items-center">
             <h2 className="text-2xl font-semibold text-foreground">
-              Recent Purchase
+              Recent Expenses
             </h2>
-            <RoleGuard allowedRole="admin">
-              <Button
-                onClick={handleAdd}
-                className="flex items-center justify-center gap-1 bg-primary hover:bg-primary/80 shadow-lg hover:shadow-xl rounded-md px-4 py-2.5 text-white transition-all"
-              >
-                <Plus className="w-5 h-5" />
-                Add Purchase
-              </Button>
-            </RoleGuard>
+            <Button
+              onClick={handleAdd}
+              className="flex items-center justify-center gap-1 bg-primary hover:bg-primary/80 shadow-lg hover:shadow-xl rounded-md px-4 py-2.5 text-white transition-all"
+            >
+              <Plus className="w-5 h-5" />
+              Add Expense
+            </Button>
           </div>
 
           <div className="p-5 flex items-center gap-4">
@@ -148,12 +134,12 @@ export default function PurchasePage() {
                 <DropdownMenuItem onClick={() => setFilterType("all")}>
                   All
                 </DropdownMenuItem>
-                {uniqueIngredients.map((ingredient) => (
+                {uniqueExpenseTypes.map((type) => (
                   <DropdownMenuItem
-                    key={ingredient}
-                    onClick={() => setFilterType(ingredient.toLowerCase())}
+                    key={type}
+                    onClick={() => setFilterType(type.toLowerCase())}
                   >
-                    {ingredient}
+                    {type}
                   </DropdownMenuItem>
                 ))}
               </DropdownMenuContent>
@@ -164,54 +150,41 @@ export default function PurchasePage() {
             <table className="w-full">
               <thead>
                 <tr className="bg-primary text-primary-foreground">
-                  <th className="text-center p-4 font-semibold">Invoice No</th>
-                  <th className="text-center p-4 font-semibold">Ingredient</th>
-                  <th className="text-center p-4 font-semibold">Quantity</th>
+                  <th className="text-center p-4 font-semibold">Expense ID</th>
+                  <th className="text-center p-4 font-semibold">Type</th>
                   <th className="text-center p-4 font-semibold">Price</th>
-                  <th className="text-center p-4 font-semibold">
-                    Purchase date
-                  </th>
-                  <th className="text-center p-4 font-semibold">Supplier</th>
+                  <th className="text-center p-4 font-semibold">Date</th>
                   <th className="text-center p-4 font-semibold">Action</th>
                 </tr>
               </thead>
               <tbody>
                 {isLoading ? (
-                  <TableSkeleton columns={7} />
-                ) : paginatedPurchases.length === 0 ? (
+                  <TableSkeleton columns={5} />
+                ) : paginatedExpenses.length === 0 ? (
                   <tr>
-                    <td colSpan={7} className="p-2 md:p-5 text-center">
-                      <p className="text-muted-foreground">
-                        No purchases found
-                      </p>
+                    <td colSpan={5} className="p-2 md:p-5 text-center">
+                      <p className="text-muted-foreground">No expenses found</p>
                     </td>
                   </tr>
                 ) : (
-                  paginatedPurchases.map((purchase, index) => (
+                  paginatedExpenses.map((expense, index) => (
                     <tr
-                      key={purchase.id}
+                      key={expense.id}
                       className={`border-b border-border text-center ${
                         index % 2 === 0 ? "bg-background" : "bg-card"
                       } hover:bg-accent/50 transition-colors`}
                     >
                       <td className="p-2 text-sm text-foreground">
-                        {purchase.invoiceNo}
+                        {expense.expenseId}
                       </td>
                       <td className="p-2 text-sm text-foreground">
-                        {purchase.items[0]?.name || "N/A"}
+                        {expense.expenseType}
                       </td>
                       <td className="p-2 text-sm text-foreground">
-                        {purchase.items[0]?.quantity}
-                        {purchase.items[0]?.unit}
+                        ${expense.totalPrice}
                       </td>
                       <td className="p-2 text-sm text-foreground">
-                        ${purchase.totalPrice}
-                      </td>
-                      <td className="p-2 text-sm text-foreground">
-                        {purchase.purchaseDate}
-                      </td>
-                      <td className="p-2 text-sm text-foreground">
-                        {purchase.supplier}
+                        {expense.date}
                       </td>
                       <td className="p-2">
                         <div className="flex items-center justify-center gap-2">
@@ -219,7 +192,7 @@ export default function PurchasePage() {
                             variant="ghost"
                             size="icon"
                             className="hover:bg-accent"
-                            onClick={() => handleView(purchase)}
+                            onClick={() => handleView(expense)}
                           >
                             <Eye className="h-5 w-5 text-foreground" />
                           </Button>
@@ -227,7 +200,7 @@ export default function PurchasePage() {
                             variant="ghost"
                             size="icon"
                             className="hover:bg-accent"
-                            onClick={() => handleEdit(purchase.id)}
+                            onClick={() => handleEdit(expense.id)}
                           >
                             <SquarePen className="h-5 w-5 text-primary" />
                           </Button>
@@ -241,8 +214,7 @@ export default function PurchasePage() {
           </div>
         </div>
 
-        {/* Pagination */}
-        {!isLoading && paginatedPurchases.length > 0 && (
+        {!isLoading && paginatedExpenses.length > 0 && (
           <Pagination
             currentPage={currentPage}
             totalPages={totalPages}
@@ -252,45 +224,15 @@ export default function PurchasePage() {
             showIfSinglePage={false}
           />
         )}
-
-        {/* Recent by Type Section */}
-        <div className="bg-card rounded-2xl border border-border shadow-[0px_8px_32px_0px_#00000026] p-6">
-          <h2 className="text-2xl font-semibold text-foreground mb-6">
-            Recent by Type
-          </h2>
-          <div className="space-y-4">
-            {mockPurchaseStats.map((stat) => (
-              <div key={stat.ingredient} className="space-y-2">
-                <div className="flex justify-between items-center">
-                  <span className="text-foreground font-medium">
-                    {stat.ingredient}
-                  </span>
-                  <span className="text-foreground font-semibold">
-                    ${stat.amount.toLocaleString()}
-                  </span>
-                </div>
-                <div className="w-full bg-gray-200 rounded-full h-2">
-                  <div
-                    className="bg-blue-600 h-2 rounded-full transition-all"
-                    style={{ width: `${stat.percentage}%` }}
-                  />
-                </div>
-                <div className="text-right text-sm text-muted-foreground">
-                  {stat.percentage}%
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
       </main>
 
-      <ViewPurchaseModal
+      <ViewExpenseModal
         isOpen={isViewModalOpen}
         onClose={() => {
           setIsViewModalOpen(false);
-          setSelectedPurchase(null);
+          setSelectedExpense(null);
         }}
-        purchase={selectedPurchase}
+        expense={selectedExpense}
       />
     </>
   );

@@ -40,6 +40,8 @@ import UserRolesPage from "@/Pages/Dashboard/Admin/UserRole/UserRolesPage";
 import PermissionPage from "@/components/UserRole/PermissionPage";
 import PurchasePage from "@/Pages/Dashboard/Admin/Purchase/PurchasePage";
 import AddEditPurchasePage from "@/Pages/Dashboard/Admin/Purchase/AddEditPurchasePage";
+import ExpensesPage from "@/Pages/Dashboard/Admin/Expense/ExpensesPage";
+import AddEditExpensePage from "@/Pages/Dashboard/Admin/Expense/AddEditExpensePage";
 
 const router = createBrowserRouter([
   {
@@ -141,7 +143,15 @@ const router = createBrowserRouter([
       },
       {
         path: "expenses",
-        element: <div>Expenses Page</div>,
+        element: <ExpensesPage />,
+      },
+      {
+        path: "expenses/add",
+        element: <AddEditExpensePage />,
+      },
+      {
+        path: "expenses/:id",
+        element: <AddEditExpensePage />,
       },
       {
         path: "reports/overall-sales",

@@ -444,7 +444,7 @@ export default function CategoryPage() {
                           index % 2 === 0 ? "bg-background" : "bg-card"
                         } hover:bg-accent/50 transition-colors`}
                       >
-                        <td className="p-4 md:pl-20">
+                        <td className="p-2 md:pl-20">
                           <div className="flex items-center justify-left gap-3">
                             <div className="w-12 h-12 rounded-full overflow-hidden bg-linear-to-br from-orange-50 to-orange-100">
                               <img
@@ -462,10 +462,10 @@ export default function CategoryPage() {
                             </span>
                           </div>
                         </td>
-                        <td className="p-4 text-sm text-foreground text-left">
+                        <td className="p-2 text-sm text-foreground text-left">
                           {category.number}
                         </td>
-                        <td className="p-4">
+                        <td className="p-2">
                           <div className="flex items-center justify-center gap-3">
                             <Button
                               variant="ghost"
@@ -523,16 +523,16 @@ export default function CategoryPage() {
                           index % 2 === 0 ? "bg-background" : "bg-card"
                         } hover:bg-accent/50 transition-colors`}
                       >
-                        <td className="p-4 text-sm text-foreground">
+                        <td className="p-2 text-sm text-foreground">
                           {subCategory.name}
                         </td>
-                        <td className="p-4 text-sm text-foreground">
+                        <td className="p-2 text-sm text-foreground">
                           {subCategory.number}
                         </td>
-                        <td className="p-4 text-sm text-foreground">
+                        <td className="p-2 text-sm text-foreground">
                           {subCategory.categoryName}
                         </td>
-                        <td className="p-4">
+                        <td className="p-2">
                           <div className="flex items-center justify-center gap-3">
                             <Button
                               variant="ghost"

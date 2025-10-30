@@ -9,6 +9,7 @@ import AddUserRoleModal from "@/components/UserRole/AddUserRoleModal";
 import { mockUserRoles } from "@/data/mockUserRoles";
 import type { UserRole } from "@/types/userRole";
 import { RoleGuard } from "@/components/RoleGuard";
+import { Pagination } from "@/components/ui/pagination";
 
 export default function UserRolesPage() {
   const navigate = useNavigate();
@@ -42,7 +43,7 @@ export default function UserRolesPage() {
   const paginatedRoles = useMemo(() => {
     const startIndex = (currentPage - 1) * itemsPerPage;
     return filteredRoles.slice(startIndex, startIndex + itemsPerPage);
-  }, [filteredRoles, currentPage]);
+  }, [filteredRoles, currentPage, itemsPerPage]);
 
   const handleViewPermissions = (roleId: string) => {
     navigate(`/dashboard/user-roles/${roleId}/permissions`);
@@ -70,98 +71,6 @@ export default function UserRolesPage() {
       setIsLoading(true);
       setTimeout(() => setIsLoading(false), 500);
     }
-  };
-
-  const renderPageNumbers = () => {
-    const pages = [];
-    const maxVisiblePages = 5;
-
-    if (totalPages <= maxVisiblePages) {
-      for (let i = 1; i <= totalPages; i++) {
-        pages.push(
-          <Button
-            key={i}
-            onClick={() => handlePageChange(i)}
-            className={`w-10 h-10 rounded-md ${
-              currentPage === i
-                ? "bg-primary text-primary-foreground"
-                : "bg-transparent text-foreground hover:bg-accent"
-            }`}
-            variant={currentPage === i ? "default" : "ghost"}
-          >
-            {i}
-          </Button>
-        );
-      }
-    } else {
-      pages.push(
-        <Button
-          key={1}
-          onClick={() => handlePageChange(1)}
-          className={`w-10 h-10 rounded-md ${
-            currentPage === 1
-              ? "bg-primary text-primary-foreground"
-              : "bg-transparent text-foreground hover:bg-accent"
-          }`}
-          variant={currentPage === 1 ? "default" : "ghost"}
-        >
-          1
-        </Button>
-      );
-
-      if (currentPage > 3) {
-        pages.push(
-          <span key="ellipsis1" className="text-muted-foreground">
-            ...
-          </span>
-        );
-      }
-
-      const start = Math.max(2, currentPage - 1);
-      const end = Math.min(totalPages - 1, currentPage + 1);
-
-      for (let i = start; i <= end; i++) {
-        pages.push(
-          <Button
-            key={i}
-            onClick={() => handlePageChange(i)}
-            className={`w-10 h-10 rounded-md ${
-              currentPage === i
-                ? "bg-primary text-primary-foreground"
-                : "bg-transparent text-foreground hover:bg-accent"
-            }`}
-            variant={currentPage === i ? "default" : "ghost"}
-          >
-            {i}
-          </Button>
-        );
-      }
-
-      if (currentPage < totalPages - 2) {
-        pages.push(
-          <span key="ellipsis2" className="text-muted-foreground">
-            ...
-          </span>
-        );
-      }
-
-      pages.push(
-        <Button
-          key={totalPages}
-          onClick={() => handlePageChange(totalPages)}
-          className={`w-10 h-10 rounded-md ${
-            currentPage === totalPages
-              ? "bg-primary text-primary-foreground"
-              : "bg-transparent text-foreground hover:bg-accent"
-          }`}
-          variant={currentPage === totalPages ? "default" : "ghost"}
-        >
-          {totalPages}
-        </Button>
-      );
-    }
-
-    return pages;
   };
 
   return (
@@ -234,13 +143,13 @@ export default function UserRolesPage() {
                         index % 2 === 0 ? "bg-background" : "bg-card"
                       } hover:bg-accent/50 transition-colors`}
                     >
-                      <td className="p-4 text-sm text-foreground">
+                      <td className="p-2 text-sm text-foreground">
                         {(currentPage - 1) * itemsPerPage + index + 1}
                       </td>
-                      <td className="p-4 text-sm text-foreground">
+                      <td className="p-2 text-sm text-foreground">
                         {role.name}
                       </td>
-                      <td className="p-4">
+                      <td className="p-2">
                         <Button
                           onClick={() => handleViewPermissions(role.id)}
                           className="bg-[#22C55E] hover:bg-[#22C55E]/80 text-white px-8 py-2 rounded-full"
@@ -257,25 +166,14 @@ export default function UserRolesPage() {
         </div>
 
         {!isLoading && paginatedRoles.length > 0 && (
-          <div className="flex items-center justify-between">
-            <Button
-              variant="outline"
-              className="rounded-md bg-card shadow-[0px_8px_32px_0px_#00000026]"
-              onClick={() => handlePageChange(currentPage - 1)}
-              disabled={currentPage === 1}
-            >
-              ← Previous
-            </Button>
-            <div className="flex items-center gap-2">{renderPageNumbers()}</div>
-            <Button
-              variant="outline"
-              className="rounded-md bg-card shadow-[0px_8px_32px_0px_#00000026]"
-              onClick={() => handlePageChange(currentPage + 1)}
-              disabled={currentPage === totalPages}
-            >
-              Next →
-            </Button>
-          </div>
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+            maxVisiblePages={5}
+            showPrevNext={true}
+            showIfSinglePage={false}
+          />
         )}
       </main>
 

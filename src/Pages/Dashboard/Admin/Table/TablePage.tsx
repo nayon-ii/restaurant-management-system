@@ -319,16 +319,16 @@ export default function TablePage() {
                         index % 2 === 0 ? "bg-background" : "bg-card"
                       } hover:bg-accent/50 transition-colors`}
                     >
-                      <td className="p-4 text-sm text-foreground">
+                      <td className="p-2 text-sm text-foreground">
                         {table.tableNo}
                       </td>
-                      <td className="p-4 text-sm text-foreground">
+                      <td className="p-2 text-sm text-foreground">
                         {table.capacity}
                       </td>
-                      <td className="p-4 text-sm text-foreground">
+                      <td className="p-2 text-sm text-foreground">
                         {table.location}
                       </td>
-                      <td className="p-4">
+                      <td className="p-2">
                         <div className="flex items-center justify-center gap-3">
                           <Button
                             variant="ghost"
