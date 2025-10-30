@@ -21,7 +21,7 @@ import type { InventoryItem } from "@/types/inventory";
 import { Switch } from "@/components/ui/switch";
 import { RoleGuard } from "@/components/RoleGuard";
 import { toast } from "sonner";
-import { Pagination } from "@/components/ui/Pagination";
+import { Pagination } from "@/components/ui/pagination";
 
 interface InventoryPageProps {
   title?: string;

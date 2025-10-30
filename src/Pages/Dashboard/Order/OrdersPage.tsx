@@ -18,7 +18,7 @@ import { TableSkeleton } from "@/components/Skeleton/TableSkeleton";
 import { getStatusColor } from "@/lib/utils";
 import { mockOrders } from "@/data/mockOrders";
 import type { OrderStatus } from "@/types/order";
-import { Pagination } from "@/components/ui/Pagination";
+import { Pagination } from "@/components/ui/pagination";
 
 import orderIcon from "@/assets/icons/order.svg";
 import processIcon from "@/assets/icons/process.svg";

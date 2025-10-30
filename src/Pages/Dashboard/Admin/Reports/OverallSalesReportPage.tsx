@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Search, Calendar, Printer } from "lucide-react";
 import { toast } from "sonner";
 import { TableSkeleton } from "@/components/Skeleton/TableSkeleton";
-import { Pagination } from "@/components/ui/Pagination";
+import { Pagination } from "@/components/ui/pagination";
 import type { SalesReport } from "@/types/reports";
 import { mockOrders } from "@/data/mockOrders";
 import {

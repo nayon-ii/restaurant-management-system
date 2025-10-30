@@ -13,7 +13,7 @@ import { toast } from "sonner";
 import { RoleGuard } from "../RoleGuard";
 import { mockUsersData } from "@/data/mockUsersData";
 import type { User } from "@/types/user";
-import { Pagination } from "@/components/ui/Pagination";
+import { Pagination } from "@/components/ui/pagination";
 
 const roles = ["All", "Chef", "Cashier", "Waiter", "Cleaner"];
 

@@ -9,7 +9,7 @@ import AddUserRoleModal from "@/components/UserRole/AddUserRoleModal";
 import { mockUserRoles } from "@/data/mockUserRoles";
 import type { UserRole } from "@/types/userRole";
 import { RoleGuard } from "@/components/RoleGuard";
-import { Pagination } from "@/components/ui/Pagination";
+import { Pagination } from "@/components/ui/pagination";
 
 export default function UserRolesPage() {
   const navigate = useNavigate();
