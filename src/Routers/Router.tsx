@@ -47,6 +47,8 @@ import OverallExpenseReportPage from "@/Pages/Dashboard/Admin/Reports/OverallExp
 import OverallSalesReportPage from "@/Pages/Dashboard/Admin/Reports/OverallSalesReportPage";
 import PurchaseReportPage from "@/Pages/Dashboard/Admin/Reports/PurchaseReportPage";
 import TopSellingItemsPage from "@/Pages/Dashboard/Admin/Reports/TopSellingItemsPage";
+import SupplierPage from "@/Pages/Dashboard/Admin/Supplier/SupplierPage";
+import SupplierReportPage from "@/Pages/Dashboard/Admin/Reports/SupplierReportPage";
 
 const router = createBrowserRouter([
   {
@@ -170,6 +172,15 @@ const router = createBrowserRouter([
         path: "reports/purchase-report",
         element: <PurchaseReportPage />,
       },
+      {
+        path: "supplier",
+        element: <SupplierPage />,
+      },
+      {
+        path: "reports/supplier-report",
+        element: <SupplierReportPage />,
+      },
+
       // Manager Routes
       {
         path: "manager",
