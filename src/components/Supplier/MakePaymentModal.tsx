@@ -1,5 +1,4 @@
 // MAKE PAYMENT MODAL - src/components/Supplier/MakePaymentModal.tsx
-// ============================================
 import { useState, useEffect } from "react";
 import {
   Dialog,
@@ -43,7 +42,7 @@ export default function MakePaymentModal({
     totalPaid: "",
     paymentAmount: "",
     due: "",
-    paymentMethod: "",
+    paymentMethod: "Cash",
     note: "",
   });
 
@@ -70,7 +69,7 @@ export default function MakePaymentModal({
       if (field === "paymentAmount" && bill) {
         const paymentAmt = parseFloat(value) || 0;
         const newDue = bill.due - paymentAmt;
-        updated.due = newDue > 0 ? newDue.toFixed(2) : "0";
+        updated.due = newDue > 0 ? newDue.toFixed(2) : "0.00";
       }
 
       return updated;
@@ -82,6 +81,11 @@ export default function MakePaymentModal({
 
     if (!formData.paymentAmount || parseFloat(formData.paymentAmount) <= 0) {
       toast.error("Please enter a valid payment amount");
+      return;
+    }
+
+    if (parseFloat(formData.paymentAmount) > bill!.due) {
+      toast.error("Payment amount cannot exceed due amount");
       return;
     }
 
@@ -97,133 +101,154 @@ export default function MakePaymentModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogOverlay className="fixed inset-0 z-50 bg-dark/50 backdrop-blur-xs" />
-      <DialogContent className="sm:max-w-2xl bg-card border-border max-h-[90vh] overflow-y-auto scrollbar-thin scrollbar-thumb-rounded scrollbar-thumb-border">
+      <DialogOverlay className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm" />
+      <DialogContent className="sm:max-w-2xl bg-card border-border max-h-[90vh] overflow-y-auto scrollbar-thin">
         <DialogHeader>
-          <DialogTitle className="text-xl font-bold text-foreground">
+          <DialogTitle className="text-2xl font-bold text-foreground">
             Make Payment
           </DialogTitle>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-4 mt-4">
-          <div className="space-y-2">
-            <Label className="text-sm">Voucher Number</Label>
-            <Input
-              type="text"
-              value={formData.voucherNumber}
-              className="h-12"
-              readOnly
-            />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label className="text-sm font-medium">Voucher Number</Label>
+              <Input
+                type="text"
+                value={formData.voucherNumber}
+                className="h-11"
+                readOnly
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label className="text-sm font-medium">Supplier</Label>
+              <Input
+                type="text"
+                value={formData.supplier}
+                className="h-11"
+                readOnly
+              />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label className="text-sm font-medium">Date</Label>
+              <Input
+                type="text"
+                value={formData.date}
+                className="h-11"
+                readOnly
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label className="text-sm font-medium">Total Amount</Label>
+              <Input
+                type="text"
+                value={`$${formData.totalAmount}`}
+                className="h-11"
+                readOnly
+              />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label className="text-sm font-medium">Total Paid</Label>
+              <Input
+                type="text"
+                value={`$${formData.totalPaid}`}
+                className="h-11"
+                readOnly
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label className="text-sm font-medium">
+                Payment Amount <span className="text-red-500">*</span>
+              </Label>
+              <Input
+                type="number"
+                step="0.01"
+                min="0"
+                max={bill.due}
+                value={formData.paymentAmount}
+                onChange={(e) =>
+                  handleInputChange("paymentAmount", e.target.value)
+                }
+                className="h-11"
+                placeholder="0.00"
+                required
+              />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label className="text-sm font-medium">Due</Label>
+              <Input
+                type="text"
+                value={`$${formData.due}`}
+                className="h-11"
+                readOnly
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label className="text-sm font-medium">
+                Payment Method <span className="text-red-500">*</span>
+              </Label>
+              <Select
+                value={formData.paymentMethod}
+                onValueChange={(value) =>
+                  handleInputChange("paymentMethod", value)
+                }
+              >
+                <SelectTrigger className="h-11! w-full">
+                  <SelectValue placeholder="Select method" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Cash">Cash</SelectItem>
+                  <SelectItem value="Bkash">Bkash</SelectItem>
+                  <SelectItem value="Nagad">Nagad</SelectItem>
+                  <SelectItem value="Rocket">Rocket</SelectItem>
+                  <SelectItem value="Bank Transfer">Bank Transfer</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
           </div>
 
           <div className="space-y-2">
-            <Label className="text-sm">Supplier</Label>
-            <Input
-              type="text"
-              value={formData.supplier}
-              className="h-12"
-              readOnly
-            />
-          </div>
-
-          <div className="space-y-2">
-            <Label className="text-sm">Date</Label>
-            <Input
-              type="text"
-              value={formData.date}
-              className="h-12"
-              readOnly
-            />
-          </div>
-
-          <div className="space-y-2">
-            <Label className="text-sm">Total Amount</Label>
-            <Input
-              type="text"
-              value={`${formData.totalAmount}`}
-              className="h-12"
-              readOnly
-            />
-          </div>
-
-          <div className="space-y-2">
-            <Label className="text-sm">Total Paid</Label>
-            <Input
-              type="text"
-              value={`${formData.totalPaid}`}
-              className="h-12"
-              readOnly
-            />
-          </div>
-
-          <div className="space-y-2">
-            <Label className="text-sm">Payment Amount</Label>
-            <Input
-              type="number"
-              value={formData.paymentAmount}
-              onChange={(e) =>
-                handleInputChange("paymentAmount", e.target.value)
-              }
-              className="h-12"
-              placeholder="Enter amount"
-              required
-            />
-          </div>
-
-          <div className="space-y-2">
-            <Label className="text-sm">Due</Label>
-            <Input type="text" value={formData.due} className="h-12" readOnly />
-          </div>
-
-          <div className="space-y-2">
-            <Label className="text-sm">Payment Method</Label>
-            <Select
-              value={formData.paymentMethod}
-              onValueChange={(value) =>
-                handleInputChange("paymentMethod", value)
-              }
-            >
-              <SelectTrigger className="h-12">
-                <SelectValue placeholder="Cash" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="Cash">Cash</SelectItem>
-                <SelectItem value="Bkash">Bkash</SelectItem>
-                <SelectItem value="Nagad">Nagad</SelectItem>
-                <SelectItem value="Rocket">Rocket</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div className="space-y-2">
-            <Label className="text-sm">Note</Label>
+            <Label className="text-sm font-medium">Note</Label>
             <Textarea
               value={formData.note}
               onChange={(e) => handleInputChange("note", e.target.value)}
-              className="min-h-20"
-              placeholder="Acf"
+              className="min-h-24 resize-none"
+              placeholder="Add payment note (optional)"
             />
           </div>
 
-          <div className="flex gap-4 pt-4">
+          <div className="flex gap-3 pt-4">
             <Button
               type="button"
               variant="outline"
               onClick={onClose}
-              className="flex-1 h-12 rounded-xl"
+              className="flex-1 h-11 rounded-lg"
               disabled={isSubmitting}
             >
               Cancel
             </Button>
             <Button
               type="submit"
-              className="flex-1 h-12 rounded-xl bg-primary hover:bg-primary/80"
+              className="flex-1 h-11 rounded-lg bg-primary hover:bg-primary/90 text-white"
               disabled={isSubmitting}
             >
               {isSubmitting ? (
                 <>
                   <LoadingSpinner size="sm" className="mr-2" />
-                  Submitting...
+                  Processing...
                 </>
               ) : (
                 "Submit Payment"

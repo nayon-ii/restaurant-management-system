@@ -4,11 +4,13 @@ import DashboardHeader from "@/components/Dashboard/DashboardHeader";
 import StatCard from "@/components/Shared/StatCard";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Search, Plus } from "lucide-react";
+import { Search, Plus, Eye, CreditCard } from "lucide-react";
 import { TableSkeleton } from "@/components/Skeleton/TableSkeleton";
 import AddSupplierModal from "@/components/Supplier/AddSupplierModal";
+import ViewBillModal from "@/components/Supplier/ViewBillModal";
+import MakePaymentModal from "@/components/Supplier/MakePaymentModal";
 import { mockSuppliers, mockBills } from "@/data/mockSuppliers";
-import type { Supplier, SupplierStats } from "@/types/supplier";
+import type { Supplier, SupplierStats, Bill } from "@/types/supplier";
 import { DueBillsSection } from "@/components/Supplier/DueBillsSection";
 import { Pagination } from "@/components/Shared/Pagination";
 
@@ -17,10 +19,11 @@ export default function SupplierPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
   const [suppliers, setSuppliers] = useState<Supplier[]>(mockSuppliers);
-  const [activeTab, setActiveTab] = useState<"all" | "due" | "suppliers">(
-    "due"
-  );
+  const [activeTab, setActiveTab] = useState<"suppliers" | "due">("suppliers");
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [selectedBill, setSelectedBill] = useState<Bill | null>(null);
+  const [isViewModalOpen, setIsViewModalOpen] = useState(false);
+  const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
 
   const itemsPerPage = 10;
 
@@ -36,10 +39,16 @@ export default function SupplierPage() {
   const stats: SupplierStats = useMemo(() => {
     const totalSuppliers = suppliers.length;
     const totalBills = mockBills.length;
-    const totalPurchases = 5326;
-    const totalAmount = 5326;
-    const totalPaid = 5326;
-    const totalDue = 5326;
+    const totalPurchases = mockBills.reduce(
+      (sum, bill) => sum + bill.totalAmount,
+      0
+    );
+    const totalAmount = mockBills.reduce(
+      (sum, bill) => sum + bill.totalAmount,
+      0
+    );
+    const totalPaid = mockBills.reduce((sum, bill) => sum + bill.paid, 0);
+    const totalDue = mockBills.reduce((sum, bill) => sum + bill.due, 0);
 
     return {
       totalSuppliers,
@@ -81,6 +90,28 @@ export default function SupplierPage() {
     setIsAddModalOpen(false);
   };
 
+  const handleViewSupplier = (supplier: Supplier) => {
+    // Find a bill for this supplier
+    const supplierBill = mockBills.find(
+      (bill) => bill.supplierId === supplier.id
+    );
+    if (supplierBill) {
+      setSelectedBill(supplierBill);
+      setIsViewModalOpen(true);
+    }
+  };
+
+  const handleMakePayment = (supplier: Supplier) => {
+    // Find a bill with due amount for this supplier
+    const supplierBill = mockBills.find(
+      (bill) => bill.supplierId === supplier.id && bill.due > 0
+    );
+    if (supplierBill) {
+      setSelectedBill(supplierBill);
+      setIsPaymentModalOpen(true);
+    }
+  };
+
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
     setIsLoading(true);
@@ -104,72 +135,47 @@ export default function SupplierPage() {
           <StatCard title="Total Bills" value={stats.totalBills.toString()} />
           <StatCard
             title="Total Purchases"
-            value={`$${stats.totalPurchases.toLocaleString()}`}
+            value={`$${stats.totalPurchases.toFixed(2)}`}
           />
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           <StatCard
             title="Total Amount"
-            value={`$${stats.totalAmount.toLocaleString()}`}
+            value={`$${stats.totalAmount.toFixed(2)}`}
           />
           <StatCard
             title="Total Paid"
-            value={`$${stats.totalPaid.toLocaleString()}`}
+            value={`$${stats.totalPaid.toFixed(2)}`}
           />
-          <StatCard
-            title="Total Due"
-            value={`$${stats.totalDue.toLocaleString()}`}
-          />
+          <StatCard title="Total Due" value={`$${stats.totalDue.toFixed(2)}`} />
         </div>
 
         {/* Tabs */}
         <div className="flex gap-2">
           <Button
-            onClick={() => setActiveTab("all")}
-            className={`flex-1 h-12 rounded-xl ${
-              activeTab === "all"
-                ? "bg-card text-foreground border border-border"
-                : "bg-card text-muted-foreground border border-border"
-            }`}
-            variant="ghost"
-          >
-            All Bill
-          </Button>
-          <Button
-            onClick={() => setActiveTab("due")}
-            className={`flex-1 h-12 rounded-xl ${
-              activeTab === "due"
-                ? "bg-primary text-white"
-                : "bg-card text-muted-foreground border border-border"
-            }`}
-          >
-            Due Bills
-          </Button>
-          <Button
             onClick={() => setActiveTab("suppliers")}
-            className={`flex-1 h-12 rounded-xl ${
+            className={`flex-1 h-12 rounded-sm ${
               activeTab === "suppliers"
-                ? "bg-card text-foreground border border-border"
+                ? "bg-primary text-white"
                 : "bg-card text-muted-foreground border border-border"
             }`}
             variant="ghost"
           >
             Suppliers
           </Button>
+          <Button
+            onClick={() => setActiveTab("due")}
+            className={`flex-1 h-12 rounded-sm ${
+              activeTab === "due"
+                ? "bg-primary text-white"
+                : "bg-card text-muted-foreground border border-border"
+            }`}
+            variant="ghost"
+          >
+            Due Bill
+          </Button>
         </div>
-
-        {/* Due Bills Section */}
-        {activeTab === "all" && (
-          <DueBillsSection bills={mockBills} isLoading={isLoading} />
-        )}
-
-        {activeTab === "due" && (
-          <DueBillsSection
-            bills={mockBills.filter((bill) => bill.due > 0)}
-            isLoading={isLoading}
-          />
-        )}
 
         {/* Suppliers Section */}
         {activeTab === "suppliers" && (
@@ -192,7 +198,7 @@ export default function SupplierPage() {
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
                 <Input
                   type="text"
-                  placeholder="Search Bill..."
+                  placeholder="Search Supplier..."
                   value={searchQuery}
                   onChange={(e) => {
                     setSearchQuery(e.target.value);
@@ -203,26 +209,27 @@ export default function SupplierPage() {
               </div>
             </div>
 
-            <div className="overflow-x-auto scrollbar-thin mx-5 border rounded-t-xl">
+            <div className="overflow-x-auto scrollbar-thin mx-5 border rounded-md">
               <table className="w-full">
                 <thead>
                   <tr className="bg-primary text-white">
-                    <th className="text-center p-4 font-semibold">Name</th>
-                    <th className="text-center p-4 font-semibold">Number</th>
-                    <th className="text-center p-4 font-semibold">Email</th>
-                    <th className="text-center p-4 font-semibold">Location</th>
-                    <th className="text-center p-4 font-semibold">Total</th>
-                    <th className="text-center p-4 font-semibold">Paid</th>
-                    <th className="text-center p-4 font-semibold">Due</th>
+                    <th className="text-left p-4 font-semibold">Name</th>
+                    <th className="text-left p-4 font-semibold">Number</th>
+                    <th className="text-left p-4 font-semibold">Email</th>
+                    <th className="text-left p-4 font-semibold">Location</th>
+                    <th className="text-right p-4 font-semibold">Total</th>
+                    <th className="text-right p-4 font-semibold">Paid</th>
+                    <th className="text-right p-4 font-semibold">Due</th>
+                    <th className="text-center p-4 font-semibold">Action</th>
                   </tr>
                 </thead>
                 <tbody>
                   {isLoading ? (
-                    <TableSkeleton columns={7} />
+                    <TableSkeleton columns={8} />
                   ) : paginatedSuppliers.length === 0 ? (
                     <tr>
                       <td
-                        colSpan={7}
+                        colSpan={8}
                         className="p-5 text-center text-muted-foreground"
                       >
                         No suppliers found
@@ -232,17 +239,61 @@ export default function SupplierPage() {
                     paginatedSuppliers.map((supplier, index) => (
                       <tr
                         key={supplier.id}
-                        className={`border-b border-border text-center ${
+                        className={`border-b border-border ${
                           index % 2 === 0 ? "bg-background" : "bg-card"
                         } hover:bg-accent/50 transition-colors`}
                       >
-                        <td className="p-4 text-sm">{supplier.name}</td>
-                        <td className="p-4 text-sm">{supplier.number}</td>
-                        <td className="p-4 text-sm">{supplier.email}</td>
-                        <td className="p-4 text-sm">{supplier.location}</td>
-                        <td className="p-4 text-sm">${supplier.total}</td>
-                        <td className="p-4 text-sm">${supplier.paid}</td>
-                        <td className="p-4 text-sm">${supplier.due}</td>
+                        <td className="p-3 text-sm font-medium">
+                          {supplier.name}
+                        </td>
+                        <td className="p-3 text-sm">{supplier.number}</td>
+                        <td className="p-3 text-sm">{supplier.email}</td>
+                        <td className="p-3 text-sm">{supplier.location}</td>
+                        <td className="p-3 text-sm text-right font-semibold">
+                          ${supplier.total.toFixed(2)}
+                        </td>
+                        <td className="p-3 text-sm text-right">
+                          <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-800">
+                            ${supplier.paid.toFixed(2)}
+                          </span>
+                        </td>
+                        <td className="p-3 text-sm text-right">
+                          {supplier.due > 0 ? (
+                            <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-800">
+                              ${supplier.due.toFixed(2)}
+                            </span>
+                          ) : (
+                            <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-600">
+                              $0.00
+                            </span>
+                          )}
+                        </td>
+                        <td className="p-3">
+                          <div className="flex items-center justify-center gap-2">
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              onClick={() => handleViewSupplier(supplier)}
+                              className="h-8 w-8 hover:bg-blue-100"
+                              title="View Details"
+                            >
+                              <Eye className="h-4 w-4 text-blue-600" />
+                            </Button>
+                            {supplier.due > 0 ? (
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                onClick={() => handleMakePayment(supplier)}
+                                className="h-8 w-8 hover:bg-orange-100"
+                                title="Make Payment"
+                              >
+                                <CreditCard className="h-4 w-4 text-primary" />
+                              </Button>
+                            ) : (
+                              <div className="h-4 w-7 text-transparent"></div>
+                            )}
+                          </div>
+                        </td>
                       </tr>
                     ))
                   )}
@@ -250,6 +301,11 @@ export default function SupplierPage() {
               </table>
             </div>
           </div>
+        )}
+
+        {/* Due Bills Section */}
+        {activeTab === "due" && (
+          <DueBillsSection bills={mockBills} isLoading={isLoading} />
         )}
 
         {/* Pagination */}
@@ -269,6 +325,24 @@ export default function SupplierPage() {
         isOpen={isAddModalOpen}
         onClose={() => setIsAddModalOpen(false)}
         onSave={handleAddSupplier}
+      />
+
+      <ViewBillModal
+        isOpen={isViewModalOpen}
+        onClose={() => {
+          setIsViewModalOpen(false);
+          setSelectedBill(null);
+        }}
+        bill={selectedBill}
+      />
+
+      <MakePaymentModal
+        isOpen={isPaymentModalOpen}
+        onClose={() => {
+          setIsPaymentModalOpen(false);
+          setSelectedBill(null);
+        }}
+        bill={selectedBill}
       />
     </>
   );

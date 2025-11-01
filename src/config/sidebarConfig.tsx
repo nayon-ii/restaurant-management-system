@@ -22,7 +22,7 @@ import {
 import type { ReactNode } from "react";
 
 import { HugeiconsIcon } from "@hugeicons/react";
-import { RestaurantTableIcon } from "@hugeicons/core-free-icons";
+import { AnalyticsUpIcon, RestaurantTableIcon } from "@hugeicons/core-free-icons";
 
 export interface SidebarItem {
   id: string;
@@ -194,7 +194,7 @@ export const sidebarConfig: Record<string, SidebarSection[]> = {
         {
           id: "supplier-report",
           label: "Supplier Report",
-          icon: <Users2 className="h-5 w-5" />,
+          icon: <HugeiconsIcon icon={AnalyticsUpIcon} size={20} />,
           path: "/dashboard/reports/supplier-report",
           roles: ["admin"],
         },

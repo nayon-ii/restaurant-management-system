@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Search } from "lucide-react";
+import { Search, Eye, CreditCard } from "lucide-react";
 import ViewBillModal from "@/components/Supplier/ViewBillModal";
 import MakePaymentModal from "@/components/Supplier/MakePaymentModal";
 import type { Bill } from "@/types/supplier";
@@ -67,70 +67,73 @@ export function DueBillsSection({ bills, isLoading }: DueBillsSectionProps) {
             filteredBills.map((bill) => (
               <div
                 key={bill.id}
-                className="bg-background border border-border rounded-xl p-5 space-y-4"
+                className="bg-background border border-border rounded-xl p-5 hover:shadow-md transition-shadow duration-200"
               >
-                <div className="flex justify-between items-start">
-                  <div>
+                <div className="flex justify-between items-start mb-4">
+                  <div className="space-y-1">
                     <h3 className="text-lg font-bold text-foreground">
-                      Bill ID: {bill.billId}
+                      {bill.billId}
                     </h3>
-                    <p className="text-sm text-muted-foreground">
-                      Date: {bill.date}
-                    </p>
-                    <p className="text-sm text-muted-foreground">
-                      Supplier: {bill.supplier}
+                    <p className="text-sm text-muted-foreground">{bill.date}</p>
+                    <p className="text-sm font-medium text-foreground">
+                      {bill.supplier}
                     </p>
                   </div>
-                  {bill.paymentMethod && (
-                    <div className="text-right">
-                      <div className="text-lg font-bold text-foreground">
-                        ${bill.totalAmount.toFixed(2)}
-                      </div>
-                      <div className="text-sm text-muted-foreground">
-                        {bill.paymentMethod}
-                      </div>
-                    </div>
-                  )}
+                  <div className="flex items-center gap-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => handleViewItems(bill)}
+                      className="h-9 px-3 rounded-lg border-border hover:bg-accent gap-1.5"
+                    >
+                      <Eye className="w-4 h-4" />
+                      View
+                    </Button>
+                    <Button
+                      size="sm"
+                      onClick={() => handleMakePayment(bill)}
+                      className="h-9 px-3 rounded-lg bg-primary hover:bg-primary/90 text-white gap-1.5"
+                    >
+                      <CreditCard className="w-4 h-4" />
+                      Pay
+                    </Button>
+                  </div>
                 </div>
 
                 <div className="grid grid-cols-3 gap-4 p-4 bg-card rounded-lg border border-border">
-                  <div>
-                    <p className="text-sm text-muted-foreground mb-1">
-                      Total amount
+                  <div className="space-y-1">
+                    <p className="text-xs text-muted-foreground uppercase tracking-wide">
+                      Total Amount
                     </p>
-                    <p className="text-lg font-semibold">
+                    <p className="text-lg font-bold text-foreground">
                       ${bill.totalAmount.toFixed(2)}
                     </p>
                   </div>
-                  <div>
-                    <p className="text-sm text-muted-foreground mb-1">Paid</p>
-                    <p className="text-lg font-semibold text-green-600">
+                  <div className="space-y-1">
+                    <p className="text-xs text-muted-foreground uppercase tracking-wide">
+                      Paid
+                    </p>
+                    <p className="text-lg font-bold text-green-600">
                       ${bill.paid.toFixed(2)}
                     </p>
                   </div>
-                  <div>
-                    <p className="text-sm text-muted-foreground mb-1">Due</p>
-                    <p className="text-lg font-semibold text-red-600">
+                  <div className="space-y-1">
+                    <p className="text-xs text-muted-foreground uppercase tracking-wide">
+                      Due
+                    </p>
+                    <p className="text-lg font-bold text-red-600">
                       ${bill.due.toFixed(2)}
                     </p>
                   </div>
                 </div>
 
-                <div className="flex gap-3">
-                  <Button
-                    variant="outline"
-                    onClick={() => handleViewItems(bill)}
-                    className="flex-1 h-11 rounded-xl border-border"
-                  >
-                    View Items
-                  </Button>
-                  <Button
-                    onClick={() => handleMakePayment(bill)}
-                    className="flex-1 h-11 rounded-xl bg-primary hover:bg-primary/80 text-white"
-                  >
-                    Make Payment
-                  </Button>
-                </div>
+                {bill.paymentMethod && (
+                  <div className="mt-3 flex items-center justify-end">
+                    <span className="text-xs px-3 py-1.5 bg-primary/10 text-primary rounded-full font-medium">
+                      {bill.paymentMethod}
+                    </span>
+                  </div>
+                )}
               </div>
             ))
           )}
