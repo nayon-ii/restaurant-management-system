@@ -186,11 +186,13 @@
   .scrollbar-thin {
     scrollbar-width: thin;
     scrollbar-color: var(--muted) var(--background);
+    border-radius: 4px;
   }
 
   .scrollbar-thin::-webkit-scrollbar {
     width: 2px;
     height: 8px;
+    border-radius: 4px;
   }
 
   .scrollbar-thin::-webkit-scrollbar-track {

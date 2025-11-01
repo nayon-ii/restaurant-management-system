@@ -1,15 +1,13 @@
 // SUPPLIER REPORT PAGE - src/Pages/Dashboard/Admin/Reports/SupplierReportPage.tsx
-// ============================================
 import { useState, useMemo, useEffect } from "react";
 import DashboardHeader from "@/components/Dashboard/DashboardHeader";
 import StatCard from "@/components/Shared/StatCard";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Search,  Printer } from "lucide-react";
+import { Search, Printer } from "lucide-react";
 import { toast } from "sonner";
 import { TableSkeleton } from "@/components/Skeleton/TableSkeleton";
 import { mockBills, mockSuppliers } from "@/data/mockSuppliers";
-
 
 export default function SupplierReportPage() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -58,7 +56,6 @@ export default function SupplierReportPage() {
     toast.success("Print functionality will be implemented");
   };
 
-
   return (
     <>
       <DashboardHeader
@@ -83,7 +80,7 @@ export default function SupplierReportPage() {
           <StatCard title="Total Due" value={`${totals.totalDue.toFixed(2)}`} />
         </div>
 
-        <div className="bg-card rounded-2xl border border-border shadow-[0px_8px_32px_0px_#00000026] pb-5">
+        <div className="bg-card rounded-2xl border border-border shadow-sm pb-5">
           <div className="p-5 border-b border-border flex justify-between items-center">
             <h2 className="text-2xl font-semibold text-foreground">
               Supplier Report
@@ -120,7 +117,7 @@ export default function SupplierReportPage() {
                   <th className="text-left p-4 font-semibold">Bill ID</th>
                   <th className="text-left p-4 font-semibold">Date</th>
                   <th className="text-left p-4 font-semibold">Supplier</th>
-                  <th className="text-right p-4 font-semibold">Total</th>
+                  <th className="text-center p-4 font-semibold">Total</th>
                   <th className="text-right p-4 font-semibold">Paid</th>
                   <th className="text-right p-4 font-semibold">Due</th>
                 </tr>
@@ -148,7 +145,7 @@ export default function SupplierReportPage() {
                       <td className="p-4">{bill.billId}</td>
                       <td className="p-4">{bill.date}</td>
                       <td className="p-4">{bill.supplier}</td>
-                      <td className="p-4 text-right">
+                      <td className="p-4 text-center">
                         ${bill.totalAmount.toFixed(2)}
                       </td>
                       <td className="p-4 text-right text-green-600">

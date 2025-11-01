@@ -17,7 +17,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { RoleGuard } from "@/components/RoleGuard";
-import { Pagination } from "@/components/ui/pagination";
+import { Pagination } from "@/components/Shared/Pagination";
 
 export default function PurchasePage() {
   const navigate = useNavigate();

@@ -1,4 +1,4 @@
-// src\components\ui\pagination.tsx
+// src\components\Shared\Pagination.tsx
 import { Button } from "@/components/ui/button";
 
 interface PaginationProps {

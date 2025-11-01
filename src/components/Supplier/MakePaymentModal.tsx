@@ -49,7 +49,6 @@ export default function MakePaymentModal({
 
   useEffect(() => {
     if (bill) {
-      const newDue = bill.due - parseFloat(formData.paymentAmount || "0");
       setFormData({
         voucherNumber: bill.billId,
         supplier: bill.supplier,
@@ -57,7 +56,7 @@ export default function MakePaymentModal({
         totalAmount: bill.totalAmount.toFixed(2),
         totalPaid: bill.paid.toFixed(2),
         paymentAmount: "",
-        due: newDue > 0 ? newDue.toFixed(2) : "0",
+        due: bill.due.toFixed(2),
         paymentMethod: bill.paymentMethod || "Cash",
         note: "",
       });
@@ -99,7 +98,7 @@ export default function MakePaymentModal({
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogOverlay className="fixed inset-0 z-50 bg-dark/50 backdrop-blur-xs" />
-      <DialogContent className="sm:max-w-2xl bg-card border-border max-h-[90vh] overflow-y-auto">
+      <DialogContent className="sm:max-w-2xl bg-card border-border max-h-[90vh] overflow-y-auto scrollbar-thin scrollbar-thumb-rounded scrollbar-thumb-border">
         <DialogHeader>
           <DialogTitle className="text-xl font-bold text-foreground">
             Make Payment

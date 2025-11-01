@@ -17,6 +17,7 @@ import {
   TrendingUp,
   CreditCard,
   BarChart3,
+  Users2,
 } from "lucide-react";
 import type { ReactNode } from "react";
 
@@ -122,7 +123,7 @@ export const sidebarConfig: Record<string, SidebarSection[]> = {
         {
           id: "supplier",
           label: "Supplier",
-          icon: <Users className="h-5 w-5" />,
+          icon: <Users2 className="h-5 w-5" />,
           path: "/dashboard/supplier",
           roles: ["admin"],
         },
@@ -188,6 +189,13 @@ export const sidebarConfig: Record<string, SidebarSection[]> = {
           label: "Purchase Report",
           icon: <FileText className="h-5 w-5" />,
           path: "/dashboard/reports/purchase-report",
+          roles: ["admin"],
+        },
+        {
+          id: "supplier-report",
+          label: "Supplier Report",
+          icon: <Users2 className="h-5 w-5" />,
+          path: "/dashboard/reports/supplier-report",
           roles: ["admin"],
         },
       ],

@@ -10,6 +10,7 @@ import AddSupplierModal from "@/components/Supplier/AddSupplierModal";
 import { mockSuppliers, mockBills } from "@/data/mockSuppliers";
 import type { Supplier, SupplierStats } from "@/types/supplier";
 import { DueBillsSection } from "@/components/Supplier/DueBillsSection";
+import { Pagination } from "@/components/Shared/Pagination";
 
 export default function SupplierPage() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -81,103 +82,9 @@ export default function SupplierPage() {
   };
 
   const handlePageChange = (page: number) => {
-    if (page >= 1 && page <= totalPages) {
-      setCurrentPage(page);
-      setIsLoading(true);
-      setTimeout(() => setIsLoading(false), 500);
-    }
-  };
-
-  const renderPageNumbers = () => {
-    const pages = [];
-    const maxVisiblePages = 5;
-
-    if (totalPages <= maxVisiblePages) {
-      for (let i = 1; i <= totalPages; i++) {
-        pages.push(
-          <Button
-            key={i}
-            onClick={() => handlePageChange(i)}
-            className={`w-10 h-10 rounded-md ${
-              currentPage === i
-                ? "bg-primary text-primary-foreground"
-                : "bg-transparent text-foreground hover:bg-accent"
-            }`}
-            variant={currentPage === i ? "default" : "ghost"}
-          >
-            {i}
-          </Button>
-        );
-      }
-    } else {
-      pages.push(
-        <Button
-          key={1}
-          onClick={() => handlePageChange(1)}
-          className={`w-10 h-10 rounded-md ${
-            currentPage === 1
-              ? "bg-primary text-primary-foreground"
-              : "bg-transparent text-foreground hover:bg-accent"
-          }`}
-          variant={currentPage === 1 ? "default" : "ghost"}
-        >
-          1
-        </Button>
-      );
-
-      if (currentPage > 3) {
-        pages.push(
-          <span key="ellipsis1" className="text-muted-foreground">
-            ...
-          </span>
-        );
-      }
-
-      const start = Math.max(2, currentPage - 1);
-      const end = Math.min(totalPages - 1, currentPage + 1);
-
-      for (let i = start; i <= end; i++) {
-        pages.push(
-          <Button
-            key={i}
-            onClick={() => handlePageChange(i)}
-            className={`w-10 h-10 rounded-md ${
-              currentPage === i
-                ? "bg-primary text-primary-foreground"
-                : "bg-transparent text-foreground hover:bg-accent"
-            }`}
-            variant={currentPage === i ? "default" : "ghost"}
-          >
-            {i}
-          </Button>
-        );
-      }
-
-      if (currentPage < totalPages - 2) {
-        pages.push(
-          <span key="ellipsis2" className="text-muted-foreground">
-            ...
-          </span>
-        );
-      }
-
-      pages.push(
-        <Button
-          key={totalPages}
-          onClick={() => handlePageChange(totalPages)}
-          className={`w-10 h-10 rounded-md ${
-            currentPage === totalPages
-              ? "bg-primary text-primary-foreground"
-              : "bg-transparent text-foreground hover:bg-accent"
-          }`}
-          variant={currentPage === totalPages ? "default" : "ghost"}
-        >
-          {totalPages}
-        </Button>
-      );
-    }
-
-    return pages;
+    setCurrentPage(page);
+    setIsLoading(true);
+    setTimeout(() => setIsLoading(false), 500);
   };
 
   return (
@@ -253,20 +160,27 @@ export default function SupplierPage() {
         </div>
 
         {/* Due Bills Section */}
-        {(activeTab === "all" || activeTab === "due") && (
+        {activeTab === "all" && (
           <DueBillsSection bills={mockBills} isLoading={isLoading} />
+        )}
+
+        {activeTab === "due" && (
+          <DueBillsSection
+            bills={mockBills.filter((bill) => bill.due > 0)}
+            isLoading={isLoading}
+          />
         )}
 
         {/* Suppliers Section */}
         {activeTab === "suppliers" && (
-          <div className="bg-card rounded-2xl border border-border shadow-[0px_8px_32px_0px_#00000026] pb-5">
+          <div className="bg-card rounded-2xl border border-border shadow-sm pb-5">
             <div className="p-5 border-b border-border flex justify-between items-center">
               <h2 className="text-2xl font-semibold text-foreground">
                 Supplier
               </h2>
               <Button
                 onClick={() => setIsAddModalOpen(true)}
-                className="flex items-center gap-1 bg-primary hover:bg-primary/80 rounded-xl px-4 py-2.5 text-white"
+                className="flex items-center gap-1 bg-primary hover:bg-primary/80 rounded-sm px-4 py-2.5 text-white"
               >
                 <Plus className="w-5 h-5" />
                 Add Supplier
@@ -343,27 +257,11 @@ export default function SupplierPage() {
           (activeTab === "suppliers"
             ? paginatedSuppliers.length > 0
             : mockBills.length > 0) && (
-            <div className="flex items-center justify-between">
-              <Button
-                variant="outline"
-                className="rounded-md bg-card shadow-[0px_8px_32px_0px_#00000026]"
-                onClick={() => handlePageChange(currentPage - 1)}
-                disabled={currentPage === 1}
-              >
-                ← Previous
-              </Button>
-              <div className="flex items-center gap-2">
-                {renderPageNumbers()}
-              </div>
-              <Button
-                variant="outline"
-                className="rounded-md bg-card shadow-[0px_8px_32px_0px_#00000026]"
-                onClick={() => handlePageChange(currentPage + 1)}
-                disabled={currentPage === totalPages}
-              >
-                Next →
-              </Button>
-            </div>
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={handlePageChange}
+            />
           )}
       </main>
 
