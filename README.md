@@ -1,75 +1,111 @@
-# React + TypeScript + Vite
+# Restaurant Management System
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A comprehensive restaurant management solution built with React, TypeScript, and Vite. This application helps restaurant owners and staff manage orders, inventory, menus, tables, expenses, and more.
 
-Currently, two official plugins are available:
+![Restaurant Management System](./public/logo.png)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Features
 
-## React Compiler
+- **Dashboard**: Real-time analytics and restaurant performance metrics
+- **Order Management**: Create, track, and manage customer orders
+- **Menu Management**: Add, edit, and organize menu items and categories
+- **Inventory Management**: Track stock levels and manage supplies
+- **Table Management**: Manage restaurant tables and seating
+- **Expense Tracking**: Record and categorize restaurant expenses
+- **User Role Management**: Role-based access control for staff members
+- **Kitchen Display System**: Real-time order updates for kitchen staff
+- **Reports**: Generate sales, inventory, and performance reports
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+## Tech Stack
 
-Note: This will impact Vite dev & build performances.
+- **Frontend**: React 19, TypeScript
+- **Build Tool**: Vite
+- **Styling**: TailwindCSS
+- **UI Components**: Radix UI
+- **Forms**: React Hook Form with Zod validation
+- **State Management**: React Redux
+- **Routing**: React Router
+- **Charts**: Recharts
+- **Icons**: Lucide React, Hugeicons
 
-## Expanding the ESLint configuration
+## Getting Started
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Prerequisites
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- Node.js (v18 or higher)
+- Yarn or npm
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### Installation
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/nrbnayon/restaurant-management-system.git
+   cd restaurant-management-system
+   ```
+
+2. Install dependencies:
+   ```bash
+   yarn install
+   # or
+   npm install
+   ```
+
+3. Start the development server:
+   ```bash
+   yarn dev
+   # or
+   npm run dev
+   ```
+
+4. Open your browser and navigate to:
+   ```
+   http://localhost:5173
+   ```
+
+## Available Scripts
+
+- `yarn dev` - Start the development server
+- `yarn build` - Build for production
+- `yarn lint` - Run ESLint
+- `yarn lint:fix` - Fix ESLint issues
+- `yarn preview` - Preview the production build
+- `yarn type-check` - Run TypeScript type checking
+
+## Project Structure
+
+```
+restaurant-management-system/
+├── public/               # Static assets
+├── src/
+│   ├── Layouts/          # Layout components
+│   ├── Pages/            # Page components
+│   ├── Routers/          # Application routes
+│   ├── assets/           # Images, icons, etc.
+│   ├── components/       # Reusable components
+│   ├── config/           # Configuration files
+│   ├── contexts/         # React contexts
+│   ├── data/             # Mock data
+│   ├── hooks/            # Custom hooks
+│   ├── lib/              # Utility functions
+│   ├── redux/            # Redux store and slices
+│   └── types/            # TypeScript type definitions
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Contributing
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Acknowledgments
+
+- [React](https://react.dev/)
+- [Vite](https://vitejs.dev/)
+- [TailwindCSS](https://tailwindcss.com/)
+- [Radix UI](https://www.radix-ui.com/)
