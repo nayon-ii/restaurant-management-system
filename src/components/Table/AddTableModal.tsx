@@ -58,7 +58,7 @@ export default function AddTableModal({
       isActive: formData.isActive,
     });
 
-    toast.success("Table added successfully!");
+    // toast.success("Table added successfully!");
     setIsSubmitting(false);
     setFormData({ tableNo: "", capacity: "", location: "", isActive: true });
   };
