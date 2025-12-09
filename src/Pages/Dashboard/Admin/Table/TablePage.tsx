@@ -161,7 +161,7 @@ export default function TablePage() {
         <div className="bg-card rounded-2xl border border-border shadow-sm pb-5">
           <div className="p-5 border-b border-border flex justify-between items-center">
             <h2 className="text-2xl font-semibold text-foreground">Table's</h2>
-            <RoleGuard allowedRole="manager">
+            <RoleGuard allowedRoles={["manager", "admin"]}>
               <Button
                 onClick={handleAdd}
                 className="flex items-center justify-center gap-1 bg-primary hover:bg-primary/80 shadow-lg hover:shadow-xl rounded-md px-4 py-2.5 text-white transition-all"
